@@ -25,7 +25,7 @@
                             <form action="{{ route('admin.delegates.delegate_daily_delivery_statement',['delegate' => $delegate->id]) }}" method="POST">
                                 @csrf 
                                 @method('POST')
-                                <button type="submit" class="btn btn-primary" @if ($is_disable_1st_btn) disabled @endif> 
+                                <button type="submit" id="delivery_1st_btn" class="btn btn-primary"> 
                                     كشف تسليم مندوب
                                 </button>
                             </form>     
@@ -34,7 +34,7 @@
                             <form action="{{ route('admin.delegates.delegate_final_delivery_statement',['delegate' => $delegate->id]) }}" method="POST">
                                 @csrf 
                                 @method('POST')
-                                <button type="submit" class="btn btn-primary" @if ($is_disable_2st_btn) disabled @endif> 
+                                <button type="submit" id="delivery_2nd_btn" class="btn btn-primary"> 
                                     كشف تسليم نهائي
                                 </button>
                             </form>     

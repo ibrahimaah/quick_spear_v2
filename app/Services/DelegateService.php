@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\City;
 use App\Models\Delegate;
 use App\Models\Shipment;
+use App\Models\ShipmentStatus;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -135,6 +136,54 @@ class DelegateService
             {
                 throw new Exception("no delegates for selected city");
             }
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0, 'msg' => $ex->getMessage()];
+        }
+    }
+
+    //i.e ex. all shipments of delegate Ahmad has status of Under Delivery
+    public function chk_all_delegate_shipments_has_status(Delegate $delegate, $status)
+    {
+        try 
+        {
+            $shipments = $delegate->shipments->where('is_deported', false);
+            
+            if ($shipments->isEmpty()) 
+            {
+                throw new Exception('This delegate does not have any shipment');
+            }
+            
+            $result = $shipments->every(function ($shipment) use ($status) {
+                return $shipment->shipment_status_id === $status;
+            });
+            
+            return ['code' => 1, 'data' => $result];
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0, 'msg' => $ex->getMessage()];
+        }
+    }
+
+
+    public function chk_all_delegate_shipments_not_has_status(Delegate $delegate,$status)
+    {
+        try 
+        {
+            $shipments = $delegate->shipments->where('is_deported', false);
+            
+            if ($shipments->isEmpty()) 
+            {
+                throw new Exception('This delegate does not have any shipment');
+            }
+            
+            $result = $shipments->every(function ($shipment) use ($status) {
+                return $shipment->shipment_status_id !== $status;
+            });
+            
+            return ['code' => 1, 'data' => $result];
         }
         catch(Exception $ex)
         {

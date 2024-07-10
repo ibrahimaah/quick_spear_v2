@@ -125,4 +125,14 @@ class Shipment extends Model
     {
         return $this->belongsTo(ShipmentStatus::class, 'shipment_status_id', 'id');
     }
+
+    public function scopeIsDeported($query)
+    {
+        return $query->where('is_deported',true);
+    }
+
+    public function scopeIsNotDeported($query)
+    {
+        return $query->where('is_deported',false);
+    }
 }

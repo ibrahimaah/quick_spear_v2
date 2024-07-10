@@ -129,25 +129,24 @@ class DelegateController extends Controller
 
     public function get_shipments(Delegate $delegate)
     {
-        $dataTable = new ExpressDataTable(false,null,$delegate->id); 
-        $is_disable_1st_btn = true;
-        
-        foreach($delegate->shipments as $shipment)
-        {
-            if($shipment->shipment_status_id != ShipmentStatus::UNDER_DELIVERY)
-            {
-                $is_disable_1st_btn = true;
-                break;
-            }
-            else 
-            {
-                $is_disable_1st_btn = false;
-            }
-        }
+        $dataTable = new ExpressDataTable(false,null,$delegate->id);
 
-        // $is_disable_1st_btn = false;
-        $is_disable_2st_btn = false;
-        return $dataTable->render('admin.delegates.show_shipments',['delegate' => $delegate,'is_disable_1st_btn'=>$is_disable_1st_btn,'is_disable_2st_btn'=>$is_disable_2st_btn]);
+        // $is_disable_1st_btn = true;
+        // foreach($delegate->shipments->where('is_deported',false) as $shipment)
+        // {
+        //     if($shipment->shipment_status_id != ShipmentStatus::UNDER_DELIVERY)
+        //     {
+        //         $is_disable_1st_btn = true;
+        //         break;
+        //     }
+        //     else 
+        //     {
+        //         $is_disable_1st_btn = false;
+        //     }
+        // }
+ 
+        // return $dataTable->render('admin.delegates.show_shipments',['delegate' => $delegate,'is_disable_1st_btn'=>$is_disable_1st_btn]);
+        return $dataTable->render('admin.delegates.show_shipments',compact(['delegate']));
     }
 
     public function get_delegates_by_city_id(City $city)

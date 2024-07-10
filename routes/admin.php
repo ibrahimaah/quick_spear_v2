@@ -20,9 +20,12 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShipmentImportController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Models\City;
+use App\Models\Delegate;
 use App\Models\Region;
 use App\Models\Shipment;
+use App\Models\ShipmentStatus;
 use App\Models\Shop;
+use App\Services\DelegateService;
 // Route::get('/ccccccccccccccccccccccccccccccccccaaaaaaaaa', function(){
 //     App\Models\Admin::create([
 //         'name'      => 'shipybuy',
@@ -42,19 +45,9 @@ App::setLocale('ar');
 
 Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('admin.')->group(function () {
     Route::get('/tmp', function(){
-        $shop = Shop::with('deliveryPrices')->find(1);
-
-        foreach ($shop->deliveryPrices as $deliveryPrice) 
-        {
-            // $location = $deliveryPrice->location->name;
-            if(get_class($deliveryPrice->location) != "App\Models\City")
-            {
-                dd($deliveryPrice->location->name);
-            }
-                
-            // echo "Delivery Price: {$deliveryPrice->price} for " . get_class($location) . " ID: {$location->id} </br>";
-        }
-
+       
+        $tmp = (new DelegateService())->chk_all_delegate_shipments_not_has_status(Delegate::find(5),ShipmentStatus::UNDER_DELIVERY);
+        dd($tmp);
     });
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/invoice', [InvoiceController::class, 'invoice'])->name('invoice');

@@ -90,19 +90,19 @@ class ExpressDataTable extends DataTable
                 return $query->customer_notes;
             }
         })
-        ->editColumn('delivery_fees', function($query) { 
-            // $city_from = $query->address->City->id; 
-            $city_from = $query->shop?->city_id;
-            $city_to = $query->city_to->id; 
-            $delivery_fees = ShipmentRate::where('city_from',"$city_from")->where('city_to',"$city_to")->first()?->rate;
+        // ->editColumn('delivery_fees', function($query) { 
+        //     // $city_from = $query->address->City->id; 
+        //     $city_from = $query->shop?->city_id;
+        //     $city_to = $query->city_to->id; 
+        //     $delivery_fees = ShipmentRate::where('city_from',"$city_from")->where('city_to',"$city_to")->first()?->rate;
 
-            if(!$delivery_fees)
-            {
-                return __('not_determined_yet');
-            }else{
-                return $delivery_fees;
-            }
-        })
+        //     if(!$delivery_fees)
+        //     {
+        //         return __('not_determined_yet');
+        //     }else{
+        //         return $delivery_fees;
+        //     }
+        // })
         ->editColumn('accepted_by_admin_at', function ($query) {
             if(!$query->accepted_by_admin_at){
                 return __('not_determined_yet');
@@ -176,7 +176,7 @@ class ExpressDataTable extends DataTable
 
         if ($this->delegate_id) 
         {
-            return $model->newQuery()->where('delegate_id',$this->delegate_id)->orderBy('id','DESC');
+            return $model->newQuery()->where('delegate_id',$this->delegate_id)->where('is_deported',false)->orderBy('id','DESC');
         }
 
         // $user_id =  $this->user_id ?? auth()->user()->id;
