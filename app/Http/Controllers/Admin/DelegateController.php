@@ -250,4 +250,34 @@ class DelegateController extends Controller
         ]);
         // return view('admin.delegates.delegate_daily_delivery_statement');
     }
+
+
+
+    public function get_initial_delivery_1st_btn_state(Delegate $delegate)
+    {
+        $res_chk_all_delegate_shipments_has_status = $this->delegateService->chk_all_delegate_shipments_has_status($delegate,ShipmentStatus::UNDER_DELIVERY);
+
+        if ($res_chk_all_delegate_shipments_has_status['code'] == 1) 
+        {
+            return response()->json(['code' => 1, 'data' => $res_chk_all_delegate_shipments_has_status['data'] ]);
+        }
+        else 
+        {
+            return response()->json(['code' => 0, 'msg' => $res_chk_all_delegate_shipments_has_status['msg']]);
+        }
+    }
+
+    public function get_initial_delivery_2nd_btn_state(Delegate $delegate)
+    {
+        $res_chk_all_delegate_shipments_not_has_status = $this->delegateService->chk_all_delegate_shipments_not_has_status($delegate,ShipmentStatus::UNDER_DELIVERY);
+        
+        if ($res_chk_all_delegate_shipments_not_has_status['code'] == 1) 
+        {
+            return response()->json(['code' => 1,'data' => $res_chk_all_delegate_shipments_not_has_status['data']]);
+        }
+        else 
+        {
+            return response()->json(['code' => 0, 'msg' => $res_chk_all_delegate_shipments_not_has_status['msg']]);
+        }
+    }
 }

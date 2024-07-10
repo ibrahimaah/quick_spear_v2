@@ -70,6 +70,9 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
 
     Route::post('get-delegate-daily-delivery-statement/{delegate}', [DelegateController::class,'delegate_daily_delivery_statement'])->name('delegates.delegate_daily_delivery_statement');
     Route::post('get-delegate-final-delivery-statement/{delegate}', [DelegateController::class,'delegate_final_delivery_statement'])->name('delegates.delegate_final_delivery_statement');
+    //get_initial_delivery_1st_btn_state
+    Route::get('get-initial-delivery-1st-btn-state/{delegate}',[DelegateController::class,'get_initial_delivery_1st_btn_state'])->name('delegates.get_initial_delivery_1st_btn_state');
+    Route::get('get-initial-delivery-2nd-btn-state/{delegate}',[DelegateController::class,'get_initial_delivery_2nd_btn_state'])->name('delegates.get_initial_delivery_2nd_btn_state');
 
     Route::post('users/update-password/{user}', [UserController::class, 'update_password'])->name('users.update_password');
     // Route::post('users/documents/delete/{id}', [UserController::class, 'documents_delete'])->name('users.documents_delete');

@@ -64,10 +64,42 @@
 <script>
    
 
-    $(document).ready(function(){
+    $(document).ready(function()
+    {
+         const waiting_msg = 'جاري المعالجة'
+         const err_msg = 'حدث خطأ في المعالجة'
 
-        const waiting_msg = 'جاري المعالجة'
-        const err_msg = 'حدث خطأ في المعالجة'
+        var delegate_id = {{ $delegate->id }}
+        
+        var url = "{{ route('admin.delegates.get_initial_delivery_1st_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
+                    url = url.replace('STATUS_PLACEHOLDER', delegate_id);
+        $.ajax({
+                url: url,
+                method: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                beforeSend: function() { 
+                    showOverlayWithMessage(waiting_msg);
+                    // $('#express-table').prop('disabled', true);
+                },
+                complete: function() {  
+                    hideOverlay();
+                    // $('#express-table').prop('disabled', false);
+                },
+                success: function(response) {
+                    if (response.code == 1) {    
+                         $('#delivery_1st_btn').prop('disabled', !response.data);
+                    } else if (response.code == 0) {
+                        alert(response.msg);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred');
+                }
+            });
+
+       
 
         $('#express-table').on('change', '.shipment-status-select', function() { 
                 var dataTable = $('#express-table').DataTable();
