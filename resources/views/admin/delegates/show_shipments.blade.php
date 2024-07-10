@@ -71,35 +71,65 @@
 
         var delegate_id = {{ $delegate->id }}
         
-        var url = "{{ route('admin.delegates.get_initial_delivery_1st_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
-                    url = url.replace('STATUS_PLACEHOLDER', delegate_id);
-        $.ajax({
-                url: url,
-                method: "GET",
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                beforeSend: function() { 
-                    showOverlayWithMessage(waiting_msg);
-                    // $('#express-table').prop('disabled', true);
-                },
-                complete: function() {  
-                    hideOverlay();
-                    // $('#express-table').prop('disabled', false);
-                },
-                success: function(response) {
-                    if (response.code == 1) {    
-                         $('#delivery_1st_btn').prop('disabled', !response.data);
-                    } else if (response.code == 0) {
-                        alert(response.msg);
-                    }
-                },
-                error: function() {
-                    alert('An error occurred');
-                }
-            });
+        var url_1 = "{{ route('admin.delegates.get_initial_delivery_1st_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
+        url_1 = url_1.replace('STATUS_PLACEHOLDER', delegate_id);
+        
 
-       
+        $.ajax({
+            url: url_1,
+            method: "GET",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            beforeSend: function() { 
+                showOverlayWithMessage(waiting_msg);
+                // $('#express-table').prop('disabled', true);
+            },
+            complete: function() {  
+                hideOverlay();
+                // $('#express-table').prop('disabled', false);
+            },
+            success: function(response) {
+                if (response.code == 1) {    
+                        $('#delivery_1st_btn').prop('disabled', !response.data);
+                } else if (response.code == 0) {
+                    alert(response.msg);
+                }
+            },
+            error: function() {
+                alert('An error occurred');
+            }
+        });
+
+
+        var url_2 = "{{ route('admin.delegates.get_initial_delivery_2nd_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
+        url_2 = url_2.replace('STATUS_PLACEHOLDER', delegate_id);
+
+        $.ajax({
+            url: url_2,
+            method: "GET",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            beforeSend: function() { 
+                showOverlayWithMessage(waiting_msg);
+                // $('#express-table').prop('disabled', true);
+            },
+            complete: function() {  
+                hideOverlay();
+                // $('#express-table').prop('disabled', false);
+            },
+            success: function(response) {
+                if (response.code == 1) {    
+                        $('#delivery_2nd_btn').prop('disabled', !response.data);
+                } else if (response.code == 0) {
+                    alert(response.msg);
+                }
+            },
+            error: function() {
+                alert('An error occurred');
+            }
+        });
 
         $('#express-table').on('change', '.shipment-status-select', function() { 
                 var dataTable = $('#express-table').DataTable();
