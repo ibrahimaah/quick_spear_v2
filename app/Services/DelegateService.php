@@ -190,4 +190,53 @@ class DelegateService
             return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }
+
+    public function deport(Delegate $delegate)
+    {
+        try 
+        {
+            $shipments = $delegate->shipments->where('is_deported', false);
+            
+            if ($shipments->isEmpty()) 
+            {
+                throw new Exception('This delegate does not have any shipment');
+            }
+            
+            foreach ($shipments as $shipment) 
+            {
+                if ($shipment->shipment_status_id == ShipmentStatus::POSTPONED) 
+                {
+                    continue;
+                }
+                else 
+                {
+                    $shipment->is_deported = true;
+                    $shipment->save();
+                }
+            }
+            
+            return ['code' => 1, 'data' => true];
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0, 'msg' => $ex->getMessage()];
+        }
+    }
+
+    public function get_total_summation(Delegate $delegate)
+    {
+        $shipments = $delegate->nonDeportedShipments();
+        if ($shipments->isNotEmpty()) 
+        {
+            foreach ($shipments as $shipment) 
+            {
+                
+            }
+        }
+        else 
+        {
+            return ['code' => 1, 'data' => 0];
+        }
+    }
+
 }

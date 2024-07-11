@@ -280,4 +280,17 @@ class DelegateController extends Controller
             return response()->json(['code' => 0, 'msg' => $res_chk_all_delegate_shipments_not_has_status['msg']]);
         }
     }
+
+    public function deport(Delegate $delegate)
+    {
+        $res_deport = $this->delegateService->deport($delegate);
+        if ($res_deport['code'] == 1) 
+        {
+            return back()->with('success','تمت العملية بنجاح');
+        }
+        else 
+        {
+            return back()->with('error',$res_deport['msg']);
+        }
+    }
 }

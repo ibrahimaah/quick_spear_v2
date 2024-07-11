@@ -41,17 +41,19 @@
                         </div>  
                     </div> 
                 @endif
-                {{-- @if (session()->has('error'))
-                    <div class="alert text-center py-4 my-3 alert-danger">{{ session()->get('error') }}</div>
-                @endif
-                @if (session()->has('success'))
-                    <div class="alert text-center py-4 my-3 alert-success">{{ session()->get('success') }}</div>
-                @endif --}}
             </div>
             
             <div class="card-body datatable-container" id="myTabContent">
                 {{ $dataTable->table() }}
             </div>
+            @if($delegate)
+                <div class="text-center">
+                    <form action="{{ route('admin.delegates.deport',['delegate' => $delegate->id]) }}" method="post" id="deport-form">
+                        @csrf 
+                        <input class="btn btn-success my-4" id="deported-btn" type="submit" value="ترحيل الكشف">
+                    </form>
+                </div>
+            @endif
         </div>
     </div>
 </div>
@@ -63,74 +65,89 @@
 
 <script>
    
-
     $(document).ready(function()
     {
+        
+        $('#deport-form').submit(function(event){
+            if(!confirm("هل أنت متأكد أنك تريد ترحيل الكشف؟")){
+                event.preventDefault();
+            }
+        });
+
          const waiting_msg = 'جاري المعالجة'
          const err_msg = 'حدث خطأ في المعالجة'
 
+        const update_1st_btn_state = delegate_id => 
+        {
+            var url_1 = "{{ route('admin.delegates.get_initial_delivery_1st_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
+            url_1 = url_1.replace('STATUS_PLACEHOLDER', delegate_id);
+
+            $.ajax({
+                url: url_1,
+                method: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                beforeSend: function() { 
+                    showOverlayWithMessage(waiting_msg);
+                    $('#delivery_1st_btn').prop('disabled', true);
+                },
+                complete: function() {  
+                    hideOverlay();
+                    // $('#express-table').prop('disabled', false);
+                },
+                success: function(response) {
+                    if (response.code == 1) {    
+                            $('#delivery_1st_btn').prop('disabled', !response.data);
+                    } else if (response.code == 0) {
+                        console.log(response.msg);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred');
+                }
+            });
+        }
+
+        const update_2nd_btn_state = delegate_id => 
+        {
+            var url_2 = "{{ route('admin.delegates.get_initial_delivery_2nd_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
+            url_2 = url_2.replace('STATUS_PLACEHOLDER', delegate_id);
+
+            $.ajax({
+                url: url_2,
+                method: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                beforeSend: function() { 
+                    showOverlayWithMessage(waiting_msg);
+                    $('#delivery_2nd_btn').prop('disabled', true);
+                    $('#deported-btn').prop('disabled', true);
+                },
+                complete: function() {  
+                    hideOverlay();
+                    // $('#express-table').prop('disabled', false);
+                },
+                success: function(response) {
+                    if (response.code == 1) {    
+                            $('#delivery_2nd_btn').prop('disabled', !response.data);
+                            $('#deported-btn').prop('disabled', !response.data);
+                    } else if (response.code == 0) {
+                        console.log(response.msg);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred');
+                }
+            });
+        }
+
         var delegate_id = {{ $delegate->id }}
         
-        var url_1 = "{{ route('admin.delegates.get_initial_delivery_1st_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
-        url_1 = url_1.replace('STATUS_PLACEHOLDER', delegate_id);
+        update_1st_btn_state(delegate_id)
+        update_2nd_btn_state(delegate_id)
         
-
-        $.ajax({
-            url: url_1,
-            method: "GET",
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            beforeSend: function() { 
-                showOverlayWithMessage(waiting_msg);
-                // $('#express-table').prop('disabled', true);
-            },
-            complete: function() {  
-                hideOverlay();
-                // $('#express-table').prop('disabled', false);
-            },
-            success: function(response) {
-                if (response.code == 1) {    
-                        $('#delivery_1st_btn').prop('disabled', !response.data);
-                } else if (response.code == 0) {
-                    alert(response.msg);
-                }
-            },
-            error: function() {
-                alert('An error occurred');
-            }
-        });
-
-
-        var url_2 = "{{ route('admin.delegates.get_initial_delivery_2nd_btn_state', ['delegate' => 'STATUS_PLACEHOLDER']) }}";
-        url_2 = url_2.replace('STATUS_PLACEHOLDER', delegate_id);
-
-        $.ajax({
-            url: url_2,
-            method: "GET",
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            beforeSend: function() { 
-                showOverlayWithMessage(waiting_msg);
-                // $('#express-table').prop('disabled', true);
-            },
-            complete: function() {  
-                hideOverlay();
-                // $('#express-table').prop('disabled', false);
-            },
-            success: function(response) {
-                if (response.code == 1) {    
-                        $('#delivery_2nd_btn').prop('disabled', !response.data);
-                } else if (response.code == 0) {
-                    alert(response.msg);
-                }
-            },
-            error: function() {
-                alert('An error occurred');
-            }
-        });
-
         $('#express-table').on('change', '.shipment-status-select', function() { 
                 var dataTable = $('#express-table').DataTable();
                 var columnName = 'id'; // Replace 'columnName' with the actual name of your column
@@ -162,10 +179,12 @@
                         },
                         success: function(response) {
                             if (response.code == 1) {    
+                                update_1st_btn_state(delegate_id)
+                                update_2nd_btn_state(delegate_id)
                                 dataTable.ajax.reload(null, false); 
                                 
                             } else if (response.code == 0) {
-                                alert(response.msg);
+                                console.log(response.msg);
                             }
                         },
                         error: function() {

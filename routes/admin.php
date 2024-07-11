@@ -45,9 +45,8 @@ App::setLocale('ar');
 
 Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('admin.')->group(function () {
     Route::get('/tmp', function(){
-       
-        $tmp = (new DelegateService())->chk_all_delegate_shipments_not_has_status(Delegate::find(5),ShipmentStatus::UNDER_DELIVERY);
-        dd($tmp);
+        $delegate = Delegate::find(5);
+        dd($delegate->deportedShipments());
     });
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/invoice', [InvoiceController::class, 'invoice'])->name('invoice');
@@ -73,6 +72,7 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     //get_initial_delivery_1st_btn_state
     Route::get('get-initial-delivery-1st-btn-state/{delegate}',[DelegateController::class,'get_initial_delivery_1st_btn_state'])->name('delegates.get_initial_delivery_1st_btn_state');
     Route::get('get-initial-delivery-2nd-btn-state/{delegate}',[DelegateController::class,'get_initial_delivery_2nd_btn_state'])->name('delegates.get_initial_delivery_2nd_btn_state');
+    Route::post('deport/{delegate}',[DelegateController::class,'deport'])->name('delegates.deport');
 
     Route::post('users/update-password/{user}', [UserController::class, 'update_password'])->name('users.update_password');
     // Route::post('users/documents/delete/{id}', [UserController::class, 'documents_delete'])->name('users.documents_delete');

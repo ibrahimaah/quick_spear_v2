@@ -33,4 +33,14 @@ class Delegate extends Model
     {
         return $this->belongsToMany(City::class)->withPivot('price')->withTimestamps();
     }
+
+    public function nonDeportedShipments()
+    {
+        return $this->shipments()->nonDeported()->get();
+    }
+
+    public function deportedShipments()
+    {
+        return $this->shipments()->deported()->get();
+    }
 }

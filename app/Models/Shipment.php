@@ -126,13 +126,34 @@ class Shipment extends Model
         return $this->belongsTo(ShipmentStatus::class, 'shipment_status_id', 'id');
     }
 
-    public function scopeIsDeported($query)
+    // public function scopeIsDeported($query)
+    // {
+    //     return $query->where('is_deported',true);
+    // }
+
+    // public function scopeIsNotDeported($query)
+    // {
+    //     return $query->where('is_deported',false);
+    // }
+
+    public function scopeNonDeported($query)
     {
-        return $query->where('is_deported',true);
+        return $query->where('is_deported', false);
     }
 
-    public function scopeIsNotDeported($query)
+    public function scopeDeported($query)
     {
-        return $query->where('is_deported',false);
+        return $query->where('is_deported', true);
+    }
+
+    public function scopeUnProfitable($query)
+    {
+        return $query->whereIn('shipment_status_id', [
+            ShipmentStatus::POSTPONED,
+            ShipmentStatus::NO_RESPONSE,
+            ShipmentStatus::UNDER_REVIEW,
+            ShipmentStatus::UNDER_DELIVERY,
+            ShipmentStatus::CANCELED
+        ]);
     }
 }

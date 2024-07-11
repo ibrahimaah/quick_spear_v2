@@ -109,19 +109,25 @@
                     <th>هاتف الزبون</th>
                     <th>ملاحظات جانبية</th>
                 </tr>
-                @foreach ($delegate->shipments as $shipment)
+                @php 
+                    $final_total = 0;
+                @endphp 
+                @foreach ($delegate->nonDeportedShipments() as $shipment)
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $shipment->city_to->name }}</td>
                         <td>{{ $shipment->consignee_region }}</td>
                         <td>{{ $shipment->shop->name }}</td> 
-                        <td>{{ $shipment->is_returned ? ' (مرتجع)' : '' }} {{ $shipment->order_price }}</td> 
+                        <td>{{ $shipment->is_returned ? ' (مرتجع)' : '' }} {{ $shipment->value_on_delivery }}</td> 
                         {{-- <td>{{ getStatusInfo($shipment->status) }}</td> --}}
-                        <td></td>
+                        <td>{{ __($shipment->status->name) }}</td>
                         <td>{{ $shipment->consignee_phone }}</td>
                         <td class="text-right">{{ $shipment->notes }}</td>
                         
                     </tr>
+                @php 
+                    $final_total+=$shipment->value_on_delivery;
+                @endphp 
                 @endforeach
                 {{-- <tr>
                     <th colspan="4">المدفوع:</th>
@@ -136,7 +142,7 @@
                 </tr> --}}
               </table>
 
-              <h4 class="mr-50">المجموع الكلي :</h4>
+              <h4 class="mr-50">المجموع الكلي : {{ $final_total }}</h4>
               <h4 class="mr-50"> العمولة :</h4>
               <h4 class="mr-50">المجموع النهائي :</h4>
           

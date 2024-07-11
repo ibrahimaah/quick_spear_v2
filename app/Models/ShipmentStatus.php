@@ -17,6 +17,6 @@ class ShipmentStatus extends Model
     const REJECTED_WITHOUT_PAY = 4;
     const REJECTED_WITH_PAY = 5;
     const POSTPONED = 6;
-    const NO_RESPONSE = 7; 
+    const NO_RESPONSE = 7;  //لا رد بعد الوصول لزبون
     const CANCELED = 8; 
 }
