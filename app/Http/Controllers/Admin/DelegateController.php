@@ -236,9 +236,24 @@ class DelegateController extends Controller
         $statement_data['current_day'] = $currentDayInArabic;
         $statement_data['current_date'] = $currentDateInArabic; 
 
-   
+        $res_get_total_summation = $this->delegateService->get_total_summation($delegate);
+        $res_get_total_delegate_commission = $this->delegateService->get_total_delegate_commission($delegate);
+
+        if ($res_get_total_summation['code'] == 0) 
+        {
+            return back()->with('error',$res_get_total_summation['msg']);
+        }
+
+        if ($res_get_total_delegate_commission['code'] == 0) 
+        {
+            return back()->with('error',$res_get_total_delegate_commission['msg']);
+        }
+
+
         $pdf = PDF::loadView('admin.delegates.delegate_final_delivery_statement',['statement' => $statement_data,
-                                                                                  'delegate' => $delegate]);
+                                                                                  'delegate' => $delegate,
+                                                                                  'total_summation' => $res_get_total_summation['data'],
+                                                                                  'total_delegate_commission' => $res_get_total_delegate_commission['data']]);
 
         $pdf_file_name = 'delegate_final_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
         // return $pdf->stream('invoice.pdf');

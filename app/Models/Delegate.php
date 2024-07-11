@@ -43,4 +43,9 @@ class Delegate extends Model
     {
         return $this->shipments()->deported()->get();
     }
+
+    public function hasDelegateCommissionNonDeportedShipments()
+    {
+        return $this->shipments()->nonDeported()->hasDelegateCommission()->get();
+    }
 }

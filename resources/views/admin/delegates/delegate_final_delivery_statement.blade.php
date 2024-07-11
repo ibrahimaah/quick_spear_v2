@@ -109,9 +109,7 @@
                     <th>هاتف الزبون</th>
                     <th>ملاحظات جانبية</th>
                 </tr>
-                @php 
-                    $final_total = 0;
-                @endphp 
+               
                 @foreach ($delegate->nonDeportedShipments() as $shipment)
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
@@ -125,9 +123,7 @@
                         <td class="text-right">{{ $shipment->notes }}</td>
                         
                     </tr>
-                @php 
-                    $final_total+=$shipment->value_on_delivery;
-                @endphp 
+              
                 @endforeach
                 {{-- <tr>
                     <th colspan="4">المدفوع:</th>
@@ -142,9 +138,9 @@
                 </tr> --}}
               </table>
 
-              <h4 class="mr-50">المجموع الكلي : {{ $final_total }}</h4>
-              <h4 class="mr-50"> العمولة :</h4>
-              <h4 class="mr-50">المجموع النهائي :</h4>
+              <h4 class="mr-50">المجموع الكلي : {{ $total_summation }}</h4>
+              <h4 class="mr-50"> العمولة : {{ $total_delegate_commission }}</h4> 
+              <h4 class="mr-50">المجموع النهائي : {{ $total_summation - $total_delegate_commission }}  </h4>
           
               
 		</div>

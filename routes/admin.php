@@ -46,7 +46,9 @@ App::setLocale('ar');
 Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('admin.')->group(function () {
     Route::get('/tmp', function(){
         $delegate = Delegate::find(5);
-        dd($delegate->deportedShipments());
+        $shipment = Shipment::find(10);
+        // dd($shipment->city->id);
+        dd($delegate->cities()->where('city_id',$shipment->consignee_city)->first()->pivot->price);
     });
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/invoice', [InvoiceController::class, 'invoice'])->name('invoice');

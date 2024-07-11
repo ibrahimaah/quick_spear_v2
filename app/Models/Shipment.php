@@ -146,14 +146,25 @@ class Shipment extends Model
         return $query->where('is_deported', true);
     }
 
-    public function scopeUnProfitable($query)
+    // public function scopeUnProfitable($query)
+    // {
+    //     return $query->whereIn('shipment_status_id', [
+    //         ShipmentStatus::POSTPONED,
+    //         ShipmentStatus::NO_RESPONSE,
+    //         ShipmentStatus::UNDER_REVIEW,
+    //         ShipmentStatus::UNDER_DELIVERY,
+    //         ShipmentStatus::CANCELED
+    //     ]);
+    // }
+
+    public function scopeHasDelegateCommission($query)
     {
-        return $query->whereIn('shipment_status_id', [
-            ShipmentStatus::POSTPONED,
-            ShipmentStatus::NO_RESPONSE,
-            ShipmentStatus::UNDER_REVIEW,
-            ShipmentStatus::UNDER_DELIVERY,
-            ShipmentStatus::CANCELED
+        return $query->whereIn('shipment_status_id', 
+        [ 
+            ShipmentStatus::NO_RESPONSE, 
+            ShipmentStatus::DELIVERED, 
+            ShipmentStatus::REJECTED_WITHOUT_PAY, 
+            ShipmentStatus::REJECTED_WITH_PAY
         ]);
     }
 }

@@ -225,17 +225,56 @@ class DelegateService
 
     public function get_total_summation(Delegate $delegate)
     {
-        $shipments = $delegate->nonDeportedShipments();
-        if ($shipments->isNotEmpty()) 
+        try 
         {
-            foreach ($shipments as $shipment) 
+            $shipments = $delegate->nonDeportedShipments();
+            $total_summation = 0;
+
+            if ($shipments->isNotEmpty()) 
             {
-                
+                foreach ($shipments as $shipment) 
+                {
+                    $total_summation += $shipment->value_on_delivery;
+                }
+
+                return ['code' => 1, 'data' => $total_summation];
+            }
+            else 
+            {
+                return ['code' => 1, 'data' => 0];
             }
         }
-        else 
+        catch(Exception $ex)
         {
-            return ['code' => 1, 'data' => 0];
+            return ['code' => 0, 'msg' => $ex->getMessage()];
+        }
+    }
+
+
+    public function get_total_delegate_commission(Delegate $delegate)
+    {
+        try 
+        {
+            $shipments = $delegate->hasDelegateCommissionNonDeportedShipments();
+            $total_commission = 0;
+
+            if ($shipments->isNotEmpty()) 
+            {
+                foreach ($shipments as $shipment) 
+                {
+                    $total_commission += $delegate->cities()->where('city_id',$shipment->city->id)->first()->pivot->price;
+                }
+                
+                return ['code' => 1, 'data' => $total_commission];
+            }
+            else 
+            {
+                return ['code' => 1, 'data' => 0];
+            }
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }
 
