@@ -168,21 +168,24 @@ class DelegateService
     }
 
 
-    public function chk_all_delegate_shipments_not_has_status(Delegate $delegate,$status)
+    public function chk_all_delegate_shipments_not_has_status(Delegate $delegate, $status)
     {
         try 
         {
             $shipments = $delegate->shipments->where('is_deported', false);
-            
+    
             if ($shipments->isEmpty()) 
             {
                 throw new Exception('This delegate does not have any shipment');
             }
-            
-            $result = $shipments->every(function ($shipment) use ($status) {
-                return $shipment->shipment_status_id !== $status;
+    
+            // Ensure $status is an array
+            $statusArray = is_array($status) ? $status : [$status];
+    
+            $result = $shipments->every(function ($shipment) use ($statusArray) {
+                return !in_array($shipment->shipment_status_id, $statusArray);
             });
-            
+    
             return ['code' => 1, 'data' => $result];
         }
         catch(Exception $ex)
@@ -190,6 +193,7 @@ class DelegateService
             return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }
+    
 
     public function deport(Delegate $delegate)
     {

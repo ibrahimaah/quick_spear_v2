@@ -17,14 +17,14 @@
 
 
     <div>
-        <a href="{{ route('admin.shipments.edit',['shipment'=>$query->id])}}" class="btn btn-sm btn-warning">
+        <a href="{{ route('admin.shipments.edit',['shipment'=>$query->id])}}" class="btn btn-sm btn-warning" target="_blank">
             <i class="bi bi-pencil"></i>
         </a>
     </div>
 
 
     <div>
-        <a href="{{ route('admin.shipments.show',['shipment'=>$query->id])}}" class="btn btn-sm btn-primary">
+        <a href="{{ route('admin.shipments.show',['shipment'=>$query->id])}}" class="btn btn-sm btn-primary" target="_blank">
             <i class="bi bi-eye"></i>
         </a>
     </div>

@@ -249,7 +249,7 @@ class ExpressDataTable extends DataTable
                 $this->column('consignee_phone', __('Phone'),false,true,false,false), 
                 $this->column('order_price', __('Order price'),false,false,false,false),
                 $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false),
-                $this->column('delivery_fees',__('delivery_fees'),false,false,false,false),
+                // $this->column('delivery_fees',__('delivery_fees'),false,false,false,false),
                 $this->column('shipment_status_id', __('Action Status'),false,true,false,false),
                 
                 $this->column('customer_notes',__('Customer notes'),false,false,false,false),
@@ -291,7 +291,7 @@ class ExpressDataTable extends DataTable
                 // $this->column('order_price', __('Order price includes delivery'),false,false,false,false),
                 $this->column('order_price', __('Order price'),false,false,false,false),
                 $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false),
-                $this->column('delivery_fees',__('delivery_fees'),false,false,false,false),
+                // $this->column('delivery_fees',__('delivery_fees'),false,false,false,false),
                 $this->column('shipment_status_id', __('Action Status'),false,true,false,false),
                 
                 $this->column('customer_notes',__('Customer notes'),false,false,false,false),

@@ -18,10 +18,10 @@
                 @else 
             --}}
 
-            <a href="#" class="btn disable btn-primary">
+            {{-- <a href="#" class="btn disable btn-primary">
                 <i class="fa fa-print"></i>
                 طباعة الفاتورة
-            </a>
+            </a> --}}
             {{-- @endif --}}
         </div>
     </div>
@@ -31,51 +31,51 @@
          
             <div class="dashboardbox mt-3">
                 <h6 class="text-muted">الحالة</h6>
-                <h4 class="scolor" style="font-weight: 700;"><span>{{ $shipment->get_status() }}</span></h4>
+                <h4 class="scolor" style="font-weight: 700;"><span>{{ __($shipment->status->name) }}</span></h4>
             </div>
             
         </div>
         <div class="col-xs-12 col-lg-3 mb-2 p-0">
             <div class="dashboardbox mt-3">
-                <h6 class="text-muted">أنشئت بواسطة</h6>
-                <h4 class="scolor" style="font-weight: 700;"><span>{{ $shipment->user->name ?? '' }}</span></h4>
+                <h6 class="text-muted">المتجر</h6>
+                <h4 class="scolor" style="font-weight: 700;"><span>{{ $shipment->shop->name ?? '' }}</span></h4>
             </div>
             
         </div>
         <div class="col-xs-12 col-lg-3 mb-2 p-0">
             <div class="dashboardbox mt-3">
                 <h6 class="text-muted">المدينة</h6>
-                <h4 class="scolor" style="font-weight: 700;"><span>{{ $shipment->address->City->name ?? '' }}</span></h4>
+                <h4 class="scolor" style="font-weight: 700;"><span>{{ $shipment->city->name ?? '' }}</span></h4>
             </div>
         </div>
      
     </div>
     <div class="col-sm-12 col-lg-10 mx-auto">
         <div class="card mb-3">
-            <div class="card-header">معلومات المرسل</div>
+            <div class="card-header">معلومات المندوب</div>
             <div class="card-body mb-3">
                 <div class="row">
                     <div class="col-sm-6 border-right">
                         <div class="d-flex justify-content-between">
                             <div><label for="" class="Label">الأسم</label></div>
                             <div class="desc">
-                                {{ $shipment->address->name  ?? ''}}
+                                {{ $shipment->delegate->name  ?? ''}}
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <div><label for="" class="Label">رقم الهاتف</label></div>
                             <div class="desc">
-                                {{ $shipment->address->phone  ?? ''}}
+                                {{ $shipment->delegate->phone  ?? ''}}
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between mt-2">
+                        {{-- <div class="d-flex justify-content-between mt-2">
                             <div><label for="" class="Label">الدولة</label></div>
                             <div class="desc">
                                 JO
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
-                    <div class="col-sm-6">
+                    {{-- <div class="col-sm-6">
                         <div class="d-flex justify-content-between">
                             <div><label for="" class="Label">المدينة</label></div>
                             <div class="desc">
@@ -94,7 +94,7 @@
                                 {{ $shipment->address->desc  ?? ''}}
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -123,24 +123,24 @@
                                 {{ $shipment->consignee_phone_2 }}
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between mt-2">
+                        {{-- <div class="d-flex justify-content-between mt-2">
                             <div><label for="" class="Label">الرمز البريدي</label></div>
                             <div class="desc">
                                 N/A
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-sm-6">
-                        <div class="d-flex justify-content-between">
+                        {{-- <div class="d-flex justify-content-between">
                             <div><label for="" class="Label">الدولة</label></div>
                             <div class="desc">
                                 JO
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="d-flex justify-content-between mt-2">
                             <div><label for="" class="Label">المدينة</label></div>
                             <div class="desc">
-                                {{ App\Models\City::find($shipment->consignee_city)->name ?? 'N/A' }}
+                                {{ $shipment->city->name }}
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
@@ -175,9 +175,15 @@
                             </div>
                         </div>--}}
                         <div class="d-flex justify-content-between mt-2">
-                            <div><label for="" class="Label">ملاحظات</label></div>
+                            <div><label for="" class="Label">ملاحظات العميل</label></div>
                             <div class="desc">
-                                {{ $shipment->notes }}
+                                {{ $shipment->customer_notes ?? 'لا يوجد' }}
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <div><label for="" class="Label">ملاحظات المندوب</label></div>
+                            <div class="desc">
+                                {{ $shipment->delegate_notes ?? 'لا يوجد' }}
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-2">
@@ -186,12 +192,12 @@
                                 {{ $shipment->created_at->format('Y-m-d') }}
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between mt-2">
+                        {{-- <div class="d-flex justify-content-between mt-2">
                             <div><label for="" class="Label">أنشئت بواسطة</label></div>
                             <div class="desc">
                                 {{ $shipment->user->name ?? '' }}
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     {{--<div class="col-sm-6">
                         <div class="d-flex justify-content-between">
@@ -258,18 +264,18 @@
                                 {{ $shipment->order_price }}
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between mt-2">
+                        {{-- <div class="d-flex justify-content-between mt-2">
                             <div><label for="" class="Label">تم الدفع في</label></div>
                             <div class="desc">
                                 N/A
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-between mt-2">
+                        </div> --}}
+                        {{-- <div class="d-flex justify-content-between mt-2">
                             <div><label for="" class="Label">رقم العملية</label></div>
                             <div class="desc">
                                 N/A
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

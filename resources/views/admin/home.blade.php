@@ -35,7 +35,7 @@
                     </div>
 
 
-                    <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2 card">
+                    {{-- <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2 card">
                         <a href="{{ route('admin.requests.index') }}" style="color:inherit;">
                             <div class="col-12 p-0 text-center card-body">
                                 <span class="fa fa-edit fa-3x"></span>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
