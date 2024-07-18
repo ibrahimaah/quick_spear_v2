@@ -300,6 +300,7 @@
             var initialCityId = $('#cities-select2').val();
             if (initialCityId) {
                 fetchDelegates(initialCityId);
+                fetchRegions(initialCityId);
             }
 
             // Fetch delegates on change event
