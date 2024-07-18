@@ -113,7 +113,7 @@
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $shipment->city_to->name }}</td>
-                        <td>{{ $shipment->consignee_region }}</td>
+                        <td>{{ $shipment->region->name }}</td>
                         <td>{{ $shipment->shop->name }}</td> 
                         <td>{{ $shipment->order_price }}</td> 
                         {{-- <td>{{ getStatusInfo($shipment->status) }}</td> --}}

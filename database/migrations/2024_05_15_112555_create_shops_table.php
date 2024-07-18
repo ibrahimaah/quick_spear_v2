@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('region');
             $table->text('description');
             $table->timestamps();
+
+            // Adding the foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

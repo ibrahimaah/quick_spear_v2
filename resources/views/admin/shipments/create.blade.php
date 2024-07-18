@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-
+@section('title','إنشاء شحنة جديدة') 
 @section('content')
 
 <style>
@@ -22,12 +22,12 @@
 
  
 
-@if(session()->has('error_delete'))
+{{-- @if(session()->has('error_delete'))
     <div class="alert text-center py-4 my-3 alert-danger">{{ session()->get('error_delete') }}</div>
 @endif
 @if(session()->has('success_delete'))
     <div class="alert text-center py-4 my-3 alert-success">{{ session()->get('success_delete') }}</div>
-@endif
+@endif --}}
 
 
 {{-- <h2 class="mb-4">{{ __('Create') }} {{ __('Local Shipping') }}</h2> --}}
@@ -35,12 +35,12 @@
 
 <div class="card">
    
-    @if(session()->has('error'))
+    {{-- @if(session()->has('error'))
         <div class="alert text-center py-4 my-3 alert-danger">{{ session()->get('error') }}</div>
     @endif
     @if(session()->has('success'))
         <div class="alert text-center py-4 my-3 alert-success">{{ session()->get('success') }}</div>
-    @endif
+    @endif --}}
 
    
 
@@ -140,12 +140,18 @@
                                 @enderror
                             </div>
 
-                            <div class="col-12 my-2 col-md-4">
+                            {{-- <div class="col-12 my-2 col-md-4">
                                 <label>{{ __('Region') }}</label><span class="text-danger">*</span>
                                 <input class="form-control mt-2 ml-2" type="text" name="consignee_region" required/>
-                                @error('consignee_line2')
+                                @error('consignee_region')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                            </div> --}}
+
+                            <div class="col-12 my-2 col-md-4">
+                                <label class="mb-2 d-block">{{ __('Region') }}</label> 
+                                <select id="choose-region-select2" name="consignee_region" required> 
+                                </select>
                             </div>
 
                             <div class="col-12 my-2 col-md-4">
@@ -166,18 +172,8 @@
                             </div>
 
                             <div class="col-12 my-2 col-md-4">
-                                <label class="mb-2 d-block">{{ __('Delegate Name') }}</label>
-                                {{-- <select id="choose-delegate-select2" name="delegate" required>
-                                    @if($delegates->isNotEmpty())
-                                        @foreach($delegates as $delegate)
-                                        <option value="{{ $delegate->id }}">{{ $delegate->name }}</option> 
-                                        @endforeach
-                                    @endif
-                                </select> --}}
-                                <select id="choose-delegate-select2" name="delegate" required>
-                                    
-                                        
-                                    {{-- @endif --}}
+                                <label class="mb-2 d-block">{{ __('Delegate Name') }}</label> 
+                                <select id="choose-delegate-select2" name="delegate" required> 
                                 </select>
                             </div>
 
@@ -242,7 +238,47 @@
                     }
                 },
                 error: function() {
-                    alert('An error occurred');
+                    console.log('An error occurred')
+                }
+            });
+        }
+
+        function fetchRegions(cityId) 
+        {
+            // alert(cityId)
+            var url = "{{ route('admin.delivery_price.get_regions_by_city_id', ['city' => 'CITY_ID_PLACEHOLDER']) }}";
+            url = url.replace('CITY_ID_PLACEHOLDER', cityId);
+
+            $.ajax({
+                url: url,
+                method: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                beforeSend: function() {  
+                    $('#choose-region-select2').prop('disabled', true);
+                    $('#save_shipment_btn').addClass('disabled-button');
+                },
+                complete: function() { 
+                    $('#choose-region-select2').prop('disabled', false);
+                    $('#save_shipment_btn').removeClass('disabled-button'); 
+                },
+                success: function(response) {
+                    if (response.code == 1) {
+                        var regions = response.data;
+                        console.log(regions)
+                        var regionSelect = $('#choose-region-select2');
+                        regionSelect.empty();
+                        regionSelect.append('<option value=""></option>'); // Add default empty option
+                        $.each(regions, function(index, region) {
+                            regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
+                        });
+                    } else if (response.code == 0) {
+                        alert('Error fetching regions');
+                    }
+                },
+                error: function() {
+                    console.log('An error occurred')
                 }
             });
         }
@@ -256,6 +292,7 @@
             // });
 
             $('#choose-delegate-select2').select2();
+            $('#choose-region-select2').select2();
             // $('#addresses-select2').select2();
             $('#shops-select2').select2();
             $('#cities-select2').select2();
@@ -270,6 +307,7 @@
                 var cityId = $("option:selected", this).val();
                 if (cityId) {
                     fetchDelegates(cityId);
+                    fetchRegions(cityId);
                 }
             });
            

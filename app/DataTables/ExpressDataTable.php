@@ -57,10 +57,13 @@ class ExpressDataTable extends DataTable
             return $query->created_at->format('Y-m-d h:i A');
         })
         ->editColumn('consignee_city', function ($query) {
-            return $query->city->name;
+            return $query->city?->name ?? 'غير محدد';
+        })
+        ->editColumn('consignee_region', function ($query) {
+            return $query->region?->name ?? 'غير محدد';
         })
         ->editColumn('shop_name', function ($query) {
-            return $query->shop->name;
+            return $query->shop?->name ?? 'غير محدد';
         })
         ->editColumn('value_on_delivery', function($query) {
             // return '<input type="checkbox" ' . $this->html->attributes($query->id) . '/>';

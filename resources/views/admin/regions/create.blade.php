@@ -46,3 +46,12 @@
 </div>
 
 @endsection
+
+@push('js')
+
+    <script>
+        $(document).ready(function(){
+            $('#city').select2();
+        } )
+    </script> 
+@endpush

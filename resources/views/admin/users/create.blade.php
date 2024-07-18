@@ -69,7 +69,7 @@
             <label class="col-sm-3 col-form-label">البريد الالكتروني</label>
             <div class="col-sm-9">
               <input class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"
-                type="email" placeholder="البريد الالكتروني" required />
+                type="email" placeholder="البريد الالكتروني" />
               @error('email')
               <div class="invalid-feedback">{{ $message }}</div>
               @enderror

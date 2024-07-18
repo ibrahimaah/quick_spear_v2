@@ -61,7 +61,7 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::post('/users/delivery-price/update/{id}', [DeliveryPriceController::class,'update'])->name('delivery_price.update');
     
 
-    Route::get('/regions/{city}',[DeliveryPriceController::class,'get_regions_by_city_id'])->name('delivery_price.get_regions_by_city_id');
+    Route::get('/city-regions/{city}',[DeliveryPriceController::class,'get_regions_by_city_id'])->name('delivery_price.get_regions_by_city_id');
 
     Route::resource('delegates', DelegateController::class);
     Route::get('get-shipments/{delegate}', [DelegateController::class,'get_shipments'])->name('delegates.get_shipments');

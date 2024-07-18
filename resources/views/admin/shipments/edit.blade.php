@@ -88,9 +88,20 @@ $status_numbers = config('constants.STATUS_NUMBER');
                             </div>
 
 
-                            <div class="col-12 my-2 col-md-4">
+                            {{-- <div class="col-12 my-2 col-md-4">
                                 <label>المنطقة</label><span class="text-danger">*</span>
                                 <input class="form-control mt-2 ml-2" type="text" name="consignee_region" value="{{ $shipment->consignee_region }}" />
+                            </div> --}}
+
+                            <div class="col-12 my-2 col-md-4">
+                                <label class="mb-2 d-block">المنطقة</label>
+                                <select id="choose-region-select2" name="consignee_region" required>
+                                    @if($regions->isNotEmpty())
+                                        @foreach($regions as $region)
+                                        <option value="{{ $region->id }}" <?= ($shipment->consignee_region == $region->id) ? 'selected' : ''?>>{{ $region->name }}</option> 
+                                        @endforeach
+                                    @endif
+                                </select>
                             </div>
 
 
@@ -178,7 +189,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
 
                         --}}
                         </div>
-                        <button class="btn btn-primary btn-lg my-3" type="submit">حفظ</button>
+                        <button class="btn btn-primary btn-lg my-3" id="save_shipment_btn" type="submit">حفظ</button>
                     </form>
                 </div>
             </div>
@@ -194,7 +205,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
 @push('js') 
 
     <script>
-        var current_delegate_id = {{ $shipment->delegate->id }}
+        
         
         function fetchDelegates(cityId) 
         {
@@ -231,7 +242,47 @@ $status_numbers = config('constants.STATUS_NUMBER');
                     }
                 },
                 error: function() {
-                    alert('An error occurred');
+                    console.log('An error occurred')
+                }
+            });
+        }
+
+        function fetchRegions(cityId) 
+        {
+            // alert(cityId)
+            var url = "{{ route('admin.delivery_price.get_regions_by_city_id', ['city' => 'CITY_ID_PLACEHOLDER']) }}";
+            url = url.replace('CITY_ID_PLACEHOLDER', cityId);
+
+            $.ajax({
+                url: url,
+                method: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                beforeSend: function() {  
+                    $('#choose-region-select2').prop('disabled', true);
+                    $('#save_shipment_btn').addClass('disabled-button');
+                },
+                complete: function() { 
+                    $('#choose-region-select2').prop('disabled', false);
+                    $('#save_shipment_btn').removeClass('disabled-button'); 
+                },
+                success: function(response) {
+                    if (response.code == 1) {
+                        var regions = response.data;
+                        console.log(regions)
+                        var regionSelect = $('#choose-region-select2');
+                        regionSelect.empty();
+                        regionSelect.append('<option value=""></option>'); // Add default empty option
+                        $.each(regions, function(index, region) {
+                            regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
+                        });
+                    } else if (response.code == 0) {
+                        alert('Error fetching regions');
+                    }
+                },
+                error: function() {
+                    console.log('An error occurred')
                 }
             });
         }
@@ -239,6 +290,8 @@ $status_numbers = config('constants.STATUS_NUMBER');
         $(document).ready(function() 
         {
             $('#choose-delegate-select2').select2();
+            
+            $('#choose-region-select2').select2();
             
             
             $('#shipment_status_select').select2();
@@ -264,6 +317,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                 var cityId = $("option:selected", this).val();
                 if (cityId) {
                     fetchDelegates(cityId);
+                    fetchRegions(cityId);
                 }
             });
         

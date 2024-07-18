@@ -153,7 +153,7 @@
                     }
                 },
                 error: function() {
-                    alert('An error occurred');
+                    console.log('An error occurred')
                 }
             });
         }

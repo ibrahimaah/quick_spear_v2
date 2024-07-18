@@ -23,7 +23,7 @@
                       </tr>
                       <tr>
                         <th scope="row">البريد الالكتروني</th>
-                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->email ?? 'غير محدد'}}</td>
                       </tr>
                       <tr>
                         <th scope="row">رقم الهاتف</th>
@@ -308,7 +308,7 @@
                     }
                 },
                 error: function() {
-                    alert('An error occurred');
+                    console.log('An error occurred')
                 }
             });
         }

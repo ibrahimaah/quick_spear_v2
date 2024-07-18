@@ -11,6 +11,7 @@ use App\Models\Address;
 use App\Models\City;
 use App\Models\Delegate;
 use App\Models\EditOrder;
+use App\Models\Region;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use App\Models\Shop;
@@ -103,51 +104,16 @@ class ShipmentController extends Controller
             return view('admin.shipments.show', compact('shipment'));
         }
     }
-    /*
-    public function show(Shipment $shipment)
-    {
-        $generator = new BarcodeGeneratorPNG();
-        $editOrders = EditOrder::where(['shipment_id' => $shipment->id])->get();
-        if ($shipment) {
-            // dd($shipment);
-            $barcode = base64_encode($generator->getBarcode($shipment->shipmentID, $generator::TYPE_CODE_128));
-            $data = Aramex::trackShipments([$shipment->shipmentID]);
-            // dd($data);
-            if (!$data->HasErrors && !isset($data->NonExistingWaybills->string)) {
-                $det = $data->TrackingResults->KeyValueOfstringArrayOfTrackingResultmFAkxlpY->Value->TrackingResult;
-                if (gettype($det) == "array") {
-                    if ($det[0]->UpdateCode == "SH014") {
-                        $shipment->update(['status' => 0]);
-                    }
-                    if (array_search($det[0]->UpdateCode, $this->status1) !== false) {
-                        $shipment->update(['status' => 1]);
-                    }
-                    if (array_search($det[0]->UpdateCode, $this->status2) !== false) {
-                        $shipment->update(['status' => 2]);
-                    }
-                    if ($det[0]->UpdateCode == "SH069") {
-                        $shipment->update(['status' => 3]);
-                    }
-                } else {
-                    if ($det->UpdateCode == "SH014") {
-                        $shipment->update(['status' => 0]);
-                    }
-                }
-
-
-                return view('admin.shipments.show', compact('shipment', 'data', 'barcode', 'editOrders'));
-                // return view('admin.shipments.show', compact('shipment'));
-            }
-            return view('admin.shipments.show', compact('shipment', 'data', 'barcode', 'editOrders'));
-        }
-    }
-    */
+  
     public function edit(Shipment $shipment)
     {
-        $delegates = Delegate::all();
+        $city = City::findOrFail($shipment->consignee_city);
+        $regions = $city->regions; 
+        $delegates = $city->delegates;  
         $shops = Shop::all();
         $shipment_statuses = ShipmentStatus::all(); 
-        return view('admin.shipments.edit', compact('shipment','delegates','shops','shipment_statuses'));
+        
+        return view('admin.shipments.edit', compact('shipment','delegates','shops','shipment_statuses','regions'));
     }
 
     public function update(Request $request, Shipment $shipment)

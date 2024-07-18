@@ -1,10 +1,10 @@
 <!-- Page Sidebar Start-->
 <div class="sidebar-wrapper">
     <div>
-        <div class="logo-wrapper">
+        <div class="logo-wrapper text-center">
             <a href="">
-                <img class="img-fluid for-light" width="50" src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}" alt="">
-                <img class="img-fluid for-dark" width="50" src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo_dark.png') }}"
+                <img class="img-fluid for-light w-75" src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}" alt="">
+                <img class="img-fluid for-dark w-75" src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo_dark.png') }}"
                     alt="">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
@@ -24,7 +24,7 @@
                         <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2"
                                 aria-hidden="true"></i></div>
                     </li>
-                    <li class="sidebar-list">
+                    <li class="sidebar-list mt-5">
                         <a class="sidebar-link" href="{{ route('admin.dashboard') }}"><i
                                 data-feather="airplay"></i><span class="">لوحة التحكم</span></a>
                     </li>

@@ -114,7 +114,7 @@
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $shipment->city_to->name }}</td>
-                        <td>{{ $shipment->consignee_region }}</td>
+                        <td>{{ $shipment->region->name }}</td>
                         <td>{{ $shipment->shop->name }}</td> 
                         <td>{{ $shipment->is_returned ? ' (مرتجع)' : '' }} {{ $shipment->value_on_delivery }}</td> 
                         {{-- <td>{{ getStatusInfo($shipment->status) }}</td> --}}

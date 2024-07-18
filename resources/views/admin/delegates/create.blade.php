@@ -66,7 +66,7 @@
                 <div class="mb-3 row">
                   <label class="col-sm-3 col-form-label">اختر مدينة</label>
                   <div class="col-sm-9">
-                    <select class="form-control" name="city" required>
+                    <select class="form-control city-select2" name="city" required>
                       <option value="">اختر مدينة</option>
                       @if($cities->isNotEmpty())
                       @foreach($cities as $city)
@@ -81,7 +81,7 @@
                 <div class="mb-3 row">
                   <label class="col-sm-3 col-form-label">أجرة المندوب</label>
                   <div class="col-sm-9">
-                    <input type="number" name="price" class="form-control" placeholder="أجرة المندوب لهذه المدينة" required />
+                    <input type="number" name="price" class="form-control" placeholder="أجرة المندوب لهذه المدينة" step=".01" required />
 
                   </div>
                 </div>
@@ -116,4 +116,17 @@
                     };
                     $(selector).replicate(options);
 </script>
+
+
+
 @endsection
+
+
+{{-- @push('js')
+
+    <script>
+        $(document).ready(function(){
+            $('.city-select2').select2();
+        } )
+    </script> 
+@endpush --}}

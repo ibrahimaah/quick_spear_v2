@@ -50,7 +50,7 @@ class RegionController extends Controller
 
         if ($res_store_region['code'] == 1) 
         {
-            return redirect()->route('admin.regions.index')->with("success", "تم اضافة البيانات بنجاح");
+            return redirect()->route('admin.regions.create')->with("success", "تم اضافة البيانات بنجاح");
         }
         else 
         {
