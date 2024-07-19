@@ -82,14 +82,16 @@ class DelegateService
             $delegate->update($delegate_table_data);
 
             
-            $delegate_pivote_data = $data['delegates'];
-            // Attach delegate to each city with price
-            foreach ($delegate_pivote_data as $delegate_pivote_row) {
-                $cityId = $delegate_pivote_row['city'];
-                $price = $delegate_pivote_row['price'];
-                // dd($price);
-                $delegate->cities()->syncWithPivotValues($cityId, ['price' => $price]);
+            // Prepare pivot data
+            $delegate_pivot_data = [];
+            foreach ($data['delegates'] as $delegate_pivot_row) {
+                $cityId = $delegate_pivot_row['city'];
+                $price = $delegate_pivot_row['price'];
+                $delegate_pivot_data[$cityId] = ['price' => $price];
             }
+
+            // Sync pivot data
+            $delegate->cities()->sync($delegate_pivot_data);
             
             return ['code' => 1, 'data' => $delegate];
           

@@ -95,7 +95,7 @@ $delegate_cities_ids[] = $city->id;
                        
   
                         <input type="number"  data-name="price" value="{{ $delegate_city->pivot->price }}"
-                          class="form-control" placeholder="أجرة المندوب لهذه المدينة" required />
+                          class="form-control" placeholder="أجرة المندوب لهذه المدينة" step=".01" required />
                       </div>
                     </div>
                   </div>

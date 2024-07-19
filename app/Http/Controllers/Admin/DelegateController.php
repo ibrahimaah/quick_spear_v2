@@ -101,7 +101,7 @@ class DelegateController extends Controller
     public function update(UpdateDelegateRequest $request,Delegate $delegate)
     {
         $validated = $request->validated();
-        // dd($validated);
+        
         $res_update = $this->delegateService->update($validated,$delegate);
 
         if ($res_update['code'] == 1) 
