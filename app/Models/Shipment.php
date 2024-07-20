@@ -8,7 +8,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Shipment extends Model
 {
-    public $guarded = [];
+    protected $fillable = [
+        'shop_id',
+        'delegate_id',
+        'consignee_name',
+        'consignee_phone',
+        'consignee_phone_2',
+        'consignee_city',
+        'consignee_region',
+        'consignee_zip_code', 
+        'accepted_by_admin_at', 
+        'order_price',
+        'value_on_delivery',
+        'customer_notes',
+        'delegate_notes',
+        'is_returned',
+        'is_deported',
+        'shipment_status_id'
+    ];
     protected $appends = ['notes'];
 
     public function getNotesAttribute()

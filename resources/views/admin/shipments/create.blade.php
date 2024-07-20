@@ -44,36 +44,41 @@
 
    
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    
     <div class="card-body">
         <div class="container">
             <form method="post" action="{{ route('admin.shipments.store') }}" id="shipments_form">
                 @csrf
-                <div data-x-wrapper="shipments">
-                    <div data-x-group>
-                        <div class="d-flex justify-content-between">
+                {{-- <div data-x-wrapper="shipments">
+                    <div data-x-group> --}}
+                        {{-- <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-success mb-3" data-add-btn>
                                 <i class="bi bi-plus-lg"></i>
                             </button>
                             <button type="button" class="btn btn-danger mb-3" id="rmv-btn" data-remove-btn>
                                 <i class="bi bi-trash"></i>
                             </button>
-                        </div>
+                        </div> --}}
                         <div class="row">
                             <div class="d-lg-flex flex-row col-sm-12 mb-3 justify-content-center">
                                 <div class="col-sm-12 col-lg-4 px-0 mb-2">
                                     <label>{{ __('Store Name') }}</label><span class="text-danger">*</span>
 
-                                    {{-- <select class="form-control mt-2 ml-2" id="addresses-select2" name="shipper" required>
-                                        @foreach ($addresses as $address)
-                                        <option value="{{ $address->id }}">
-                                            {{ $address->name }}
-                                        </option>
-                                        @endforeach
-                                    </select> --}}
+                             
 
-                                    <select class="form-control mt-2 ml-2" id="shops-select2" name="shop" required>
+                                    <select class="form-control mt-2 ml-2" id="shops-select2" name="shop_id" required>
                                         @foreach ($shops as $shop)
-                                        <option value="{{ $shop->id }}">
+                                        <option value="{{ $shop->id }}" @selected(session()->has('shipment') && $shop->id == session()->get('shipment')->shop_id)>
                                             {{ $shop->name }}
                                         </option>
                                         @endforeach
@@ -81,14 +86,9 @@
 
 
                                 </div>
-                                {{-- <a href="{{ route('admin.address.index') }}" 
-                                style="height: 37px;margin-top: 3.3% !important;" 
-                                class="btn btn-primary ml-xl-3 mr-xl-3 mx-3">
-                                {{ __('New Address') }}
-                                </a> --}}
+                               
    
-                            </div>
-                            {{-- <hr /> --}}
+                            </div> 
                         </div>
                         <div class="row">
                             <div class="col-12 my-2 col-md-4">
@@ -113,13 +113,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Phone') }} 2</label>
-                                <input class="form-control mt-2 ml-2" type="number" name="consignee_phone_2" />
-                                @error('consignee_phone_2')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div> 
+                           
                         
 
                             <div class="col-12 my-2 col-md-4">
@@ -140,17 +134,18 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Region') }}</label><span class="text-danger">*</span>
-                                <input class="form-control mt-2 ml-2" type="text" name="consignee_region" required/>
-                                @error('consignee_region')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div> --}}
+                           
 
                             <div class="col-12 my-2 col-md-4">
                                 <label class="mb-2 d-block">{{ __('Region') }}</label> 
                                 <select id="choose-region-select2" name="consignee_region" required> 
+                                </select>
+                            </div>
+
+
+                            <div class="col-12 my-2 col-md-4">
+                                <label class="mb-2 d-block">{{ __('Delegate Name') }}</label> 
+                                <select id="choose-delegate-select2" name="delegate_id" required> 
                                 </select>
                             </div>
 
@@ -164,6 +159,15 @@
 
                       
                             <div class="col-12 my-2 col-md-4">
+                                <label>{{ __('Phone') }} 2</label>
+                                <input class="form-control mt-2 ml-2" type="number" name="consignee_phone_2" />
+                                @error('consignee_phone_2')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div> 
+
+
+                            <div class="col-12 my-2 col-md-4">
                                 <label>{{ __('Customer notes') }}</label>
                                 <input class="form-control mt-2 ml-2" name="customer_notes" />
                                 @error('customer_notes')
@@ -171,11 +175,8 @@
                                 @enderror
                             </div>
 
-                            <div class="col-12 my-2 col-md-4">
-                                <label class="mb-2 d-block">{{ __('Delegate Name') }}</label> 
-                                <select id="choose-delegate-select2" name="delegate" required> 
-                                </select>
-                            </div>
+
+                           
 
                             <div class="col-12 my-2 col-md-4">
                                 <label>{{ __('Delegate notes') }}</label>
@@ -184,11 +185,20 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="col-12 my-2 col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" name="is_returned" value="1" type="checkbox" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        هل يوجد مرتجع؟
+                                    </label>
+                                </div>
+                            </div>
                       
                         </div>
                         <hr>
-                    </div>
-                </div>
+                    {{-- </div>
+                </div> --}}
                 <button class="btn btn-primary btn-lg my-3" id="save_shipment_btn" type="submit">{{ __('Save') }}</button>
             </form>
         </div>
@@ -341,7 +351,7 @@
 
 
 
-<script src="{{ asset('assets/vendor/jquery/jquery_v3.7.min.js') }}"></script>
+{{-- <script src="{{ asset('assets/vendor/jquery/jquery_v3.7.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/jquery.replicate/jquery.replicate.js') }}"></script>
 <script>
     const selector ='[data-x-wrapper]';
@@ -364,5 +374,5 @@
         //     if((/\d/g).test(e.key)) e.preventDefault();
         // })
     });
-</script>
+</script> --}}
 @endsection

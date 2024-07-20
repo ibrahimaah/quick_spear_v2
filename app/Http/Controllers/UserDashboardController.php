@@ -30,36 +30,37 @@ class UserDashboardController extends Controller
     {
         $user = Auth::user();
         $shop_id = $user->shop->id;
-        $shop_id = $user->shop->id;
-        $new_users_count= [];
-        $days_list = [];
-        $counts_list = [];
-        $counts_list1 = [];
-        $counts_list2 = [];
-        $counts_list3 = [];
-        $date_from = Carbon::parse($request->from ?? now()->subDays(30));
-        $to = Carbon::parse($request->to ?? now());
-        $days = $date_from->diffInDays($to);
-        for ($i = 0 ; $i < $days && $i < 30  ; $i++) {
-            array_push($days_list, $to->format('m-d'));
-            array_push($counts_list, Shipment::where('shop_id', $shop_id)->where('status', 0)->whereDate('created_at', $to->format('Y-m-d'))->count());
-            array_push($counts_list1, Shipment::where('shop_id', $shop_id)->where('status', 1)->whereDate('created_at', $to->format('Y-m-d'))->count());
-            array_push($counts_list2, Shipment::where('shop_id', $shop_id)->where('status', 2)->whereDate('created_at', $to->format('Y-m-d'))->count());
-            array_push($counts_list3, Shipment::where('shop_id', $shop_id)->where('status', 3)->whereDate('created_at', $to->format('Y-m-d'))->count());
-            $to = $to->subDays(1);
-        }
-        $shipment_count=[
-            'days_list'=>$days_list,
-            'counts_list'=>$counts_list,
-            'counts_list1'=>$counts_list1,
-            'counts_list2'=>$counts_list2,
-            'counts_list3'=>$counts_list3,
-        ];
+        // $shop_id = $user->shop->id;
+        // $new_users_count= [];
+        // $days_list = [];
+        // $counts_list = [];
+        // $counts_list1 = [];
+        // $counts_list2 = [];
+        // $counts_list3 = [];
+        // $date_from = Carbon::parse($request->from ?? now()->subDays(30));
+        // $to = Carbon::parse($request->to ?? now());
+        // $days = $date_from->diffInDays($to);
+        // for ($i = 0 ; $i < $days && $i < 30  ; $i++) {
+        //     array_push($days_list, $to->format('m-d'));
+        //     array_push($counts_list, Shipment::where('shop_id', $shop_id)->where('status', 0)->whereDate('created_at', $to->format('Y-m-d'))->count());
+        //     array_push($counts_list1, Shipment::where('shop_id', $shop_id)->where('status', 1)->whereDate('created_at', $to->format('Y-m-d'))->count());
+        //     array_push($counts_list2, Shipment::where('shop_id', $shop_id)->where('status', 2)->whereDate('created_at', $to->format('Y-m-d'))->count());
+        //     array_push($counts_list3, Shipment::where('shop_id', $shop_id)->where('status', 3)->whereDate('created_at', $to->format('Y-m-d'))->count());
+        //     $to = $to->subDays(1);
+        // }
+        // $shipment_count=[
+        //     'days_list'=>$days_list,
+        //     'counts_list'=>$counts_list,
+        //     'counts_list1'=>$counts_list1,
+        //     'counts_list2'=>$counts_list2,
+        //     'counts_list3'=>$counts_list3,
+        // ];
 
         // $shipment = Shipment::where('user_id', auth()->user()->id)->get();
         $shipment = Shipment::where('shop_id', $shop_id)->get();
 
-        return view('pages.user.dashboard', compact('shipment', 'shipment_count', 'date_from', 'to'));
+        // return view('pages.user.dashboard', compact('shipment', 'shipment_count', 'date_from', 'to'));
+        return view('pages.user.dashboard', compact('shipment'));
     }
 
     public function account()

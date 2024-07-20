@@ -13,36 +13,24 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ShipmentService
 {
-    public function store(Request $request,$by_admin=false): Shipment
+    public function store($data)
     { 
-        foreach ($request->shipments as $shipment) : 
-            $shop_id = $by_admin ? $shipment['shop'] : $request->shop;
-            // $shipment_status_id = $by_admin ? $shipment['shipment_status_id'] : ShipmentStatus::UNDER_REVIEW;
-            $shipment_status_id =  ShipmentStatus::UNDER_REVIEW;
-            $data = [ 
-                'shop_id' => $shop_id,
-                'consignee_name' => $shipment['consignee_name'],
-                'consignee_phone' => $shipment['consignee_phone'],
-                'consignee_phone_2' => $shipment['consignee_phone_2'],
-                // 'consignee_country_code' => 'JO',
-                'consignee_city' => $shipment['consignee_city'],
-                'consignee_region' => $shipment['consignee_region'],
-                // 'consignee_zip_code' => '',
-                'shipping_date_time'    => now(),
-                'due_date'  => now()->addHours(72),
-                'order_price' => $shipment['order_price'],
-                'customer_notes' => $shipment['customer_notes'],
-                'delegate_id' => $shipment['delegate'] ?? null,
-                'delegate_notes' => $shipment['delegate_notes'] ?? null,
-                'shipment_status_id' => $shipment_status_id
-            ];
-
-            
+       try 
+       {
             $shipment = Shipment::create($data);
-
-        endforeach;
-
-        return $shipment;
+            if ($shipment) 
+            {
+                return ['code' => 1 , 'data' => $shipment];
+            }
+            else 
+            {
+                return ['code' => 0 , 'msg' => 'Error in storing new shipment'];
+            }
+       }
+       catch(Exception $ex)
+       {
+            return ['code' => 0 , 'msg' => $ex->getMessage()];
+       }
     }
 
     public function update(Request $request,Shipment $shipment,$by_admin=false)
@@ -51,7 +39,6 @@ class ShipmentService
         { 
             
             $data = [ 
-                // 'address_id' => $request->address,
                 'shop_id' => $request->shop,
                 'consignee_name' => $request->consignee_name,
                 'consignee_phone' => $request->consignee_phone,
@@ -62,12 +49,8 @@ class ShipmentService
                 'customer_notes' => $request->customer_notes,
                 'delegate_id' => $request->delegate ?? null,
                 'delegate_notes' => $request->delegate_notes ?? null,
-                // 'status' => $request->status,
                 'shipment_status_id' => $request->shipment_status_id,
-                // 'consignee_country_code' => 'JO',
-                // 'consignee_zip_code' => '',
-                'shipping_date_time'    => now(),
-                'due_date'  => now()->addHours(72),
+                'is_returned' => $request->is_returned ?? 0,
             ];
 
             
@@ -78,8 +61,7 @@ class ShipmentService
 
             if ($by_admin) 
             {
-                $data['value_on_delivery'] = $request->value_on_delivery ?? 0;
-                $data['is_returned'] = $request->has('is_returned') ? $request->is_returned : false;
+                $data['value_on_delivery'] = $request->value_on_delivery ?? 0; 
             }
 
             if ($shipment->update($data)) 

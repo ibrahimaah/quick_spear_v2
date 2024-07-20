@@ -6,7 +6,8 @@
     <section class="container card mb-5 p-0">
         <div class="col-12 card-header">
             <h4>
-                {{ __('Shipping') }} {{ $date_from->format('Y-m-d') . ' - ' . $to->addDays(30)->format('Y-m-d') }}
+                {{ __('Shipping') }} 
+                {{-- {{ $date_from->format('Y-m-d') . ' - ' . $to->addDays(30)->format('Y-m-d') }} --}}
             </h4>
 
             <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal"
@@ -198,7 +199,7 @@
     </section>
 @endsection
 @section('js')
-    <script>
+    {{-- <script>
         var options = {
             chart: {
                 type: 'line'
@@ -253,5 +254,5 @@
 
         chart.render();
         chart2.render();
-    </script>
+    </script> --}}
 @endsection

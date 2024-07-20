@@ -9,6 +9,15 @@
    #shipments_form > div > div:nth-child(1) > div > #rmv-btn {
         visibility: hidden !important;
     }
+    .select2-selection__rendered {
+        line-height: 31px !important;
+    }
+    .select2-container .select2-selection--single {
+        height: 35px !important;
+    }
+    .select2-selection__arrow {
+        height: 34px !important;
+    }
 </style>
 {{-- <h2 class="mb-4">{{ __('Create') }} {{ __('Shipping.') }} </h2> --}}
 <h2 class="mb-4">إنشاء شحنة للمتجر <span class="fw-bold text-success">{{ $shop?->name }}</span></h2>
@@ -35,39 +44,18 @@
 
                 <div data-x-wrapper="shipments">
                     <div data-x-group>
-                        <div class="d-flex justify-content-between">
+                        {{-- <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-success mb-3" data-add-btn>
                                 <i class="bi bi-plus-lg"></i>
                             </button>
                             <button type="button" class="btn btn-danger mb-3" id="rmv-btn" data-remove-btn>
                                 <i class="bi bi-trash"></i>
                             </button>
-                        </div>
-                        {{--
-                        <div class="row">
-                            <div class="d-lg-flex flex-row col-sm-12 mb-3 justify-content-center">
-                                <div class="col-sm-12 col-lg-4 px-0 mb-2">
-                                    <label>{{ __('Store Name') }}</label><span class="text-danger">*</span>
-                                    <select class="form-control mt-2 ml-2 " name="shipper" required>
-                                        @foreach (auth()->user()->addresses->where('type', 0)->all() as $address)
-                                        <option value="{{ $address->id }}">
-                                            {{ $address->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <a href="{{ route('front.user.address') }}" 
-                                style="height: 37px;margin-top: 3.3% !important;" 
-                                class="btn btn-primary ml-xl-3 mr-xl-3 mx-3">
-                                {{ __('New Address') }}
-                                </a>
-   
-                            </div>
-                            <hr />
                         </div> --}}
+            
                         <div class="row">
                             <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Consignee Name') }}</label>
+                                <label>{{ __('Consignee Name') }}</label><span class="text-danger">*</span>
                                 <input class="form-control mt-2 ml-2" type="text" name="consignee_name"/>
                                 @error('consignee_name')
                                     <div class="text-danger">{{ $message }}</div>
@@ -99,8 +87,8 @@
                         
 
                             <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('City') }}</label><span class="text-danger">*</span>
-                                <select class="form-control mt-2 ml-2" type="text" id="consignee_city" name="consignee_city" required>
+                                <label class="mb-2 d-inline-block">{{ __('City') }}</label><span class="text-danger">*</span>
+                                <select class="form-control mt-2 ml-2" type="text" id="cities-select2" name="consignee_city" required>
                                     @foreach (App\Models\City::get() as $city)
                                         <option value="{{ $city->id }}">{{ $city->name }}</option>
                                     @endforeach
@@ -110,12 +98,13 @@
                                 @enderror
                             </div>
 
+                           
+
                             <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Region') }}</label><span class="text-danger">*</span>
-                                <input class="form-control mt-2 ml-2" type="text" name="consignee_region" required/>
-                                @error('consignee_line2')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <label class="mb-2 d-inline-block">{{ __('Region') }}</label><span class="text-danger">*</span> 
+                                <select id="choose-region-select2" class="form-control" name="consignee_region" required> 
+                                   
+                                </select>
                             </div>
 
                             <div class="col-12 my-2 col-md-4">
@@ -135,15 +124,16 @@
                                 @enderror
                             </div>
 
-                        {{-- 
                             <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Delegate notes') }}</label>
-                                <input class="form-control mt-2 ml-2" name="delegate_notes" id="" cols="30" rows="3"/>
-                                @error('delegate_notes')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div> 
-                        --}}
+                                <div class="form-check">
+                                    <input class="form-check-input" name="is_returned" value="1" type="checkbox" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        هل يوجد مرتجع؟
+                                    </label>
+                                </div>
+                            </div>
+
+ 
                       
                         
                             
@@ -152,34 +142,86 @@
                         <hr>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-lg my-3" type="submit">{{ __('Save') }}</button>
+                <button class="btn btn-primary btn-lg my-3" id="save_shipment_btn" type="submit">{{ __('Save') }}</button>
             </form>
         </div>
     </div>
 </div>
 
-<script src="{{ asset('assets/vendor/jquery/jquery_v3.7.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/jquery.replicate/jquery.replicate.js') }}"></script>
+{{-- <script src="{{ asset('assets/vendor/jquery/jquery_v3.7.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/vendor/jquery.replicate/jquery.replicate.js') }}"></script> --}}
+<script src="{{ asset('assets/admin')}}/js/jquery-3.5.1.min.js"></script>
 <script>
-    const selector ='[data-x-wrapper]';
+     function fetchRegions(cityId) 
+     {
+        var url = "{{ route('admin.delivery_price.get_regions_by_city_id', ['city' => 'CITY_ID_PLACEHOLDER']) }}";
+        url = url.replace('CITY_ID_PLACEHOLDER', cityId);
 
-    let options = {
-        disableNaming:'[data-disable-naming]',
-        wrapper: selector,
-        group:'[data-x-group]',
-        addBtn:'[data-add-btn]',
-        removeBtn:'[data-remove-btn]'
-    };
+        $.ajax({
+            url: url,
+            method: "GET",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            beforeSend: function() {  
+                $('#choose-region-select2').prop('disabled', true);
+                $('#save_shipment_btn').addClass('disabled-button');
+            },
+            complete: function() { 
+                $('#choose-region-select2').prop('disabled', false);
+                $('#save_shipment_btn').removeClass('disabled-button'); 
+            },
+            success: function(response) {
+                if (response.code == 1) {
+                    var regions = response.data;
+                    console.log(regions)
+                    var regionSelect = $('#choose-region-select2');
+                    regionSelect.empty();
+                    regionSelect.append('<option value=""></option>'); // Add default empty option
+                    $.each(regions, function(index, region) {
+                        regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
+                    });
+                } else if (response.code == 0) {
+                    alert('Error fetching regions');
+                }
+            },
+            error: function() {
+                console.log('An error occurred')
+            }
+        });
+    }
 
-    $(selector).replicate(options);
+    // const selector ='[data-x-wrapper]';
 
-    $(()=>{
-        $('input[type=text]:not(#phone_number)').on('keydown',(e)=>{
-            if((/\d/g).test(e.key)) e.preventDefault();
-        })
-        // $('#phone_number').on('keydown',(e)=>{
-        //     if((/\d/g).test(e.key)) e.preventDefault();
-        // })
-    });
+    // let options = {
+    //     disableNaming:'[data-disable-naming]',
+    //     wrapper: selector,
+    //     group:'[data-x-group]',
+    //     addBtn:'[data-add-btn]',
+    //     removeBtn:'[data-remove-btn]'
+    // };
+
+    // $(selector).replicate(options);
+    
+    $(document).ready(function() 
+    {
+        $('#cities-select2').select2();
+        $('#choose-region-select2').select2();
+
+        var initialCityId = $('#cities-select2').val();
+            if (initialCityId) {
+                fetchRegions(initialCityId);
+            }
+
+        // Fetch delegates on change event
+        $('#cities-select2').on('change', function (e) {
+            var cityId = $("option:selected", this).val();
+            if (cityId) { 
+                fetchRegions(cityId);
+            }
+        });
+
+    })
+   
 </script>
 @endsection

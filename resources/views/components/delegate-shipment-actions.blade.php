@@ -29,10 +29,16 @@
         </a>
     </div>
 
+    @php
+        $completedStatusId = App\Models\ShipmentStatus::DELIVERED;
+    @endphp
+
     <div>
         <select class="form-select form-select-lg shipment-status-select">
             <option>اختر حالة الشحنة</option>
+            <option value="{{ $completedStatusId }}">{{ __(App\Models\ShipmentStatus::find($completedStatusId)->name) }}</option>
             @foreach ($shipment_statuses as $shipment_status)
+                @continue($shipment_status->id == $completedStatusId || $shipment_status->id == App\Models\ShipmentStatus::UNDER_REVIEW)
             <option value="{{ $shipment_status->id }}">{{ __($shipment_status->name) }}</option> 
             @endforeach
           </select>

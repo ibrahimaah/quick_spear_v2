@@ -61,7 +61,7 @@
                     @if (auth()->check())
                     <li><a class="nav-link mx-1 scrollto {{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('front.user.dashboard') }}">{{ __('Home') }}</a></li>
                     <li><a class="nav-link mx-1 scrollto {{ request()->is('express') || request()->is('express/*') ? 'active' : '' }}" href="{{ route('front.express.index') }}">{{ __('Shipping') }}</a></li>
-                    <li><a class="nav-link mx-1 scrollto" href="{{ route('front.payments.index') }}">{{ __('Payments') }}</a></li>
+                    {{-- <li><a class="nav-link mx-1 scrollto" href="{{ route('front.payments.index') }}">{{ __('Payments') }}</a></li> --}}
                     <li><a class="nav-link mx-1 scrollto {{ request()->is('profile/*') ? 'active' : '' }}" href="{{ route('front.user.account') }}">{{ __('Account') }}</a></li>
                     @elseif(auth('team')->check() && auth('team')->user()->role == 'all')
                     <li><a class="nav-link mx-1 scrollto {{ request()->is('express') || request()->is('express/*') ? 'active' : '' }}" href="{{ route('front.express.index') }}">{{ __('Shipping') }}</a></li>

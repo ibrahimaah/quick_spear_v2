@@ -16,6 +16,7 @@ use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use App\Models\Shop;
 use App\Services\ShipmentService;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Octw\Aramex\Aramex;
@@ -76,25 +77,41 @@ class ShipmentController extends Controller
 
     public function store(Request $request)
     {
-        try 
-        {
-            $shipment = $this->shipmentService->store($request,true);
+        
+        $validated = $request->validate([
+            'shop_id' => 'required',
+            'consignee_name' => 'required',
+            'consignee_phone' => 'required',
+            'consignee_city' => 'required',
+            'consignee_region' => 'required',
+            'delegate_id' => 'required',
+            'order_price' => 'required|numeric|gt:0',
+            'customer_notes' => 'nullable',
+            'delegate_notes' => 'nullable',
+            'consignee_phone_2' => 'nullable'
+        ]);
+        
+        $data = $validated;
+        $data['is_returned'] = $request->input('is_returned', 0);
+        $data['shipment_status_id'] = ShipmentStatus::UNDER_REVIEW;
+        
+        $res_store = $this->shipmentService->store($data);
 
-            if($shipment)
-            {
-                return redirect()->route('admin.shipments.create')->with('success', 'تم اضافة الشحنة بنجاح');
-            }
-            else 
-            {
-                return redirect()->route('admin.shipments.create')->with('faild', 'حدث خطأ في إضافة الشحنة');
-            }
-            
-        } 
-        catch (\Exception $ex) 
+        if($res_store['code'] == 1)
         {
-            return $ex->getMessage();
+            return redirect()->route('admin.shipments.create')
+                                ->with('success', 'تم اضافة الشحنة بنجاح')
+                                ->with('shipment', $res_store['data']);
+        }
+        else 
+        {
+            dd($res_store['msg']);
+            return redirect()->route('admin.shipments.create')
+                                ->with('faild', $res_store['msg']);
         }
     }
+            
+     
 
     public function show(Shipment $shipment)
     {
