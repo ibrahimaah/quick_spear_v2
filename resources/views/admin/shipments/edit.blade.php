@@ -112,6 +112,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                        type="number"
                                        name="order_price" 
                                        value="{{ $shipment->order_price }}"
+                                       step=".01"
                                        required/>
                             </div>
 
@@ -120,6 +121,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                 <input class="form-control mt-2 ml-2" 
                                        type="number"
                                        name="value_on_delivery" 
+                                       step=".01"
                                        value="{{ $shipment->value_on_delivery }}"
                                        />
                             </div>

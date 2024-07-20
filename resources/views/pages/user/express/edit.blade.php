@@ -96,7 +96,7 @@
 
                     <div class="col-12 my-2 col-md-4">
                         <label>{{ __('Order price includes delivery') }}</label><span class="text-danger">*</span>
-                        <input class="form-control mt-2 ml-2" type="number" name="order_price" value="{{ $shipment->order_price }}" required />
+                        <input class="form-control mt-2 ml-2" type="number" name="order_price" step=".01" value="{{ $shipment->order_price }}" required />
                         @error('order_price')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
