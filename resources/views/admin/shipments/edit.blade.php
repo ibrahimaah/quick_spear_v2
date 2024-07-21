@@ -7,6 +7,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
 @endphp 
 
 
+
 <div class="row">
     
 
@@ -79,7 +80,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
 
                             <div class="col-12 my-2 col-md-4">
                                 <label class="mb-2 d-block">المنطقة</label>
-                                <select id="choose-region-select2" name="consignee_region" required>
+                                <select id="choose-region-select2" class="form-control" name="consignee_region" required>
                                     @if($regions->isNotEmpty())
                                         @foreach($regions as $region)
                                         <option value="{{ $region->id }}" <?= ($shipment->consignee_region == $region->id) ? 'selected' : ''?>>{{ $region->name }}</option> 
@@ -195,6 +196,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
 
 
 @push('js') 
+    
     <script>
         function fetchDelegates(cityId) 
         {
@@ -296,7 +298,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
             });
         
         });
-</script>
+    </script>
 
 @endpush
 

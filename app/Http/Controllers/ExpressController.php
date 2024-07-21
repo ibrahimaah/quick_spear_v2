@@ -97,7 +97,9 @@ class ExpressController extends Controller
 
     public function edit(Shipment $shipment)
     {
-        return view('pages.user.express.edit',['shipment'=>$shipment]);
+        $city = City::findOrFail($shipment->consignee_city);
+        $regions = $city->regions; 
+        return view('pages.user.express.edit',['shipment'=>$shipment,'regions'=>$regions]);
     }
     public function show($id)
     {

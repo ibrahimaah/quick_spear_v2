@@ -6,6 +6,18 @@
         visibility: hidden !important;
     }
 </style>
+<style>
+    
+    .select2-selection__rendered {
+        line-height: 31px !important;
+    }
+    .select2-container .select2-selection--single {
+        height: 35px !important;
+    }
+    .select2-selection__arrow {
+        height: 34px !important;
+    }
+</style>
 {{-- <h2 class="mb-4">{{ __('Edit') }} {{ __('Shipping.') }} #{{ $shipment->id }} </h2> --}}
     <h2 class="mb-4">تعديل شحنة رقم <span class="text-success">#{{ $shipment->id }}</span> للمتجر <span class="text-success">{{ $shipment->shop->name }}</span></h2>
 
@@ -25,29 +37,6 @@
             <form method="post" action="{{ route('front.express.update',['shipment'=>$shipment->id]) }}" id="shipments_form">
                 @csrf
 
-                {{--
-                <div class="row">
-                    <div class="d-lg-flex flex-row col-sm-12 mb-3 justify-content-center">
-                        <div class="col-sm-12 col-lg-4 px-0 mb-2">
-                            <label>{{ __('Store Name') }}</label><span class="text-danger">*</span>
-                            <select class="form-control mt-2 ml-2 " name="shipper">
-                                @foreach (auth()->user()->addresses->where('type', 0)->all() as $address)
-                                <option value="{{ $address->id }}" <?=$shipment->address_id == $address->id ? 'selected' : '' ?>>
-                                    {{ $address->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <a href="{{ route('front.user.address') }}" style="height: 37px;margin-top: 3.3% !important;" class="btn btn-primary ml-xl-3 mr-xl-3 mx-3">
-                            {{ __('New Address') }}
-                        </a>
-
-
-
-                    </div>
-                    <hr />
-                </div>
-                --}}
                 <div class="row">
                     <div class="col-12 my-2 col-md-4">
                         <label>{{ __('Consignee Name') }}</label>
@@ -76,7 +65,7 @@
 
                     <div class="col-12 my-2 col-md-4">
                         <label>{{ __('City') }}</label><span class="text-danger">*</span>
-                        <select class="form-control mt-2 ml-2" type="text" name="consignee_city" required>
+                        <select class="form-control mt-2 ml-2" type="text" name="consignee_city" id="cities-select2" required>
                             @foreach (App\Models\City::get() as $city)
                             <option value="{{ $city->id }}" <?=$shipment->consignee_city == $city->id ? 'selected' : '' ?>>{{ $city->name }}</option>
                             @endforeach
@@ -87,9 +76,15 @@
                     </div>
 
                     <div class="col-12 my-2 col-md-4">
-                        <label>{{ __('Region') }}</label><span class="text-danger">*</span>
-                        <input class="form-control mt-2 ml-2" type="text" name="consignee_region" value="{{ $shipment->consignee_region }}" required />
-                        @error('consignee_line2')
+                        <label class="mb-2 d-inline-block">{{ __('Region') }}</label><span class="text-danger">*</span> 
+                        <select id="choose-region-select2" class="form-control" name="consignee_region" required>
+                            @if($regions->isNotEmpty())
+                                @foreach($regions as $region)
+                                <option value="{{ $region->id }}" <?= ($shipment->consignee_region == $region->id) ? 'selected' : ''?>>{{ $region->name }}</option> 
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('consignee_region')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -136,3 +131,107 @@
 
 
 @endsection
+
+@push('js') 
+    {{-- <script src="{{ asset('assets/admin')}}/js/jquery-3.5.1.min.js"></script> --}}
+    <script>
+        function fetchDelegates(cityId) 
+        {
+            var url = "{{ route('admin.delegates.get_delegates_by_city_id', ['city' => 'CITY_ID_PLACEHOLDER']) }}";
+            url = url.replace('CITY_ID_PLACEHOLDER', cityId);
+            var delegateSelect = $('#choose-delegate-select2');
+
+            $.ajax({
+                url: url,
+                method: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                beforeSend: function() { 
+                    $('#choose-delegate-select2').prop('disabled', true);
+                    $('#save_shipment_btn').addClass('disabled-button');
+                },
+                complete: function() { 
+                    $('#choose-delegate-select2').prop('disabled', false);
+                    $('#save_shipment_btn').removeClass('disabled-button');
+                },
+                success: function(response) {
+                    
+                    if (response.code == 1) {
+                        var delegates = response.data;
+                        delegateSelect.empty();
+                        delegateSelect.append('<option value=""></option>'); // Add default empty option
+                        $.each(delegates, function(index, delegate) 
+                        { 
+                            delegateSelect.append('<option value="' + delegate.id + '">' + delegate.name + '</option>');
+                        });
+                    } else if (response.code == 0) {
+                        delegateSelect.empty();
+                        alert(response.msg);
+                    }
+                },
+                error: function() {
+                    delegateSelect.empty();
+                    console.log(response.msg)
+                }
+            });
+        }
+
+        function fetchRegions(cityId) 
+        {
+            // alert(cityId)
+            var url = "{{ route('admin.delivery_price.get_regions_by_city_id', ['city' => 'CITY_ID_PLACEHOLDER']) }}";
+            url = url.replace('CITY_ID_PLACEHOLDER', cityId);
+
+            $.ajax({
+                url: url,
+                method: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                beforeSend: function() {  
+                    $('#choose-region-select2').prop('disabled', true);
+                    $('#save_shipment_btn').addClass('disabled-button');
+                },
+                complete: function() { 
+                    $('#choose-region-select2').prop('disabled', false);
+                    $('#save_shipment_btn').removeClass('disabled-button'); 
+                },
+                success: function(response) {
+                    if (response.code == 1) {
+                        var regions = response.data;
+                        console.log(regions)
+                        var regionSelect = $('#choose-region-select2');
+                        regionSelect.empty();
+                        regionSelect.append('<option value=""></option>'); // Add default empty option
+                        $.each(regions, function(index, region) {
+                            regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
+                        });
+                    } else if (response.code == 0) {
+                        alert(response.msg);
+                    }
+                },
+                error: function() {
+                    console.log('An error occurred')
+                }
+            });
+        }
+
+        $(document).ready(function() 
+        {   
+            
+            $('#choose-region-select2').select2();  
+            $('#cities-select2').select2();
+
+            // Fetch delegates on change event
+            $('#cities-select2').on('change', function (e) {
+                var cityId = $("option:selected", this).val();
+                if (cityId) { 
+                    fetchRegions(cityId);
+                }
+            });
+        
+        });
+    </script>
+
+@endpush
