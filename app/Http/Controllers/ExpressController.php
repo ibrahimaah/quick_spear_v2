@@ -15,6 +15,7 @@ use App\Models\ShipmentRate;
 use Illuminate\Http\Request;
 use App\Exports\ShipmentsExport;
 use App\Http\Requests\StoreClientShipmentRequest;
+use App\Http\Requests\UpdateClientShipmentRequest;
 use App\Jobs\ImportShipments;
 use App\Models\ShipmentStatus;
 use App\Services\ShipmentService;
@@ -118,23 +119,7 @@ class ExpressController extends Controller
     }
 
     
-
-    public function update(Request $request,Shipment $shipment)
-    {
-        // $shipment->address_id = $request->shipper;
-        $shipment->consignee_name = $request->consignee_name;
-        $shipment->consignee_phone = $request->consignee_phone;
-        $shipment->consignee_phone_2 = $request->consignee_phone_2;
-        $shipment->consignee_city = $request->consignee_city;
-        $shipment->consignee_region = $request->consignee_region;
-        $shipment->order_price = $request->order_price;
-        $shipment->customer_notes = $request->customer_notes;
-        $shipment->delegate_notes = $request->delegate_notes;
-
-        if($shipment->save()){
-            return back()->with('success',__('Saved.'));
-        }
-    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Store shipment by client
     public function store(StoreClientShipmentRequest $storeClientShipmentRequest)
@@ -155,8 +140,51 @@ class ExpressController extends Controller
         } 
     }
 
+    //update shipment by client
+    public function update(UpdateClientShipmentRequest $updateClientShipmentRequest,Shipment $shipment)
+    {
+        $validated = $updateClientShipmentRequest->validated();
+        $data = $validated;
+        $data['is_returned'] = $updateClientShipmentRequest->input('is_returned', 0);
+        $res_update = $this->shipmentService->update($data,$shipment);
+        if ($res_update['code'] == 1) 
+        {
+            return redirect()->back()->with('success', 'تم حفظ بيانات الشحنة بنجاح');
+        }
+        else 
+        {
+            return redirect()->back()->with('faild', 'حدث خطأ في حفظ بيانات الشحنة');
+        }
+    }
+
+    public function destroy(Shipment $shipment)
+    {
+        $res_rmv = $this->shipmentService->remove($shipment->id);
+        if ($res_rmv['code'] == 1) 
+        {
+            return back()->with('success',__('Deleted Successfully'));
+        }
+        else 
+        {
+            return back()->with('error',$res_rmv['msg']);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    
     public function store_old(Request $request)
     {
         dd($request->all());
@@ -523,18 +551,7 @@ class ExpressController extends Controller
     }
 
 
-    public function destroy(Shipment $shipment)
-    {
-        $res_rmv = $this->shipmentService->remove($shipment->id);
-        if ($res_rmv['code'] == 1) 
-        {
-            return back()->with('success',__('Deleted Successfully'));
-        }
-        else 
-        {
-            return back()->with('error',$res_rmv['msg']);
-        }
-    }
+    
 
 
 }
