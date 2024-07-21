@@ -54,11 +54,11 @@
                         </div>
                         <div class="d-flex  justify-content-between flex-row-reverse">
                             <h4 class="scolor" style="font-weight: 700;">
-                                {{ $shipment->where('status', 0)->count() }}
+                                {{ $shipment->where('shipment_status_id', 0)->count() }}
                             </h4>
                             <h4 style="font-weight: 700;">
                                 @if ($shipment->count() !== 0)
-                                    {{ number_format(($shipment->where('status', 0)->count() * 100) / $shipment->count(), 2) }}
+                                    {{ number_format(($shipment->where('shipment_status_id', 0)->count() * 100) / $shipment->count(), 2) }}
                                     %
                                 @else
                                     0 %
@@ -75,11 +75,11 @@
                         </div>
                         <div class="d-flex  justify-content-between flex-row-reverse">
                             <h4 class="scolor" style="font-weight: 700;">
-                                {{ $shipment->where('status', 1)->count() }}
+                                {{ $shipment->where('shipment_status_id', 1)->count() }}
                             </h4>
                             <h4 style="font-weight: 700;">
                                 @if ($shipment->count() !== 0)
-                                    {{ number_format(($shipment->where('status', 1)->count() * 100) / $shipment->count(), 2) }}
+                                    {{ number_format(($shipment->where('shipment_status_id', 1)->count() * 100) / $shipment->count(), 2) }}
                                     %
                                 @else
                                     0 %
@@ -96,11 +96,11 @@
                         </div>
                         <div class="d-flex  justify-content-between flex-row-reverse">
                             <h4 class="scolor" style="font-weight: 700;">
-                                {{ $shipment->whereIn('status', [2, 4])->count() }}
+                                {{ $shipment->whereIn('shipment_status_id', [2, 4])->count() }}
                             </h4>
                             <h4 style="font-weight: 700;">
                                 @if ($shipment->count() !== 0)
-                                    {{ number_format(($shipment->whereIn('status', [2, 4])->count() * 100) / $shipment->count(), 2) }}
+                                    {{ number_format(($shipment->whereIn('shipment_status_id', [2, 4])->count() * 100) / $shipment->count(), 2) }}
                                     %
                                 @else
                                     0 %
@@ -117,11 +117,11 @@
                         </div>
                         <div class="d-flex  justify-content-between flex-row-reverse">
                             <h4 class="scolor" style="font-weight: 700;">
-                                {{ $shipment->where('status', 3)->count() }}
+                                {{ $shipment->where('shipment_status_id', 3)->count() }}
                             </h4>
                             <h4 style="font-weight: 700;">
                                 @if ($shipment->count() !== 0)
-                                    {{ number_format(($shipment->where('status', 3)->count() * 100) / $shipment->count(), 2) }}
+                                    {{ number_format(($shipment->where('shipment_status_id', 3)->count() * 100) / $shipment->count(), 2) }}
                                     %
                                 @else
                                     0 %

@@ -14,6 +14,7 @@ use App\Models\EditOrder;
 use App\Models\ShipmentRate;
 use Illuminate\Http\Request;
 use App\Exports\ShipmentsExport;
+use App\Http\Requests\StoreClientShipmentRequest;
 use App\Jobs\ImportShipments;
 use App\Models\ShipmentStatus;
 use App\Services\ShipmentService;
@@ -69,34 +70,7 @@ class ExpressController extends Controller
 
     public function index(Request $request)
     {
-        // dd($request->all());
-        // $user = Auth::user();
-        // $shop_id = $user->shop->id;
         $dataTable = new ExpressDataTable(false,Auth::user()->shop->id);
-        
-        // $ships = Shipment::where('user_id', auth()->user()->id)->where(function ($q) use ($request) {
-
-        //     if ($request->from!=null) {
-        //         $q->whereBetween('created_at', [$request->from, $request->to]);
-        //     }
-        //     if ($request->status!=null) {
-        //         $q->where('status', 'LIKE', "%$request->status%");
-        //     }
-        //     if ($request->process!=null && $request->cod!=null) {
-        //         $q->where('cash_on_delivery_amount', $request->process, $request->cod);
-        //     }
-        //     if ($request->phone!=null) {
-        //         $q->where('consignee_phone', 'LIKE', "%$request->phone%");
-        //     }
-        // });
-        // $user = Auth::user();
-        // $shop_id = $user->shop->id;
-        // // dd($shop_id);
-        // // $ships = Shipment::where('user_id', auth()->user()->id);
-        // $ships = Shipment::where('shop_id', $shop_id);
-        // $ships = $ships->latest()->get();
-        
-        // return view('pages.user.express.shipping', compact('dataTable','ships'));
         return $dataTable->render('pages.user.express.shipping',['shipment_statuses' => ShipmentStatus::all()]);
     }
 
@@ -118,8 +92,6 @@ class ExpressController extends Controller
 
     public function create()
     {
-        // $user = Auth::user();
-        // $shop = $user->shop;
         return view('pages.user.express.create',['shop'=> Auth::user()->shop]);
     }
 
@@ -143,57 +115,7 @@ class ExpressController extends Controller
         return abort(404);
     }
 
-    // public function AramixCreateShipment($shipmentDetails,$shipper,$ship)
-    // {
-    //      // dd($shipmentDetails);
-    //      $callResponse = Aramex::createShipment($shipmentDetails);
-    //      // if (false) {
-    //      if (!empty($callResponse->error)) {
-    //          foreach ($callResponse->errors as $errorObject) {
-    //              return $errorObject->Code . ' => ' . $errorObject->Message;
-    //          }
-    //      } else {
-    //          $file =  file_get_contents($callResponse->Shipments->ProcessedShipment->ShipmentLabel->LabelURL);
-    //          $putFile = file_put_contents($callResponse->Shipments->ProcessedShipment->ID . '.pdf', $file);
-    //          // $putFile = Storage::put($callResponse->Shipments->ProcessedShipment->ID . '.pdf', $file);
-    //          $data = [
-    //              'user_id' => auth()->user()->id,
-    //              'address_id' => $shipper->id,
-    //              'consignee_name' => $shipmentDetails['consignee']['name'],
-    //              'consignee_email' => $shipmentDetails['consignee']['email'],
-    //              'consignee_phone' => $shipmentDetails['consignee']['phone'],
-    //              'consignee_cell_phone' => $shipmentDetails['consignee']['cell_phone'],
-    //              'consignee_zip_code' => $shipmentDetails['consignee']['zip_code'],
-    //              'consignee_country_code' => $shipmentDetails['consignee']['country_code'],
-    //              'consignee_line1' => $shipmentDetails['consignee']['line1'],
-    //              'consignee_line2' => $shipmentDetails['consignee']['line2'],
-    //              'consignee_line3' => $shipmentDetails['consignee']['line2'],
-    //              'consignee_city' => $ship['consignee_city'],
-
-    //              // Shipment Data
-    //              'reference' => $ship['reference'],
-    //              'shipping_date_time'    => now()->addHours(2),
-    //              'due_date'  => now()->addHours(72),
-    //              'comments'  => $shipmentDetails['comments'],
-    //              'pickup_location'   => $shipmentDetails['pickup_location'],
-    //              'pickup_guid'   => $shipmentDetails['pickup_guid'],
-    //              'cash_on_delivery_amount'   => $shipmentDetails['cash_on_delivery_amount'],
-    //              'product_group' => $shipmentDetails['product_group'],
-    //              'product_type'  => $shipmentDetails['product_type'],
-    //              'payment_type'  => $shipmentDetails['payment_type'],
-    //              'customs_value_amount'  => 0,
-    //              'collect_amount' => $this->sumExpress($shipper->city, $shipper->city, $ship['weight']),
-    //              'weight'    => $shipmentDetails['weight'],
-    //              'number_of_pieces'  => $shipmentDetails['number_of_pieces'],
-    //              'description'   => $shipmentDetails['description'],
-    //              'shipmentID' => $callResponse->Shipments->ProcessedShipment->ID,
-    //              'shipmentLabelURL' => $callResponse->Shipments->ProcessedShipment->ID . '.pdf',
-    //              'shipmentAttachments' => $callResponse->Shipments->ProcessedShipment->ShipmentAttachments->ProcessedShipmentAttachment->Url ?? 'N/A',
-    //          ];
-    //          return $data;
-    //      }
-    // }
-
+    
 
     public function update(Request $request,Shipment $shipment)
     {
@@ -211,29 +133,28 @@ class ExpressController extends Controller
             return back()->with('success',__('Saved.'));
         }
     }
-    public function store(Request $request)
-    {
-       
-        try 
-        {
-            // dd($request->all());
-            $shipment = $this->shipmentService->store($request);
 
-            if($shipment)
-            {
-                return redirect()->route('front.express.index')->with('success', 'تم اضافة الشحنة بنجاح');
-            }
-            else 
-            {
-                return redirect()->route('front.express.index')->with('faild', 'حدث خطأ في إضافة الشحنة');
-            }
-            
-        } 
-        catch (\Exception $ex) 
+    //Store shipment by client
+    public function store(StoreClientShipmentRequest $storeClientShipmentRequest)
+    {   
+        $validated = $storeClientShipmentRequest->validated();
+        $data = $validated;
+        $data['is_returned'] = $storeClientShipmentRequest->input('is_returned', 0);
+        $data['shipment_status_id'] = ShipmentStatus::UNDER_REVIEW;
+        $res_store = $this->shipmentService->store($data);
+
+        if($res_store['code'] == 1)
         {
-            return $ex->getMessage();
+            return redirect()->route('front.express.index')->with('success', 'تم اضافة الشحنة بنجاح');
         }
+        else 
+        {
+            return redirect()->route('front.express.index')->with('faild', 'حدث خطأ في إضافة الشحنة');
+        } 
     }
+
+
+
     public function store_old(Request $request)
     {
         dd($request->all());

@@ -33,35 +33,20 @@ class ShipmentService
        }
     }
 
-    public function update(Request $request,Shipment $shipment,$by_admin=false)
+    public function update(Array $data,Shipment $shipment,$by_admin=false)
     {
         try 
         { 
-            
-            $data = [ 
-                'shop_id' => $request->shop,
-                'consignee_name' => $request->consignee_name,
-                'consignee_phone' => $request->consignee_phone,
-                'consignee_phone_2' => $request->consignee_phone_2,
-                'consignee_city' => $request->consignee_city,
-                'consignee_region' => $request->consignee_region,
-                'order_price' => $request->order_price,
-                'customer_notes' => $request->customer_notes,
-                'delegate_id' => $request->delegate ?? null,
-                'delegate_notes' => $request->delegate_notes ?? null,
-                'shipment_status_id' => $request->shipment_status_id,
-                'is_returned' => $request->is_returned ?? 0,
-            ];
-
-            
-            if($shipment->shipment_status_id == ShipmentStatus::UNDER_REVIEW && $request->shipment_status_id == ShipmentStatus::UNDER_DELIVERY)
-            {
-                $data['accepted_by_admin_at'] = Carbon::now()->toDateTimeString();
-            }
-
+        
             if ($by_admin) 
             {
-                $data['value_on_delivery'] = $request->value_on_delivery ?? 0; 
+                $data['value_on_delivery'] = $data['value_on_delivery'] ?? 0; 
+                
+                if($shipment->shipment_status_id == ShipmentStatus::UNDER_REVIEW && 
+                   $data['shipment_status_id'] == ShipmentStatus::UNDER_DELIVERY)
+                {
+                    $data['accepted_by_admin_at'] = Carbon::now()->toDateTimeString();
+                }
             }
 
             if ($shipment->update($data)) 

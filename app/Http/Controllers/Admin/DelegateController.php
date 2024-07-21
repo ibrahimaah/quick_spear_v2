@@ -159,7 +159,8 @@ class DelegateController extends Controller
         }
         else 
         {
-            dd($res_get_delegates_by_city_id['msg']);
+            return response()->json(['code' => 0 , 'msg' => $res_get_delegates_by_city_id['msg']]);
+            
         }
     }
 

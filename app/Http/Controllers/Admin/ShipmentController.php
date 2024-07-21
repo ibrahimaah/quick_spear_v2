@@ -6,6 +6,9 @@ use App\DataTables\ExpressDataTable;
 use App\DataTables\ShipmentDataTable;
 use App\Exports\AdminShipmentsExport;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAdminShipmentRequest;
+use App\Http\Requests\StoreShipmentRequest;
+use App\Http\Requests\UpdateAdminShipmentRequest;
 use App\Imports\TransactionsImport;
 use App\Models\Address;
 use App\Models\City;
@@ -75,24 +78,13 @@ class ShipmentController extends Controller
                                                'delegates'=>$delegates]); 
     }
 
-    public function store(Request $request)
-    {
-        
-        $validated = $request->validate([
-            'shop_id' => 'required',
-            'consignee_name' => 'required',
-            'consignee_phone' => 'required',
-            'consignee_city' => 'required',
-            'consignee_region' => 'required',
-            'delegate_id' => 'required',
-            'order_price' => 'required|numeric|gt:0',
-            'customer_notes' => 'nullable',
-            'delegate_notes' => 'nullable',
-            'consignee_phone_2' => 'nullable'
-        ]);
+    //Store new shipment by admin
+    public function store(StoreAdminShipmentRequest $storeAdminShipmentRequest)
+    { 
+        $validated = $storeAdminShipmentRequest->validated();
         
         $data = $validated;
-        $data['is_returned'] = $request->input('is_returned', 0);
+        $data['is_returned'] = $storeAdminShipmentRequest->input('is_returned', 0);
         $data['shipment_status_id'] = ShipmentStatus::UNDER_REVIEW;
         
         $res_store = $this->shipmentService->store($data);
@@ -133,11 +125,13 @@ class ShipmentController extends Controller
         return view('admin.shipments.edit', compact('shipment','delegates','shops','shipment_statuses','regions'));
     }
 
-    public function update(Request $request, Shipment $shipment)
+    public function update(UpdateAdminShipmentRequest $updateAdminShipmentRequest, Shipment $shipment)
     {
-       
-        // dd($request->all());
-        $res_update_shipment = $this->shipmentService->update($request,$shipment,true);
+        $validated = $updateAdminShipmentRequest->validated();
+        $data = $validated;
+        $data['is_returned'] = $updateAdminShipmentRequest->input('is_returned', 0);
+
+        $res_update_shipment = $this->shipmentService->update($data,$shipment,true);
 
         if ($res_update_shipment['code'] == 1) {
             return redirect()->back()->with("success_update", "تم تعديل البيانات بنجاح");

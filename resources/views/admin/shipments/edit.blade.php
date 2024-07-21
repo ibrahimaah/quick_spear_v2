@@ -14,7 +14,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h4>#{{ $shipment->id }}</h4>
+                <h4>تعديل الشحنة #{{ $shipment->id }}</h4>
             </div>
             <div class="card-body">
                 <div class="container">
@@ -28,21 +28,13 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                 <div class="col-xl-8 col-sm-12 col-lg-8 px-0 mx-2 mb-2">
                                     <label>اسم المتجر/المحل</label><span class="text-danger">*</span>
                                     
-                                    <select class="form-control mt-2 ml-2" id="shops-select2" name="shop" required>
+                                    <select class="form-control mt-2 ml-2" id="shops-select2" name="shop_id" required>
                                         @foreach ($shops as $shop)
                                         <option value="{{ $shop->id }}" <?=$shipment?->shop?->id == $shop?->id ? 'selected' : '' ?>>
                                             {{ $shop->name }}
                                         </option>
                                         @endforeach
                                     </select>
-                                    {{-- <select class="form-control mt-2 ml-2 " name="address">
-                                        @foreach ($shipment->user->addresses->all() as $address)
-                                        <option {{ $shipment->address_id == $address->id ? 'selected' : '' }} value="{{ $address->id }}">
-                                            {{ "الاسم : " . ($address->name ?? '') . "           | المدينة : " . ($address->City->name ?? "") . "           | الوصف :" . $address->desc }}
-                                        </option>
-                                        @endforeach
-                                    </select> --}}
-
                                 </div>
                             </div>
                             <hr />
@@ -66,10 +58,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                         value="{{ $shipment->consignee_phone }}"
                                  />
                             </div>
-                            <div class="col-12 my-2 col-md-4">
-                                <label>رقم الهاتف البديل</label>
-                                <input class="form-control mt-2 ml-2" type="number" name="consignee_phone_2" value="{{ $shipment->consignee_phone_2 }}" />
-                            </div>
+                            
 
 
 
@@ -86,12 +75,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                     @endforeach
                                 </select>
                             </div>
-
-
-                            {{-- <div class="col-12 my-2 col-md-4">
-                                <label>المنطقة</label><span class="text-danger">*</span>
-                                <input class="form-control mt-2 ml-2" type="text" name="consignee_region" value="{{ $shipment->consignee_region }}" />
-                            </div> --}}
+ 
 
                             <div class="col-12 my-2 col-md-4">
                                 <label class="mb-2 d-block">المنطقة</label>
@@ -126,17 +110,9 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                        />
                             </div>
 
-
-
-                            <div class="col-12 my-2 col-md-4">
-                                <label>ملاحظات العميل</label>
-                                <input class="form-control mt-2 ml-2" type="text" name="customer_notes" value="{{ $shipment->customer_notes }}" />
-                            </div>
-
-
                             <div class="col-12 my-2 col-md-4">
                                 <label class="mb-2 d-block">{{ __('Delegate Name') }}</label>
-                                <select id="choose-delegate-select2" name="delegate" required>
+                                <select id="choose-delegate-select2" name="delegate_id" required>
                                     @if($delegates->isNotEmpty())
                                         @foreach($delegates as $delegate)
                                         <option value="{{ $delegate->id }}" <?= ($shipment->delegate_id == $delegate->id) ? 'selected' : ''?>>{{ $delegate->name }}</option> 
@@ -145,20 +121,34 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                 </select>
                             </div>
 
-
-                            <div class="col-12 my-2 col-md-4">
-                                <label>ملاحظات المندوب</label>
-                                <input class="form-control mt-2 ml-2" type="text" name="delegate_notes" value="{{ $shipment->delegate_notes }}" />
-                            </div>
+                            
 
                             <div class="col-12 my-2 col-md-4">
                                 <label for="message-text" class="col-form-label">حالة الشحنة</label>
                                 <select class="form-select w-25 m-1" name="shipment_status_id" id="shipment_status_select">
-                                    <option value="">اختر حالةالشحنة</option>
+                                    <option value="">اختر حالة الشحنة</option>
                                     @foreach($shipment_statuses as $shipment_status)
                                     <option value="{{ $shipment_status->id }}" <?=($shipment->shipment_status_id == $shipment_status->id) ? 'selected' : ''?>>{{ __($shipment_status->name) }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+
+
+                            <div class="col-12 my-2 col-md-4">
+                                <label>رقم الهاتف البديل</label>
+                                <input class="form-control mt-2 ml-2" type="number" name="consignee_phone_2" value="{{ $shipment->consignee_phone_2 }}" />
+                            </div>
+
+                            <div class="col-12 my-2 col-md-4">
+                                <label>ملاحظات العميل</label>
+                                <input class="form-control mt-2 ml-2" type="text" name="customer_notes" value="{{ $shipment->customer_notes }}" />
+                            </div>
+
+                            
+
+                            <div class="col-12 my-2 col-md-4">
+                                <label>ملاحظات المندوب</label>
+                                <input class="form-control mt-2 ml-2" type="text" name="delegate_notes" value="{{ $shipment->delegate_notes }}" />
                             </div>
 
                             <div class="col-12 my-2 col-md-4">
@@ -205,14 +195,12 @@ $status_numbers = config('constants.STATUS_NUMBER');
 
 
 @push('js') 
-
     <script>
-        
-        
         function fetchDelegates(cityId) 
         {
             var url = "{{ route('admin.delegates.get_delegates_by_city_id', ['city' => 'CITY_ID_PLACEHOLDER']) }}";
             url = url.replace('CITY_ID_PLACEHOLDER', cityId);
+            var delegateSelect = $('#choose-delegate-select2');
 
             $.ajax({
                 url: url,
@@ -229,22 +217,23 @@ $status_numbers = config('constants.STATUS_NUMBER');
                     $('#save_shipment_btn').removeClass('disabled-button');
                 },
                 success: function(response) {
+                    
                     if (response.code == 1) {
                         var delegates = response.data;
-                        var delegateSelect = $('#choose-delegate-select2');
                         delegateSelect.empty();
                         delegateSelect.append('<option value=""></option>'); // Add default empty option
-                        $.each(delegates, function(index, delegate) {
-                            // var selected = (current_delegate_id === delegate.id) ? ' selected' : '';
-                            // delegateSelect.append('<option value="' + delegate.id + '"' + selected + '>' + delegate.name + '</option>');
+                        $.each(delegates, function(index, delegate) 
+                        { 
                             delegateSelect.append('<option value="' + delegate.id + '">' + delegate.name + '</option>');
                         });
                     } else if (response.code == 0) {
-                        alert('Error fetching delegates');
+                        delegateSelect.empty();
+                        alert(response.msg);
                     }
                 },
                 error: function() {
-                    console.log('An error occurred')
+                    delegateSelect.empty();
+                    console.log(response.msg)
                 }
             });
         }
@@ -280,7 +269,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                             regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
                         });
                     } else if (response.code == 0) {
-                        alert('Error fetching regions');
+                        alert(response.msg);
                     }
                 },
                 error: function() {
@@ -292,27 +281,10 @@ $status_numbers = config('constants.STATUS_NUMBER');
         $(document).ready(function() 
         {
             $('#choose-delegate-select2').select2();
-            
             $('#choose-region-select2').select2();
-            
-            
             $('#shipment_status_select').select2();
-       
-            // $('#delegates-select2').select2();
-
-            // $('#delegates-select2').select2({
-            //     dropdownParent: $('#assign-delegate-modal')
-            // });
-
-            // $('#choose-delegate-select2').select2();
-            // $('#addresses-select2').select2();
             $('#shops-select2').select2();
             $('#cities-select2').select2();
-
-            // var initialCityId = $('#cities-select2').val();
-            // if (initialCityId) {
-            //     fetchDelegates(initialCityId);
-            // }
 
             // Fetch delegates on change event
             $('#cities-select2').on('change', function (e) {
@@ -323,10 +295,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                 }
             });
         
-            
-            
         });
-
 </script>
 
 @endpush

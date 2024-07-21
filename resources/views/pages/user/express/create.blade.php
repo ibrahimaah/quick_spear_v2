@@ -39,7 +39,7 @@
             <form method="post" action="{{ route('front.express.store') }}" id="shipments_form">
                 @csrf
                 
-                <input type="hidden" name="shop" value="{{ $shop->id }}" required />
+                <input type="hidden" name="shop_id" value="{{ $shop->id }}" required />
                 {{-- <input type="hidden" name="shipment_status_id" value="{{ $shipment_status_id }}" required /> --}}
 
                 <div data-x-wrapper="shipments">
