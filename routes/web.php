@@ -10,9 +10,13 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShipmentImportController;
 use App\Http\Controllers\TestController;
+use App\Models\Region;
 
 // Route::post('testupload', [TestController::class, 'store']);
-
+    // Route::get('/tmp', function(){
+    //     echo get_class(Region::findOrFail(1));
+        
+    // });
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),

@@ -8,12 +8,21 @@ use Exception;
 class DeliveryPriceService
 {
 
-    public function store($data)
+    public function store($data,$has_regions = false)
     {
         try 
         {
-            $delivery_price = DeliveryPrice::create($data);
-            if ($delivery_price->save()) 
+            if (!$has_regions) 
+            {
+                $delivery_price = DeliveryPrice::create($data);
+            }
+            else 
+            {
+                $delivery_price = DeliveryPrice::insert($data);
+            }
+
+
+            if ($delivery_price) 
             {
                 return ['code' => 1 , 'data' => true];
             }
@@ -21,6 +30,7 @@ class DeliveryPriceService
             {
                 throw new Exception('Can not store this deliveryPrice');
             }
+           
         }
         catch(Exception $ex)
         {

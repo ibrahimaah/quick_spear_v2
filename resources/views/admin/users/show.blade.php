@@ -62,7 +62,7 @@
                                 data-bs-toggle="modal" 
                                 data-bs-target="#store-price-modal">إضافة سعر</button>
                                 <div class="modal fade" id="store-price-modal" tabindex="-1">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <form method="post"
                                                 action="{{ route('admin.delivery_price.store') }}">
@@ -77,7 +77,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <input type="hidden" name="shop" value="{{ $user->shop->id }}">
+                                                    <input type="hidden" name="shop_id" value="{{ $user->shop->id }}">
                                                     <div class="mb-3 row">
                                                         <label class="col-sm-3 col-form-label" >
                                                             اختر المحافظة
@@ -100,7 +100,7 @@
                                                             اختر المنطقة
                                                         </label>
                                                         <div class="col-sm-9">
-                                                            <select class="form-control" name="region" id="select-region">
+                                                            <select class="form-control" name="regions[]" id="select-region" multiple="multiple">
                                                                 
                                                             </select>
                                                             @error('region')
@@ -174,11 +174,13 @@
                                                 @if(get_class($deliveryPrice->location) == "App\Models\City")
                                                     <span>محافظة</span>
                                                 @else 
-                                                    @php 
-                                                        $city_region = $deliveryPrice->location->city->name;
-                                                        $city_region = "تتبع لمحافظة ".$city_region;
-                                                    @endphp 
+                                                    
                                                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $city_region }}">منطقة</span>
+                                                     @php 
+                                                        $city_region = $deliveryPrice->location->city->name;
+                                                        // $city_region = "تتبع لمحافظة ".$city_region;
+                                                        echo '('.$city_region.')';
+                                                    @endphp 
                                                 @endif 
                                             </td>
                                             <td>{{ $deliveryPrice->price }}</td>
@@ -304,7 +306,8 @@
                             regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
                         });
                     } else if (response.code == 0) {
-                        alert('Error fetching regions');
+                        regionSelect.empty();
+                        alert(response.msg);
                     }
                 },
                 error: function() {

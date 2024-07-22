@@ -33,22 +33,41 @@ class DeliveryPriceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'shop' => 'required',
+            'shop_id' => 'required',
             'city' => 'required',
-            'region' => 'nullable',
+            'regions' => 'nullable',
             'price' => 'required|numeric|gt:0'
         ]);
- 
-        // dd($validated);
-        $data = [
-            'shop_id' => $validated['shop'],
-            'location_type' => $validated['region'] ? get_class(Region::findOrFail($validated['region'])) : get_class(City::findOrFail($validated['city'])),
-            'location_id' => $validated['region'] ?? $validated['city'],
-            'price' => $validated['price'],
-        ];
-
-        // dd($data);
-        $res_store = $this->deliveryPriceService->store($data);
+         
+        if(!$request->has('regions'))
+        {
+            $data = [
+                'shop_id' => $validated['shop_id'],
+                'location_type' => 'App\Models\City',
+                'location_id' => $validated['city'],
+                'price' => $validated['price'],
+            ];
+        }
+        else 
+        {  
+            $regions_ids = $validated['regions']; 
+            $data=[];
+            $i=0;
+            foreach($regions_ids as $region_id)
+            {
+                $data[$i] = [
+                    'shop_id' => $validated['shop_id'],
+                    'location_type' => 'App\Models\Region',
+                    'location_id' => $region_id,
+                    'price' => $validated['price'],
+                ];
+    
+                $i++;
+            }
+        }
+        
+        $res_store = $this->deliveryPriceService->store($data,true);
+        
         if ($res_store['code'] == 1) 
         {
             return back()->with('success','تم حفظ البيانات بنجاح');
