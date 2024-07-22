@@ -1,5 +1,6 @@
+
 <div>
-    @if($query->status->id == 1)
+    @if($query->shipment_status_id == App\Models\ShipmentStatus::UNDER_REVIEW)
     <a href="express/edit/{{$query->id}}" 
        class="btn btn-sm btn-warning">
        <i class="bi bi-pencil"></i>

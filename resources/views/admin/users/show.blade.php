@@ -54,6 +54,18 @@
     <div class="tab-pane fade" id="shipments" role="tabpanel">
         <div class="row mt-5">
             <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>الشحنات</h5>
+                    </div>
+                    <div class="card-body datatable-container" id="myTabContent">
+                            {{ $dataTable->table() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-sm-12">
                 
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
@@ -253,24 +265,13 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>الشحنات</h5>
-                    </div>
-                    <div class="card-body datatable-container" id="myTabContent">
-                            {{-- {{ $dataTable->table() }} --}}
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div> 
   </div>
   
      
     @push('scripts')
-    
+    {{ $dataTable->scripts() }}
     <script>
 
         function fetchRegions(cityId) 

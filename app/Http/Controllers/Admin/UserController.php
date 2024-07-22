@@ -106,8 +106,10 @@ class UserController extends Controller
     public function show(user $user)
     {
         $shop = $user->shop;
+        $dataTable = new ExpressDataTable(false,$shop->id);
+        
         $cities = City::all();
-        return view('admin.users.show', ['user'=>$user,
+        return $dataTable->render('admin.users.show', ['user'=>$user,
                                          'shop'=>$shop,
                                          'cities'=>$cities]); 
     }
