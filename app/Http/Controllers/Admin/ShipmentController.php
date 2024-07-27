@@ -85,7 +85,8 @@ class ShipmentController extends Controller
         
         $data = $validated;
         $data['is_returned'] = $storeAdminShipmentRequest->input('is_returned', 0);
-        $data['shipment_status_id'] = ShipmentStatus::UNDER_REVIEW;
+        // $data['shipment_status_id'] = ShipmentStatus::UNDER_REVIEW;
+        $data['shipment_status_id'] = ShipmentStatus::UNDER_DELIVERY;
         
         $res_store = $this->shipmentService->store($data);
 

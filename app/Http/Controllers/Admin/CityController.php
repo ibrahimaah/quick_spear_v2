@@ -50,7 +50,8 @@ class CityController extends Controller
 
         if ($res_store_city['code'] == 1) 
         {
-            return redirect()->route('admin.cities.index')->with("success", "تم اضافة البيانات بنجاح");
+            // return redirect()->route('admin.cities.index')->with("success", "تم اضافة البيانات بنجاح");
+            return redirect()->back()->with("success", "تم اضافة البيانات بنجاح");
         }
         else 
         {
@@ -153,7 +154,8 @@ class CityController extends Controller
 
         if ($res_update_city['code'] == 1) 
         {
-            return redirect()->route('admin.cities.index')->with("success", "تم تعديل البيانات بنجاح");
+            // return redirect()->route('admin.cities.index')->with("success", "تم تعديل البيانات بنجاح");
+            return redirect()->back()->with("success", "تم تعديل البيانات بنجاح");
         }
         else 
         {
@@ -173,7 +175,8 @@ class CityController extends Controller
        $res_destroy_city = $this->cityService->destroy($city);
        if ($res_destroy_city['code'] == 1) 
        {
-            return redirect()->route('admin.cities.index')->with("success", "تم حذف البيانات بنجاح");
+            // return redirect()->route('admin.cities.index')->with("success", "تم حذف البيانات بنجاح");
+            return redirect()->back()->with("success", "تم حذف البيانات بنجاح");
        }
        else 
        {

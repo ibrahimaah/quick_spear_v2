@@ -33,7 +33,8 @@ class StoreAdminShipmentRequest extends FormRequest
             'order_price' => 'required|numeric|gt:0',
             'customer_notes' => 'nullable',
             'delegate_notes' => 'nullable',
-            'consignee_phone_2' => 'nullable'
+            'consignee_phone_2' => 'nullable',
+            // 'by_admin' => 'required',
         ];
     }
 }

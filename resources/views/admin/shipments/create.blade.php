@@ -59,6 +59,7 @@
         <div class="container">
             <form method="post" action="{{ route('admin.shipments.store') }}" id="shipments_form">
                 @csrf
+                {{-- <input type="hidden" name="by_admin" value="1"> --}}
                 {{-- <div data-x-wrapper="shipments">
                     <div data-x-group> --}}
                         {{-- <div class="d-flex justify-content-between">

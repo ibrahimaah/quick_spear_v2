@@ -84,7 +84,8 @@ class RegionController extends Controller
 
         if ($res_update_region['code'] == 1) 
         {
-            return redirect()->route('admin.regions.index')->with("success", "تم تعديل البيانات بنجاح");
+            // return redirect()->route('admin.regions.index')->with("success", "تم تعديل البيانات بنجاح");
+            return redirect()->back()->with("success", "تم تعديل البيانات بنجاح");
         }
         else 
         {

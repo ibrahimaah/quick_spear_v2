@@ -156,7 +156,8 @@ class UserController extends Controller
 
         $shop->update($shop_data);
 
-        return redirect()->route('admin.users.index')->with("success", "تم تعديل البيانات بنجاح");
+        // return redirect()->route('admin.users.index')->with("success", "تم تعديل البيانات بنجاح");
+        return redirect()->back()->with("success", "تم تعديل البيانات بنجاح");
     }
 
     public function destroy(user $user)

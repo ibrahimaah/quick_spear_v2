@@ -8,12 +8,14 @@
     }
     .datatable-container {
         overflow-x: auto;
+        overflow-y: auto;
         white-space: nowrap;
-        transform: rotateX(180deg);
+        height:500px;
+        /* transform: rotateX(180deg); */
         
     }
     .datatable-child-container{
-        transform: rotateX(180deg);
+       /* transform: rotateX(180deg); */
     }
 
     

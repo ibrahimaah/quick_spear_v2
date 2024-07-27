@@ -60,11 +60,13 @@ class DelegateController extends Controller
 
         if ($res_store['code'] == 1) 
         {
-            return redirect()->route('admin.delegates.index')->with("success", "تم اضافة البيانات بنجاح");
+            // return redirect()->route('admin.delegates.index')->with("success", "تم اضافة البيانات بنجاح");
+            return redirect()->back()->with("success", "تم اضافة البيانات بنجاح");
         }
         else
         {
             return redirect()->route('admin.delegates.index')->with("error",$res_store['msg']);
+            return redirect()->back()->with("error",$res_store['msg']);
         }
        
     }
@@ -106,11 +108,13 @@ class DelegateController extends Controller
 
         if ($res_update['code'] == 1) 
         {
-            return redirect()->route('admin.delegates.index')->with("success", "تم حفظ البيانات بنجاح");
+            // return redirect()->route('admin.delegates.index')->with("success", "تم حفظ البيانات بنجاح");
+            return redirect()->back()->with("success", "تم حفظ البيانات بنجاح");
         }
         else
         {
-            return redirect()->route('admin.delegates.index')->with("error",$res_update['msg']);
+            // return redirect()->route('admin.delegates.index')->with("error",$res_update['msg']);
+            return redirect()->back()->with("error",$res_update['msg']);
         }
        
     }
@@ -124,7 +128,8 @@ class DelegateController extends Controller
     public function destroy(Delegate $delegate)
     {
         $delegate->delete();
-        return redirect()->route('admin.delegates.index')->with("success","تم حذف البيانات بنجاح");
+        // return redirect()->route('admin.delegates.index')->with("success","تم حذف البيانات بنجاح");
+        return redirect()->back()->with("success","تم حذف البيانات بنجاح");
     }
 
     public function get_shipments(Delegate $delegate)
