@@ -15,9 +15,7 @@
                         <span>الشحنات</span>
                         @endif
                     </h5>
-                    <h5>
-                        <a href="{{ route('admin.delegates.index') }}" class="btn btn-danger btn-sm"><i class="fa fa-arrow-left"></i></a>
-                    </h5>
+                    <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
                 </div>
                 @if($delegate)
                     <div class="d-flex gap-2">

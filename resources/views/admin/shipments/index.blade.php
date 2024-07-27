@@ -8,8 +8,15 @@
     }
     .datatable-container {
         overflow-x: auto;
-        white-space: nowrap; /* Prevents text wrapping */
+        white-space: nowrap;
+        transform: rotateX(180deg);
+        
     }
+    .datatable-child-container{
+        transform: rotateX(180deg);
+    }
+
+    
     #shipments_form > div > div > div:nth-child(3) > div:nth-child(8) > span > span.selection > span,
     #shipments_form > div > div > div:nth-child(3) > div:nth-child(4) > span.select2.select2-container.select2-container--default > span.selection > span
     {
@@ -38,13 +45,16 @@
 
 
 {{-- <h2 class="mb-4">{{ __('Create') }} {{ __('Local Shipping') }}</h2> --}}
-<h2 class="mb-4">عرض الشحنات</h2>
+<div class="d-flex justify-content-between">
+    <h2>عرض الشحنات</h2>
+    <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+</div>
 
     @php 
         $status_numbers = config('constants.STATUS_NUMBER');
     @endphp 
  
-    <div class="card p-3">
+    <div class="card p-3 mt-4">
 
        <div class="w-25">
         <select class="form-select w-25 m-1" id="shipment_status_select">
@@ -58,18 +68,20 @@
         <button id="assign-shipment-btn" class="btn btn-primary w-25 m-1">إسناد لمندوب</button>
 
 
-        <form action="{{ route('admin.invoice') }}" method="get">
+        {{-- <form action="{{ route('admin.invoice') }}" method="get">
             @csrf 
             <input type="hidden" id="selected-shipments-ids-input-invoice" name="selected_shipments" value="">
             <button type="submit" id="invoice-btn" class="btn btn-primary w-25 m-1">فاتورة</button>
-        </form>
+        </form> --}}
 
 
 
         <div class="admin-shipments">
-            <div class="card-body datatable-container" id="myTabContent">
-                {{ $dataTable->table() }}
-            </div>
+                <div class="card-body datatable-container mt-4" id="myTabContent">
+                    <div class="datatable-child-container">
+                        {{ $dataTable->table() }}
+                    </div>
+                </div>
         </div>
     </div>
 

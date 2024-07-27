@@ -183,6 +183,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                         --}}
                         </div>
                         <button class="btn btn-primary btn-lg my-3" id="save_shipment_btn" type="submit">حفظ</button>
+                        <a href="{{ url()->previous() }}" class="btn btn-danger">رجوع</a>
                     </form>
                 </div>
             </div>

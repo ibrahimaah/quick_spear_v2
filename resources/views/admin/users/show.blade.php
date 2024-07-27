@@ -9,13 +9,19 @@
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#shipments" type="button" role="tab">الشحن</button>
     </li> 
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="price-tab" data-bs-toggle="tab" data-bs-target="#delivery_prices" type="button" role="tab">أسعار التوصيل</button>
+    </li> 
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="main-info" role="tabpanel">
         <div class="row mt-5">
             <div class="col-sm-8">
-                <h5 class="mb-4">معلومات الحساب</h5>
-                <table class="table">
+                <div class="d-flex justify-content-between">
+                    <h5>معلومات الحساب</h5>
+                    <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+                </div>
+                <table class="table mt-4">
                     <tbody>
                       <tr>
                         <th scope="row">اسم المستخدم</th>
@@ -46,8 +52,9 @@
                         <td>{{ $user->shop->description }}</td>
                       </tr>
                     </tbody>
-                </table>
-               
+                </table> 
+
+                
             </div>
         </div>
     </div>
@@ -56,23 +63,39 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>الشحنات</h5>
+                        <div class="d-flex justify-content-between">
+                            
+                            <h5>الشحنات</h5>
+                            <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+                            
+                        </div>
                     </div>
                     <div class="card-body datatable-container" id="myTabContent">
                             {{ $dataTable->table() }}
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
+        
+    </div> 
+    <div class="tab-pane fade" id="delivery_prices" role="tabpanel">
+         
         <div class="row mt-5">
             <div class="col-sm-12">
                 
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h5>اسعار التوصيل لهذا المستخدم</h5>
-                        <button class="btn btn-success"
+                        
+                            <h5>اسعار التوصيل لهذا المستخدم</h5>
+                            
+                        
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-success d-block"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#store-price-modal">إضافة سعر</button>
+                            <a href="{{ url()->previous() }}" class="btn btn-danger d-block mx-1">رجوع</a>
+                        </div>
+
                                 <div class="modal fade" id="store-price-modal" tabindex="-1">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">

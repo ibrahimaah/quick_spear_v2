@@ -5,8 +5,11 @@
 
 <div>
     <div class="row">
-        <div class="col-sm-12 col-lg-6 mx-auto">
-            <h3 class="NavigateHeader">معلومات الشحنة</h3>
+        <div class="col-sm-12 mx-auto">
+            <div class="d-flex justify-content-between">
+                <h3 class="NavigateHeader">معلومات الشحنة</h3>
+                <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+            </div>
         </div>
         <div class="mb-3 col-sm-12 col-lg-6 mx-auto text-left text-sm-end text-md-start">
         {{-- 

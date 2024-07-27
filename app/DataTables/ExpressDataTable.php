@@ -100,6 +100,14 @@ class ExpressDataTable extends DataTable
             }
             return $query->created_at->format('Y-m-d h:i A');
         })
+        ->editColumn('order_price', function ($query) {
+            if($query->is_returned){
+                return $query->order_price . '(مرتجع)';
+            }else 
+            {
+                return $query->order_price;
+            }
+        })
         ->addColumn('checkbox', function($query) { 
             return '<input type="checkbox" class="sub_chk" data-id="'. $query->id .'">';
         }) 
@@ -162,7 +170,7 @@ class ExpressDataTable extends DataTable
     {
         if($this->is_from_admin)
         {
-            return $model->newQuery()->orderBy('id','DESC');
+            return $model->newQuery()->orderBy('shop_id','DESC')->latest();
         }
 
         if ($this->delegate_id) 
@@ -209,52 +217,89 @@ class ExpressDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        $commonColumns = [
-            $this->column('checkbox', false, false, false, false),
-            $this->column('id', __('order_number'), false, true, false, false),
-            $this->column('consignee_city', __('City'), false, false, false, false),
-            $this->column('consignee_region', __('consignee_region'), false, false, false, false),
-            $this->column('consignee_phone', __('Phone'), false, true, false, false),
-            $this->column('order_price', __('Order price'), false, false, false, false),
-            $this->column('value_on_delivery', __('Value on delivery'), false, false, false, false),
-            $this->column('shipment_status_id', __('Action Status'), false, true, false, false),
-        ];
-    
-        if ($this->is_from_admin) {
-            $additionalColumns = [
-                $this->column('shop_name', __('shop_name'), false, false, false, false),
-                $this->column('customer_notes', __('Customer notes'), false, false, false, false),
+        if($this->is_from_admin)
+        {
+            $columns = [
+                // $this->column('checkbox','<input type="checkbox" id="master">',false,false,false,false,'checkbox'),
+                $this->column('checkbox', false, false, false, false),
+                $this->column('id',__('order_number'),false,true,false,false),
+                $this->column('shop_name',__('shop_name'),false,false,false,false),  
+                $this->column('consignee_city',__('City'),false,false,false,false), 
+                $this->column('consignee_region',__('consignee_region'),false,false,false,false),
+                $this->column('consignee_phone', __('Phone'),false,true,false,false), 
+                $this->column('order_price', __('Order price'),false,false,false,false),
+                $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false),
+                $this->column('shipment_status_id', __('Action Status'),false,true,false,false),
+                
+                $this->column('customer_notes',__('Customer notes'),false,false,false,false),
                 $this->column('delegate_notes', __('Delegate notes')),
-                $this->column('created_at', __('Created.'), false, false, false, false),
-                $this->column('accepted_by_admin_at', __('accepted_by_admin_at'), false, false, false, false),
-                $this->column('admin_actions', __('Actions'), false, false, false, false),
-            ];
-        } elseif ($this->delegate_id) {
-            $additionalColumns = [
-                $this->column('shop_name', __('shop_name'), false, false, false, false),
-                $this->column('notes', __('Notes'), false, false, false, false),
-                $this->column('delegate_shipment_actions', __('Actions')),
-            ];
-        } elseif ($this->shop_id) {
-            $additionalColumns = [
-                $this->column('customer_notes', __('Customer notes'), false, false, false, false),
-                $this->column('delegate_notes', __('Delegate notes')),
-                $this->column('created_at', __('Created.'), false, false, false, false),
-                $this->column('accepted_by_admin_at', __('accepted_by_admin_at'), false, false, false, false),
-            ];
-        } else {
-            $additionalColumns = [
-                $this->column('customer_notes', __('Customer notes'), false, false, false, false),
-                $this->column('delegate_notes', __('Delegate notes')),
-                $this->column('created_at', __('Created.'), false, false, false, false),
-                $this->column('accepted_by_admin_at', __('accepted_by_admin_at'), false, false, false, false),
-                $this->column('user_actions', __('Actions'), false, false, false, false),
+                $this->column('created_at',__('Created.'),false,false,false,false),
+                $this->column('accepted_by_admin_at',__('accepted_by_admin_at'),false,false,false,false), 
+                $this->column('admin_actions',__('Actions'),false,false,false,false), 
             ];
         }
-    
-        return array_merge($commonColumns, $additionalColumns);
-      
+        elseif($this->delegate_id)
+        {
+            $columns = [ 
+                $this->column('id',__('order_number'),false,true,false,false),
+                $this->column('shop_name',__('shop_name'),false,false,false,false),
+                $this->column('consignee_city',__('consignee_city'),false,false,false,false),
+                $this->column('consignee_region',__('consignee_region'),false,false,false,false),
+                $this->column('consignee_phone', __('Phone'),false,true,false,false),
+                $this->column('order_price', __('Order price'),false,false,false,false),
+                $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false),
+                $this->column('shipment_status_id', __('Action Status'),false,true,false,false), 
+                $this->column('notes', __('Notes'),false,false,false,false),
+                $this->column('delegate_shipment_actions', __('Actions')), 
+            ];
+        }
+        elseif ($this->shop_id)  //user datatable in admin dashboard
+        {
+            $columns = [
+                // $this->column('checkbox','<input type="checkbox" id="master">',false,false,false,false,'checkbox'),
+                $this->column('checkbox', false, false, false, false),
+                $this->column('id',__('order_number'),false,true,false,false),
+                // $this->column('DT_RowIndex','#',false,false,false,false), 
+                $this->column('consignee_city',__('City'),false,false,false,false), 
+                $this->column('consignee_region',__('consignee_region'),false,false,false,false),
+                $this->column('consignee_phone', __('Phone'),false,true,false,false), 
+                $this->column('order_price', __('Order price'),false,false,false,false),
+                $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false), 
+                $this->column('shipment_status_id', __('Action Status'),false,true,false,false),
+                    
+                $this->column('customer_notes',__('Customer notes'),false,false,false,false),
+                $this->column('delegate_notes', __('Delegate notes')),
+                $this->column('created_at',__('Created.'),false,false,false,false),
+                $this->column('accepted_by_admin_at',__('accepted_by_admin_at'),false,false,false,false), 
+                $this->column('admin_actions',__('Actions'),false,false,false,false), 
+        ];
     }
+    // elseif (!$this->is_from_admin && !$this->delegate_id)  //user datatable
+    else
+    {
+        $columns = [
+            // $this->column('checkbox','<input type="checkbox" id="master">',false,false,false,false,'checkbox'),
+            $this->column('checkbox', false, false, false, false),
+            $this->column('id',__('order_number'),false,true,false,false),
+            // $this->column('DT_RowIndex','#',false,false,false,false), 
+            $this->column('consignee_city',__('City'),false,false,false,false), 
+            $this->column('consignee_region',__('consignee_region'),false,false,false,false),
+            $this->column('consignee_phone', __('Phone'),false,true,false,false), 
+            $this->column('order_price', __('Order price'),false,false,false,false),
+            $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false), 
+            $this->column('shipment_status_id', __('Action Status'),false,true,false,false), 
+            $this->column('customer_notes',__('Customer notes'),false,false,false,false),
+            $this->column('delegate_notes', __('Delegate notes')),
+            $this->column('created_at',__('Created.'),false,false,false,false),
+            $this->column('accepted_by_admin_at',__('accepted_by_admin_at'),false,false,false,false), 
+            $this->column('user_actions', __('Actions'),false,false,false,false)
+        ];
+    }
+    
+
+    return $columns;
+  
+}
 
     /**
      * Get filename for export.

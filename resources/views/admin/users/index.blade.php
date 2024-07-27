@@ -6,7 +6,10 @@
 	<div class="col-sm-12">
 	    <div class="card">
 	      <div class="card-header">
-	        <h5>المستخدمين</h5>
+	        <div class="d-flex justify-content-between">
+				<h5>المستخدمين</h5>
+				<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+			</div>
 	      </div>
 	      <div class="card-body">
 	        <div class="table-responsive">

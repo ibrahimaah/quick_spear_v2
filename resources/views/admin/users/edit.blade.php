@@ -213,6 +213,7 @@
               </div>
               <div class="card-footer text-end">
                 <button class="btn btn-primary" type="submit">حفظ</button>
+                <a href="{{ url()->previous() }}" class="btn btn-danger">رجوع</a>
               </div>
             </form>
           </div>

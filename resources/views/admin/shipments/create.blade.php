@@ -178,13 +178,13 @@
 
                            
 
-                            <div class="col-12 my-2 col-md-4">
+                            {{-- <div class="col-12 my-2 col-md-4">
                                 <label>{{ __('Delegate notes') }}</label>
                                 <input class="form-control mt-2 ml-2" name="delegate_notes" />
                                 @error('delegate_notes')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="col-12 my-2 col-md-4">
                                 <div class="form-check">
@@ -200,6 +200,9 @@
                     {{-- </div>
                 </div> --}}
                 <button class="btn btn-primary btn-lg my-3" id="save_shipment_btn" type="submit">{{ __('Save') }}</button>
+                 
+			    <a href="{{ url()->previous() }}" class="btn btn-danger">رجوع</a>
+
             </form>
         </div>
     </div>

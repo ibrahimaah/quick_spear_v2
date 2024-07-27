@@ -96,7 +96,7 @@
                             @endforeach
                             --}}
                         </ul>
-                        <span class="badge rounded-pill badge-success">{{ App\Models\Shipment::count() }}</span>
+                        <span class="badge rounded-pill badge-success">{{ App\Models\Shipment::where('is_deported',false)->count() }}</span>
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                         data-feather="flag"></i><span class="">المدفوعات</span></a>

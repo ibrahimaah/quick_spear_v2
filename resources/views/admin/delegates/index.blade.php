@@ -8,7 +8,10 @@
 	<div class="col-sm-12">
 		<div class="card">
 			<div class="card-header">
-				<h5>المندوبين</h5>
+				<div class="d-flex justify-content-between">
+					<h5>المندوبين</h5>
+					<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+				</div>
 			</div>
 			
 			

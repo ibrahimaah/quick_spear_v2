@@ -19,7 +19,7 @@
                         {{-- <livewire:notifications /> --}}
                     {{-- </ul> --}}
                 </li>
-                <li>
+                {{-- <li>
                     <form id="mode-form" action="{{route('admin.mode')}}" method="POST" style="display: none;">
                         @csrf
                     </form>
@@ -27,7 +27,7 @@
                             onclick="event.preventDefault(); document.getElementById('mode-form').submit();"><i
                                 class="fa {{ auth('admin')->user()->dark == 0 ? 'fa-moon-o' : 'fa-lightbulb-o' }}"></i></a>
                     </div>
-                </li>
+                </li> --}}
                 <li class="profile-nav onhover-dropdown p-0 me-0">
                     <div class="media profile-media">
                         <div class="media-body"><span>{{ auth('admin')->user()->name }}</span>

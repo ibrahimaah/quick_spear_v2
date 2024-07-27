@@ -26,7 +26,7 @@ class StoreAdminShipmentRequest extends FormRequest
         return [
             'shop_id' => 'required',
             'delegate_id' => 'required',
-            'consignee_name' => 'required',
+            'consignee_name' => 'nullable',
             'consignee_phone' => 'required',
             'consignee_city' => 'required',
             'consignee_region' => 'required',
