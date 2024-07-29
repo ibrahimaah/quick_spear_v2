@@ -123,7 +123,33 @@ class ShipmentController extends Controller
         $shops = Shop::all();
         $shipment_statuses = ShipmentStatus::all(); 
         
-        return view('admin.shipments.edit', compact('shipment','delegates','shops','shipment_statuses','regions'));
+
+         // Previous shipment
+        $previousShipmentId = null;
+        $previousShipment = Shipment::where('id', '<', $shipment->id)->orderBy('id', 'desc')->where('is_deported',false)->first();
+
+        if ($previousShipment) 
+        {
+            $previousShipmentId = $previousShipment->id;
+        }
+        else 
+        {
+            $previousShipmentId = null;
+        }
+
+        // Next shipment
+        $nextShipmentId = null;
+        $nextShipment = Shipment::where('id', '>', $shipment->id)->orderBy('id', 'asc')->where('is_deported',false)->first();
+        if ($nextShipment) 
+        {
+            $nextShipmentId = $nextShipment->id;
+        }
+        else 
+        {
+            $nextShipmentId = null;
+        }
+
+        return view('admin.shipments.edit', compact('shipment','delegates','shops','shipment_statuses','regions','previousShipmentId','nextShipmentId'));
     }
 
     public function update(UpdateAdminShipmentRequest $updateAdminShipmentRequest, Shipment $shipment)

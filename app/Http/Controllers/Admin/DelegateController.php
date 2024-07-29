@@ -169,6 +169,25 @@ class DelegateController extends Controller
         }
     }
 
+
+    public function get_delegates_by_shipments_ids(Request $request)
+    {
+        $shipments_ids = $request->input('shipments_ids');
+        $res_get_delegates_by_shipments_ids = (new DelegateService())->get_delegates_by_shipments_ids($shipments_ids);
+        if ($res_get_delegates_by_shipments_ids['code'] == 1) 
+        {
+            $delegates = $res_get_delegates_by_shipments_ids['data'];
+            return response()->json(['code' => 1 , 'data' => $delegates]);
+        }
+        else 
+        {
+            return response()->json(['code' => 0 , 'msg' => $res_get_delegates_by_shipments_ids['msg']]);
+            
+        }
+        
+    }
+
+
     public function get_delegates_by_city_name($name)
     {
         $res_get_delegates_by_city_name = (new DelegateService())->get_delegates_by_city_name($name);

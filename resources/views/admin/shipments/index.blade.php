@@ -131,15 +131,60 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
-        function getDelegatesByCityName(cityName) 
+        // function getDelegatesByCityName(cityName) 
+        // {
+            
+        //     var url = "{{ route('admin.delegates.get_delegates_by_city_name', ['name' => 'CITY_ID_PLACEHOLDER']) }}";
+        //     url = url.replace('CITY_ID_PLACEHOLDER', cityName);
+
+        //     $.ajax({
+        //         url: url,
+        //         method: "GET",
+        //         headers: {
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         },
+        //         beforeSend: function() {  
+        //             $('#delegates-select2').prop('disabled', true);
+        //             $('#assign-shipment-btn').addClass('disabled-button');
+        //         },
+        //         complete: function() { 
+        //             $('#delegates-select2').prop('disabled', false);
+        //             $('#assign-shipment-btn').removeClass('disabled-button');
+        //         },
+        //         success: function(response) {
+        //             if (response.code == 1) {
+        //                 var delegates = response.data;
+        //                 var delegateSelect = $('#delegates-select2');
+        //                 delegateSelect.empty();
+        //                 delegateSelect.append('<option value=""></option>'); // Add default empty option
+        //                 $.each(delegates, function(index, delegate) {
+        //                     // var selected = (current_delegate_id === delegate.id) ? ' selected' : '';
+        //                     // delegateSelect.append('<option value="' + delegate.id + '"' + selected + '>' + delegate.name + '</option>');
+        //                     delegateSelect.append('<option value="' + delegate.id + '">' + delegate.name + '</option>');
+        //                 });
+        //             } else if (response.code == 0) {
+        //                 alert('Error fetching delegates');
+        //             }
+        //         },
+        //         error: function() {
+        //             console.log('An error occurred')
+        //         }
+        //     });
+        // }
+
+
+        function getDelegatesByShipmentsIds(shipments_ids) 
         {
             
-            var url = "{{ route('admin.delegates.get_delegates_by_city_name', ['name' => 'CITY_ID_PLACEHOLDER']) }}";
-            url = url.replace('CITY_ID_PLACEHOLDER', cityName);
+            var url = "{{ route('admin.delegates.get_delegates_by_shipments_ids') }}";
+            // url = url.replace('CITY_ID_PLACEHOLDER', cityName);
 
             $.ajax({
                 url: url,
                 method: "GET",
+                data: {
+                    shipments_ids: shipments_ids
+                },
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
@@ -154,17 +199,22 @@
                 success: function(response) {
                     if (response.code == 1) {
                         var delegates = response.data;
+
+                        console.log(delegates)
                         var delegateSelect = $('#delegates-select2');
                         delegateSelect.empty();
                         delegateSelect.append('<option value=""></option>'); // Add default empty option
-                        $.each(delegates, function(index, delegate) {
-                            // var selected = (current_delegate_id === delegate.id) ? ' selected' : '';
-                            // delegateSelect.append('<option value="' + delegate.id + '"' + selected + '>' + delegate.name + '</option>');
+                        $.each(delegates, function(index, delegate) { 
                             delegateSelect.append('<option value="' + delegate.id + '">' + delegate.name + '</option>');
                         });
-                    } else if (response.code == 0) {
-                        alert('Error fetching delegates');
+
+                       
+                    } else if (response.code == 0) 
+                    {
+                        delegateSelect.empty();
+                        alert('لم يتم العثور على نتائج')
                     }
+
                 },
                 error: function() {
                     console.log('An error occurred')
@@ -195,10 +245,10 @@
             function toggleButtonState() {
                 if (selectedIds.length > 0) {
                     assignButton.prop('disabled', false); // Enable the button
-                    invoiceButton.prop('disabled', false); // Enable the button
+                    // invoiceButton.prop('disabled', false); // Enable the button
                 } else {
                     assignButton.prop('disabled', true); // Disable the button
-                    invoiceButton.prop('disabled', true);
+                    // invoiceButton.prop('disabled', true);
                 }
             }
 
@@ -208,27 +258,9 @@
             $('#express-table').on('change', 'input[type="checkbox"]', function() {
                 var id = $(this).val(); 
 
-                var columnName = 'consignee_city'; // Replace 'columnName' with the actual name of your column
-                var columnIndex = dataTable.column(columnName + ':name').index();
-                var cityName = $(this).closest('tr').find('td:eq('+columnIndex+')').text().trim();
-                console.log(cityName)
                 if (this.checked) 
                 {
-                    if (selectedCityName === null) 
-                    {
-                        selectedCityName = cityName; // Set the initial city_id
-                        selectedIds.push(id);
-                        
-                    } 
-                    else if (selectedCityName === cityName) 
-                    {
-                        selectedIds.push(id); // Add the id if the city_id matches
-                    } 
-                    else 
-                    {
-                        alert('يجب أن تحتوي كافة الأسطر المحددة على نفس المدينة');
-                        $(this).prop('checked', false); // Uncheck the checkbox
-                    }
+                    selectedIds.push(id);
                 } 
                 else 
                 {
@@ -236,10 +268,6 @@
                     if (index !== -1) 
                     {
                         selectedIds.splice(index, 1); // Remove the id
-                        if (selectedIds.length === 0) 
-                        {
-                            selectedCityName = null; // Reset city_id if no rows are selected
-                        }
                     }
                 }
 
@@ -251,7 +279,8 @@
             assignButton.on('click', function() {
                 // Show Bootstrap modal and display selected ids inside it
                 if (selectedIds.length > 0) {
-                    getDelegatesByCityName(selectedCityName) 
+                    // getDelegatesByCityName(selectedCityName) 
+                    getDelegatesByShipmentsIds(selectedIds) 
                     $('#assign-delegate-modal').modal('show');
                     $('#selected-shipments-ids-input').val(selectedIds); 
                     

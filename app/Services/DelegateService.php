@@ -124,6 +124,41 @@ class DelegateService
         }
     }
 
+
+    public function get_delegates_by_shipments_ids($shipments_ids)
+    {
+        try 
+        {
+            $cities_ids = [];
+            foreach($shipments_ids as $shipment_id)
+            {
+                $shipment = Shipment::findOrFail($shipment_id);
+                $cities_ids[] = $shipment->consignee_city;
+            }
+            $cities_ids = array_unique($cities_ids);
+
+            $cities_count = count($cities_ids);
+
+            $delegates = Delegate::whereHas('cities', function ($query) use ($cities_ids, $cities_count) {
+                $query->whereIn('city_id', $cities_ids)
+                    ->groupBy('delegate_id')
+                    ->havingRaw("COUNT(DISTINCT city_id) = ?", [$cities_count]);
+            })->get();
+
+            if ($delegates->isNotEmpty()) 
+            {
+                return ['code' => 1 , 'data' => $delegates];
+            }
+            else 
+            {
+                throw new Exception("no delegates for selected city");
+            }
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0, 'msg' => $ex->getMessage()];
+        }
+    }
     public function get_delegates_by_city_name($city_name)
     {
         try 

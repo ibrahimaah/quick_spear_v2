@@ -15,7 +15,21 @@ $status_numbers = config('constants.STATUS_NUMBER');
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h4>تعديل الشحنة #{{ $shipment->id }}</h4>
+                <div class="d-flex justify-content-between">
+                    <h4>تعديل الشحنة #{{ $shipment->id }}</h4>
+                    <div>
+                        <a href="{{ route('admin.shipments.edit',['shipment'=>$previousShipmentId])}}" 
+                            class="btn btn-sm btn-warning">
+                            <<
+                            <i class="bi bi-pencil"></i>
+                         </a>
+                         <a href="{{ route('admin.shipments.edit',['shipment'=>$nextShipmentId])}}" 
+                            class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil"></i>
+                            >>
+                         </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="container">

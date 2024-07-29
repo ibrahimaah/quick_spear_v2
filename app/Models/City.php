@@ -16,6 +16,11 @@ class City extends Model
         return $this->belongsToMany(Delegate::class)->withPivot('price')->withTimestamps();
     }
 
+    public function cityDelegates()
+    {
+        return $this->hasMany(CityDelegate::class);
+    }
+    
     public function shop()
     {
         return $this->hasOne(Shop::class);

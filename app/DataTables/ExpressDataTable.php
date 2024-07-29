@@ -60,7 +60,7 @@ class ExpressDataTable extends DataTable
         })
         ->editColumn('consignee_city', function ($query) {
             return $query->city?->name ?? 'غير محدد';
-        })
+        }) 
         ->editColumn('consignee_region', function ($query) {
             return $query->region?->name ?? 'غير محدد';
         })
@@ -170,7 +170,7 @@ class ExpressDataTable extends DataTable
     {
         if($this->is_from_admin)
         {
-            return $model->newQuery()->orderBy('shop_id','DESC')->latest();
+            return $model->newQuery()->orderBy('shop_id','DESC')->where('is_deported',false)->latest();
         }
 
         if ($this->delegate_id) 
