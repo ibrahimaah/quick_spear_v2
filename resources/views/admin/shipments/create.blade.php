@@ -247,6 +247,11 @@
                         $.each(delegates, function(index, delegate) {
                             delegateSelect.append('<option value="' + delegate.id + '">' + delegate.name + '</option>');
                         });
+
+                        if (delegates.length === 1) {
+                            delegateSelect.val(delegates[0].id);
+                        }
+                        
                     } else if (response.code == 0) {
                         alert('Error fetching delegates');
                     }
@@ -287,6 +292,9 @@
                         $.each(regions, function(index, region) {
                             regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
                         });
+                        if (regions.length === 1) {
+                            regionSelect.val(regions[0].id);
+                        }
                     } else if (response.code == 0) {
                         alert('Error fetching regions');
                     }
@@ -299,6 +307,7 @@
         
         $(document).ready(function() 
         {
+            
             // $('#delegates-select2').select2();
 
             // $('#delegates-select2').select2({
@@ -323,6 +332,7 @@
                 if (cityId) {
                     fetchDelegates(cityId);
                     fetchRegions(cityId);
+                    // alert($('#choose-delegate-select2 option').length)
                 }
             });
            

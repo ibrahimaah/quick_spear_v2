@@ -117,6 +117,7 @@ class ShipmentController extends Controller
   
     public function edit(Shipment $shipment)
     {
+        
         $city = City::findOrFail($shipment->consignee_city);
         $regions = $city->regions; 
         $delegates = $city->delegates;  

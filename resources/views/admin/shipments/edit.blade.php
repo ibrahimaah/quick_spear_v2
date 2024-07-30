@@ -4,6 +4,8 @@
 
 @php 
 $status_numbers = config('constants.STATUS_NUMBER');
+$deliverd = App\Models\ShipmentStatus::DELIVERED;
+$rejected_with_pay = App\Models\ShipmentStatus::REJECTED_WITH_PAY;
 @endphp 
 
 
@@ -18,16 +20,21 @@ $status_numbers = config('constants.STATUS_NUMBER');
                 <div class="d-flex justify-content-between">
                     <h4>تعديل الشحنة #{{ $shipment->id }}</h4>
                     <div>
+                        @if($previousShipmentId)
                         <a href="{{ route('admin.shipments.edit',['shipment'=>$previousShipmentId])}}" 
                             class="btn btn-sm btn-warning">
                             <<
                             <i class="bi bi-pencil"></i>
                          </a>
+                        @endif
+
+                        @if($nextShipmentId)
                          <a href="{{ route('admin.shipments.edit',['shipment'=>$nextShipmentId])}}" 
                             class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil"></i>
                             >>
                          </a>
+                         @endif
                     </div>
                 </div>
             </div>
@@ -110,6 +117,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                 <input class="form-control mt-2 ml-2" 
                                        type="number"
                                        name="order_price" 
+                                       id="order_price_input"
                                        value="{{ $shipment->order_price }}"
                                        step=".01"
                                        required/>
@@ -121,6 +129,7 @@ $status_numbers = config('constants.STATUS_NUMBER');
                                        type="number"
                                        name="value_on_delivery" 
                                        step=".01"
+                                       id="value_on_delivery_input"
                                        value="{{ $shipment->value_on_delivery }}"
                                        />
                             </div>
@@ -243,6 +252,11 @@ $status_numbers = config('constants.STATUS_NUMBER');
                         { 
                             delegateSelect.append('<option value="' + delegate.id + '">' + delegate.name + '</option>');
                         });
+
+                        if (delegates.length === 1) {
+                            delegateSelect.val(delegates[0].id);
+                        }
+
                     } else if (response.code == 0) {
                         delegateSelect.empty();
                         alert(response.msg);
@@ -285,6 +299,9 @@ $status_numbers = config('constants.STATUS_NUMBER');
                         $.each(regions, function(index, region) {
                             regionSelect.append('<option value="' + region.id + '">' + region.name + '</option>');
                         });
+                        if (regions.length === 1) {
+                            regionSelect.val(regions[0].id);
+                        }
                     } else if (response.code == 0) {
                         alert(response.msg);
                     }
@@ -309,6 +326,17 @@ $status_numbers = config('constants.STATUS_NUMBER');
                 if (cityId) {
                     fetchDelegates(cityId);
                     fetchRegions(cityId);
+                }
+            });
+
+            $('#shipment_status_select').on('change',function(e){
+                var shipment_status_id = $("option:selected", this).val();
+                var order_price_input_val = $('#order_price_input').val();
+                if (shipment_status_id == {{ $deliverd }} || shipment_status_id == {{ $rejected_with_pay }}) 
+                {
+                    $('#value_on_delivery_input').val(order_price_input_val)
+                } else {
+                    $('#value_on_delivery_input').val(0)
                 }
             });
         
