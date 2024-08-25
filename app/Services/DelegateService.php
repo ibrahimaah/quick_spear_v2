@@ -245,14 +245,25 @@ class DelegateService
             
             foreach ($shipments as $shipment) 
             {
-                if ($shipment->shipment_status_id == ShipmentStatus::POSTPONED) 
+                try 
                 {
-                    continue;
+                    if ($shipment->shipment_status_id == ShipmentStatus::POSTPONED) 
+                    {
+                        continue;
+                    }
+                    elseif($shipment->shipment_status_id == ShipmentStatus::DELIVERED || 
+                           $shipment->shipment_status_id == ShipmentStatus::REJECTED_WITHOUT_PAY ||
+                           $shipment->shipment_status_id == ShipmentStatus::REJECTED_WITH_PAY ||
+                           $shipment->shipment_status_id == ShipmentStatus::NO_RESPONSE ||
+                           $shipment->shipment_status_id == ShipmentStatus::CANCELED)
+                    {
+                        $shipment->is_deported = true;
+                        $shipment->save();
+                    }
                 }
-                else 
+                catch(Exception $ex)
                 {
-                    $shipment->is_deported = true;
-                    $shipment->save();
+                    logger("Error in deport method in Delegate Service : ".$ex->getMessage());
                 }
             }
             
