@@ -13,7 +13,6 @@ class BillService
         try 
         {
             $shop_bills = Bill::where('shop_id',$shop_id)->get();
-
             return ['code' => 1, 'data' => $shop_bills];
         } 
         catch (Exception $ex) 

@@ -256,7 +256,7 @@ class DelegateService
             {
                 // Generate a unique bill number for the shop
                 // $billNumber = 'BILL-' . $shopId . '-' . time(); 
-                $billNumber = 'BILL-' . $shopId . '-' . time(); 
+                $billNumber = 'BILL-' . $shopId . '-' . date('Ymd');
                 // Alternatively, use Str::random(6) for a random string
                 // $billNumber = 'BILL-' . $shopId . '-' . Str::random(6);
 
