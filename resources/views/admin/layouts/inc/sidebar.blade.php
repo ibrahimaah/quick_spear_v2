@@ -101,8 +101,8 @@
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                         data-feather="flag"></i><span class="">المدفوعات</span></a>
                         <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.payments.index') }}">عرض كل طلبات الدفع </a> </li>
                             <li><a href="{{ route('admin.transactions.index') }}">عرض كل المدفوعات </a></li>
-                            <li><a href="{{ route('admin.requests.index') }}">عرض كل طلبات الدفع </a> </li>
                         </ul>
                     </li>
                     {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i

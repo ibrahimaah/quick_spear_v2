@@ -16,7 +16,7 @@ use App\Models\Shipment;
 
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function(){
-        
+        dd( $billNumber = 'BILL-' . 1 . '-' . time());
         $shipments_ids = [25,27];
         $cities_ids = [];
             foreach($shipments_ids as $shipment_id)

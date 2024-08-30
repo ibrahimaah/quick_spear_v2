@@ -330,6 +330,7 @@ class DelegateController extends Controller
         }
         else 
         {
+            dd($res_deport['msg']);
             return back()->with('error',$res_deport['msg']);
         }
     }

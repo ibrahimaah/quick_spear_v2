@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BillController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Admin\ContactController;
@@ -85,7 +86,8 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::resource('transactions', TransactionController::class);
     Route::post('transactions/exportPayment', [TransactionController::class, 'exportPayment'])->name('exportPayment');
     Route::post('/exportTransactions', [TransactionController::class, 'export'])->name('trans.ex');
-    Route::get('/indexRequest', [TransactionController::class, 'indexRequest'])->name('requests.index');
+    Route::get('/view-all-payment-requests', [TransactionController::class, 'view_all_payment_requests'])->name('payments.index');
+    Route::get('view_shop_bills/{shop}',[BillController::class,'view_shop_bills'])->name('payments.view_shop_bills');
     Route::post('/updateRequest/{id}', [TransactionController::class, 'updateRequest'])->name('requests.update');
     Route::resource('cities', CityController::class);
     Route::resource('regions', RegionController::class);

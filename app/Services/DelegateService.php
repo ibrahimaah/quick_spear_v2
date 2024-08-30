@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Address;
+use App\Models\Bill;
+use App\Models\BillStatus;
 use App\Models\City;
 use App\Models\Delegate;
 use App\Models\Shipment;
@@ -236,44 +238,75 @@ class DelegateService
     {
         try 
         {
-            $shipments = $delegate->shipments->where('is_deported', false);
-            
+            $shipments = $delegate->shipments()
+                                ->where('is_deported', false)
+                                ->where('shipment_status_id', '!=', ShipmentStatus::POSTPONED)
+                                ->get();
+
+
             if ($shipments->isEmpty()) 
             {
-                throw new Exception('This delegate does not have any shipment');
+                return ['code' => 0, 'msg' => 'This delegate does not have any shipment'];
             }
-            
-            foreach ($shipments as $shipment) 
+
+           // Group shipments by shop_id
+            $shipmentsByShop = $shipments->groupBy('shop_id');
+
+            foreach ($shipmentsByShop as $shopId => $shipments) 
             {
-                try 
+                // Generate a unique bill number for the shop
+                // $billNumber = 'BILL-' . $shopId . '-' . time(); 
+                $billNumber = 'BILL-' . $shopId . '-' . time(); 
+                // Alternatively, use Str::random(6) for a random string
+                // $billNumber = 'BILL-' . $shopId . '-' . Str::random(6);
+
+                $shipments->each(function ($shipment) use ($billNumber) 
                 {
-                    if ($shipment->shipment_status_id == ShipmentStatus::POSTPONED) 
+                    try 
                     {
-                        continue;
-                    }
-                    elseif($shipment->shipment_status_id == ShipmentStatus::DELIVERED || 
-                           $shipment->shipment_status_id == ShipmentStatus::REJECTED_WITHOUT_PAY ||
-                           $shipment->shipment_status_id == ShipmentStatus::REJECTED_WITH_PAY ||
-                           $shipment->shipment_status_id == ShipmentStatus::NO_RESPONSE ||
-                           $shipment->shipment_status_id == ShipmentStatus::CANCELED)
+                        $billData = [
+                            'bill_number' => $billNumber,
+                            'shop_id' => $shipment->shop_id,
+                            'delegate_id' => $shipment->delegate_id,
+                            'consignee_name' => $shipment->consignee_name,
+                            'consignee_phone' => $shipment->consignee_phone,
+                            'consignee_city' => $shipment->consignee_city,
+                            'consignee_region' => $shipment->consignee_region,
+                            'order_price' => $shipment->order_price,
+                            'value_on_delivery' => $shipment->value_on_delivery,
+                            'customer_notes' => $shipment->customer_notes,
+                            'delegate_notes' => $shipment->delegate_notes,
+                            'is_returned' => $shipment->is_returned,
+                            'shipment_status_id' => $shipment->shipment_status_id,
+                            'bill_status_id' => BillStatus::UNDER_REVIEW
+                        ];
+                
+                        $bill = Bill::create($billData);
+
+                        if ($bill) {
+                            $shipment->update(['is_deported' => true]);
+                        }
+                        else {
+                            throw new Exception('Error in storing new bill');
+                        }
+                    
+                    } 
+                    catch (Exception $ex) 
                     {
-                        $shipment->is_deported = true;
-                        $shipment->save();
+                        throw new Exception($ex->getMessage());
                     }
-                }
-                catch(Exception $ex)
-                {
-                    logger("Error in deport method in Delegate Service : ".$ex->getMessage());
-                }
+                });
             }
-            
+
             return ['code' => 1, 'data' => true];
-        }
-        catch(Exception $ex)
+
+        } 
+        catch (Exception $ex) 
         {
             return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }
+
 
     public function get_total_summation(Delegate $delegate)
     {
