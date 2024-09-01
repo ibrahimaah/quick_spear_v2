@@ -2,6 +2,17 @@
 
 use Illuminate\Support\Facades\Config;
 
+use Carbon\Carbon;
+
+if(!function_exists('get_bill_date_from_bill_number'))
+{
+    function get_bill_date_from_bill_number($bill_number)
+    { 
+        $bill_date_string = substr($bill_number, -8);
+        return Carbon::createFromFormat('Ymd', $bill_date_string)->format('Y-m-d');
+    }
+}
+
 function get_default_lang(){
     return   Config::get('app.locale');
 }

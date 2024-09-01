@@ -23,6 +23,7 @@ class Shop extends Model
     {
         return $this->hasMany(Shipment::class);
     }
+    
 
     public function bills()
     {
