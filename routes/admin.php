@@ -88,6 +88,8 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::post('/exportTransactions', [TransactionController::class, 'export'])->name('trans.ex');
     Route::get('/view-all-payment-requests', [TransactionController::class, 'view_all_payment_requests'])->name('payments.index');
     Route::get('view_shop_bills/{shop}',[BillController::class,'view_shop_bills'])->name('payments.view_shop_bills');
+    // Route::get('prepare-bill',[BillController::class,'prepare_bill'])->name('prepare_bill');
+    Route::post('prepare-bill',[BillController::class,'prepare_bill'])->name('prepare_bill');
     Route::post('/updateRequest/{id}', [TransactionController::class, 'updateRequest'])->name('requests.update');
     Route::resource('cities', CityController::class);
     Route::resource('regions', RegionController::class);

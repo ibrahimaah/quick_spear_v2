@@ -22,7 +22,9 @@
 	              <tr>
 	                <th>#</th>
 	                <th>رقم الفاتورة</th>
+	                <th>قيمة الفاتورة</th>
 	                <th>تاريخ الفاتورة</th>
+	                <th>العميات</th>
 	              </tr>
 	            </thead>
 	              <tbody>
@@ -30,9 +32,27 @@
 						<tr>
 							<td>{{ $loop->iteration++ }}</td>
 							<td>{{ $billNumber }}</td> 
+							<td>
+								@php 
+									$total_bill_value = 0;
+									foreach($bills as $bill):
+										$total_bill_value+=$bill->value_on_delivery;
+									endforeach
+								  
+								@endphp 
+								{{  $total_bill_value  }}
+							</td>
 							<td> 
 								{{ get_bill_date_from_bill_number($billNumber) }}
 							</td> 
+							<td>
+								
+								<form action="{{ route('admin.prepare_bill') }}" method="POST">
+								@csrf 
+								<input type="hidden" name="bill_number" value="{{ $billNumber }}" required />
+								<input type="submit" class="btn btn-primary" value="عرض الفاتورة"/>
+								</form>
+							</td>
 						</tr>
 		            @endforeach
 	          	  </tbody>

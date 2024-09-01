@@ -13,6 +13,45 @@ if(!function_exists('get_bill_date_from_bill_number'))
     }
 }
 
+if(!function_exists('get_shop_id_from_bill_number'))
+{
+    function get_shop_id_from_bill_number($bill_number)
+    { 
+        if (preg_match('/BILL-(\d+)-20240830/', $bill_number, $matches)) 
+        {
+            $shop_id = $matches[1];
+            return $shop_id;
+        } 
+        else 
+        {
+            return null;
+        }
+
+    }
+}
+
+
+if(!function_exists('get_arabic_day_name'))
+{
+    function get_arabic_day_name($bill_date)
+    { 
+        if (preg_match('/BILL-(\d+)-20240830/', $bill_number, $matches)) 
+        {
+            $shop_id = $matches[1];
+            return $shop_id;
+        } 
+        else 
+        {
+            return null;
+        }
+
+    }
+}
+
+
+
+
+
 function get_default_lang(){
     return   Config::get('app.locale');
 }
