@@ -31,20 +31,55 @@ if(!function_exists('get_shop_id_from_bill_number'))
 }
 
 
-if(!function_exists('get_arabic_day_name'))
+if(!function_exists('get_date_from_bill_number'))
 {
-    function get_arabic_day_name($bill_date)
+    function get_date_from_bill_number($bill_number)
     { 
-        if (preg_match('/BILL-(\d+)-20240830/', $bill_number, $matches)) 
+        try 
         {
-            $shop_id = $matches[1];
-            return $shop_id;
-        } 
-        else 
-        {
-            return null;
-        }
+           // Extract the date part (last 8 characters)
+            $dateString = substr($bill_number, -8);
 
+            // Create a Carbon instance from the extracted date
+            $date = Carbon::createFromFormat('Ymd', $dateString);
+
+            // Format the date as year/month/day
+            $formattedDate = $date->format('Y/m/d');
+
+            return $formattedDate;
+            
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
+    }
+}
+
+
+if(!function_exists('get_arabic_day_from_bill_number'))
+{
+    function get_arabic_day_from_bill_number($bill_number)
+    { 
+        try 
+        {
+            $dateString = substr($bill_number, -8);
+
+            // Create a Carbon instance from the extracted date
+            $date = Carbon::createFromFormat('Ymd', $dateString);
+
+            // Set the locale to Arabic
+            $date->locale('ar');
+
+            // Get the day of the week in Arabic
+            $arabicDay = $date->translatedFormat('l');
+
+            return $arabicDay;
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
     }
 }
 

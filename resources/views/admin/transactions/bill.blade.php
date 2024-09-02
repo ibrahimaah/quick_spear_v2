@@ -46,17 +46,19 @@
 			<table id="invoice-table">
                 <tr> 
                   <th colspan="4"><span>اسم الصفحة/المتجر : </span><span id="shop_name">
-                    {{ $shop_name }}
+                    {{ $shop->name }}
                  </span></th>
                   <th colspan="3">اليوم :
-                    <span> </span>
+                    <span>{{ $bill_date_day }}</span>
                   </th>
                 </tr>
                 <tr>
                     <th colspan="4">اسم العميل :
                         <span>{{ $client_name }}</span>
                     </th>
-                    <th colspan="3">التاريخ :</th>
+                    <th colspan="3">التاريخ :
+                        <span>{{ $bill_date }}</span>
+                    </th>
                 </tr>
                 <tr>
                     <th>الرقم</th>
@@ -67,27 +69,23 @@
                     <th>حالة الشحنة</th>
                     <th>الملاحظات</th>
                 </tr>
-                {{-- @foreach ($selected_shipments as $selected_shipment) --}}
+                @foreach ($orders as $order)
                     <tr>
-                        {{-- <td>{{ ++$loop->index }}</td> --}}
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ ++$loop->iteration }}</td>
+                        <td>{{ $order->city->name }}</td>
+                        <td>{{ $order->consignee_phone }}</td> 
+                        <td>{{ $order->value_on_delivery }}</td> 
+                        <td>{{ $shop->getDeliveryPrice($order->consignee_region,true) ?? $shop->getDeliveryPrice($order->consignee_city)}}</td> 
+                        <td>{{ __($order->status->name) }}</td> 
+                        <td>{{ $order->delegate_notes }}</td> 
                     </tr>
-                {{-- @endforeach --}}
-                <tr>
-                    <th colspan="4">المدفوع:</th>
-                    <th colspan="3" rowspan="2">اسم المندوب وتوقيعه :</th>
-                </tr>
+                @endforeach
+              
                 <tr>
                     <th colspan="4">له :</th>
                 </tr>
                 <tr>
-                    <th colspan="4">عليه :</th>
-                    <th colspan="3">اسم المستلم وتوقيعه :</th>
+                    <th colspan="4">عليه :</th> 
                 </tr>
               </table>
               

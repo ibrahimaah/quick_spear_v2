@@ -34,4 +34,20 @@ class Shop extends Model
     {
         return $this->hasMany(DeliveryPrice::class);
     }
+
+    function getDeliveryPrice($location_id, $isRegion = false)
+    {
+        // Determine the location type based on the $isRegion flag
+        $locationType = $isRegion ? Region::class : City::class;
+    
+        // Retrieve the delivery price for the specific shop and location
+        $deliveryPrice = DeliveryPrice::where('shop_id', $this->id)
+            ->where('location_type', $locationType)
+            ->where('location_id', $location_id)
+            ->value('price');
+    
+        return $deliveryPrice;
+    }
+    
+    
 }
