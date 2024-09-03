@@ -38,7 +38,8 @@
             <option>اختر حالة الشحنة</option>
             <option value="{{ $completedStatusId }}">{{ __(App\Models\ShipmentStatus::find($completedStatusId)->name) }}</option>
             @foreach ($shipment_statuses as $shipment_status)
-                @continue($shipment_status->id == $completedStatusId || $shipment_status->id == App\Models\ShipmentStatus::UNDER_REVIEW)
+                
+                @continue($shipment_status->id == $completedStatusId || $shipment_status->id == App\Models\ShipmentStatus::UNDER_REVIEW || $shipment_status->id == App\Models\ShipmentStatus::REJECTED_WITH_PAY )
             <option value="{{ $shipment_status->id }}">{{ __($shipment_status->name) }}</option> 
             @endforeach
           </select>

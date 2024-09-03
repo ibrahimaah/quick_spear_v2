@@ -13,38 +13,13 @@ use App\Http\Controllers\TestController;
 use App\Models\City;
 use App\Models\Region;
 use App\Models\Shipment;
+use App\Services\DeliveryPriceService;
 
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function(){
-        dd( $billNumber = 'BILL-' . 1 . '-' . time());
-        $shipments_ids = [25,27];
-        $cities_ids = [];
-            foreach($shipments_ids as $shipment_id)
-            {
-                $shipment = Shipment::findOrFail($shipment_id);
-                $cities_ids[] = $shipment->consignee_city;
-            }
-            $cities_ids = array_unique($cities_ids);
-            
-            $delegates = [];
-
-            foreach($cities_ids as $city_id)
-            {
-                $city = City::findOrFail($city_id); 
-                $delegates[] = $city->delegates;
-            }
-
-            $delegates = array_unique($delegates);
-            dd($delegates);
-            if (count($delegates) > 0) 
-            {
-                return ['code' => 1 , 'data' => $delegates];
-            }
-            else 
-            {
-                throw new Exception("no delegates for selected city");
-            }
-        
+   
+        $dpr = (new DeliveryPriceService()) ->getDeliveryPrice(9);
+        dd($dpr);
         
     });
 Route::group(

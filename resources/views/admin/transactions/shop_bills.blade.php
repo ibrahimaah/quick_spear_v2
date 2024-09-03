@@ -9,7 +9,7 @@
 	    <div class="card">
 	      <div class="card-header">
 	        <div class="d-flex justify-content-between">
-				<h5>طلبات الدفع</h5>
+				<h5>طلبات الدفع للمتجر <a href="{{ route('admin.users.show',['user' => $shop->user->id]) }}" class="text-success" target="_blank">{{ $shop->name }}</a></h5>
 				<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
 			</div>
 	      </div>
@@ -46,12 +46,14 @@
 								{{ get_bill_date_from_bill_number($billNumber) }}
 							</td> 
 							<td>
-								
-								<form action="{{ route('admin.prepare_bill') }}" method="POST">
+								<a href="{{ route('admin.prepare_bill',['bill_number' => $billNumber]) }}"
+								   class="btn btn-primary"
+								   target="_blank">عرض الفاتورة</a>
+								{{-- <form action="" method="POST">
 								@csrf 
 								<input type="hidden" name="bill_number" value="{{ $billNumber }}" required />
 								<input type="submit" class="btn btn-primary" value="عرض الفاتورة"/>
-								</form>
+								</form> --}}
 							</td>
 						</tr>
 		            @endforeach

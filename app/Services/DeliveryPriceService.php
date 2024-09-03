@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Bill;
+use App\Models\City;
 use App\Models\DeliveryPrice;
+use App\Models\Region;
 use Exception;
 
 class DeliveryPriceService
@@ -78,5 +81,34 @@ class DeliveryPriceService
         {
             return ['code' => 0, 'msg' => $ex->getMessage()];
         }
+    }
+
+    public function getDeliveryPrice($bill_id)
+    {
+        try 
+        {
+            $bill = Bill::findOrFail($bill_id);
+
+            $deliveryPrice = $this->getPriceForLocation($bill->shop_id, $bill->consignee_region, Region::class)
+                            ?? $this->getPriceForLocation($bill->shop_id, $bill->consignee_city, City::class);
+
+            return ['code' => 1, 'data' => $deliveryPrice];
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0, 'msg' => $ex->getMessage()];
+        }
+    }
+
+
+    private function getPriceForLocation($shopId, $locationId, $locationType)
+    {
+        if ($locationId) {
+            return DeliveryPrice::where('shop_id', $shopId)
+                                ->where('location_type', $locationType)
+                                ->where('location_id', $locationId)
+                                ->value('price');
+        }
+        return null;
     }
 }

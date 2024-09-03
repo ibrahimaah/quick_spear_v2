@@ -149,11 +149,27 @@ class ShipmentService
         }
     }
 
-    public function update_status(Shipment $shipment,$shipment_status_id)
+    public function update_status(Shipment $shipment,$shipment_status_id ,$with_value_on_delivery = false)
     {
         try 
         { 
             $shipment->shipment_status_id = $shipment_status_id;
+            if ($with_value_on_delivery) 
+            {
+                switch($shipment_status_id)
+                {
+                    // case ShipmentStatus::REJECTED_WITH_PAY:
+                    case ShipmentStatus::DELIVERED:
+                        $shipment->value_on_delivery = $shipment->order_price;
+                        break;
+                    default:
+                        // Default case if no other case matches
+                        $shipment->value_on_delivery = 0; // Example default action
+                    break;
+                }
+            }
+
+
             if ($shipment->save()) 
             {
                 return ['code' => 1 , 'data' => true];

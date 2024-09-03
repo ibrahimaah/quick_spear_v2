@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\DeliveryPrice;
+use App\Services\DeliveryPriceService;
 use Illuminate\Support\Facades\Config;
 
 use Carbon\Carbon;
@@ -17,7 +19,7 @@ if(!function_exists('get_shop_id_from_bill_number'))
 {
     function get_shop_id_from_bill_number($bill_number)
     { 
-        if (preg_match('/BILL-(\d+)-20240830/', $bill_number, $matches)) 
+        if (preg_match('/BILL-(\d+)-\d{8}/', $bill_number, $matches)) 
         {
             $shop_id = $matches[1];
             return $shop_id;
@@ -75,6 +77,30 @@ if(!function_exists('get_arabic_day_from_bill_number'))
             $arabicDay = $date->translatedFormat('l');
 
             return $arabicDay;
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
+    }
+}
+
+if(!function_exists('get_delivery_price'))
+{
+    function get_delivery_price($bill_id)
+    { 
+        try 
+        {
+            $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($bill_id);
+            if ($res_get_delivery_price['code'] == 1) 
+            {
+                $delivery_price = $res_get_delivery_price['data'];
+                return $delivery_price;
+            }
+            else 
+            {
+                dd($res_get_delivery_price['msg']);
+            }
         }
         catch(Exception $ex)
         {

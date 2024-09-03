@@ -235,7 +235,7 @@ class ShipmentController extends Controller
 
     public function update_status(Shipment $shipment , $shipment_status_id)
     {
-        $res_update_status = $this->shipmentService->update_status($shipment,$shipment_status_id);
+        $res_update_status = $this->shipmentService->update_status($shipment,$shipment_status_id,true);
         if ($res_update_status['code'] == 1) 
         {
             return response()->json(['code' => 1 , 'data' => true]);

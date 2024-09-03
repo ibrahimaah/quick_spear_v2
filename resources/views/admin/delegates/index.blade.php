@@ -47,10 +47,12 @@
 										@method('delete')
 									</form> 
 
+									@if ($delegate->shipments->isNotEmpty())
 									<a class="btn btn-primary"
 										href="{{ route('admin.delegates.get_shipments', ['delegate'=>$delegate->id]) }}">
 										عرض الشحنات
 									</a>
+									@endif
 								</td>
 							</tr>
 							@endforeach

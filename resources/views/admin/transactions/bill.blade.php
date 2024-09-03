@@ -75,17 +75,20 @@
                         <td>{{ $order->city->name }}</td>
                         <td>{{ $order->consignee_phone }}</td> 
                         <td>{{ $order->value_on_delivery }}</td> 
-                        <td>{{ $shop->getDeliveryPrice($order->consignee_region,true) ?? $shop->getDeliveryPrice($order->consignee_city)}}</td> 
+                        {{-- <td>{{ $shop->getDeliveryPrice($order->consignee_region,true) ?? $shop->getDeliveryPrice($order->consignee_city)}}</td>  --}}
+                        <td>{{ get_delivery_price($order->id) }}</td> 
                         <td>{{ __($order->status->name) }}</td> 
                         <td>{{ $order->delegate_notes }}</td> 
                     </tr>
                 @endforeach
               
                 <tr>
-                    <th colspan="4">له :</th>
+                    <th colspan="4">له : <span></span>
+                    </th>
                 </tr>
                 <tr>
-                    <th colspan="4">عليه :</th> 
+                    <th colspan="4">عليه : <span></span>
+                    </th> 
                 </tr>
               </table>
               
