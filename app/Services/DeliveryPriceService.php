@@ -6,6 +6,7 @@ use App\Models\Bill;
 use App\Models\City;
 use App\Models\DeliveryPrice;
 use App\Models\Region;
+use App\Models\Shipment;
 use Exception;
 
 class DeliveryPriceService
@@ -83,16 +84,32 @@ class DeliveryPriceService
         }
     }
 
-    public function getDeliveryPrice($bill_id)
+    public function getDeliveryPrice($shipment_id)
     {
         try 
         {
-            $bill = Bill::findOrFail($bill_id);
+            $shipment = Shipment::findOrFail($shipment_id);
 
-            $deliveryPrice = $this->getPriceForLocation($bill->shop_id, $bill->consignee_region, Region::class)
-                            ?? $this->getPriceForLocation($bill->shop_id, $bill->consignee_city, City::class);
+            $region_delivery_price = $this->getPriceForLocation($shipment->shop_id, $shipment->consignee_region, Region::class);
+            if (!$region_delivery_price) 
+            {
+                $city_delivery_price = $this->getPriceForLocation($shipment->shop_id, $shipment->consignee_city, City::class);
+                if (!$city_delivery_price) 
+                {
+                    throw new Exception("Delivery Price is not set for city : ".$shipment->city->name. " for user : ".$shipment->shop->user->name." for shop: ".$shipment->shop->name);
+                }
+                else 
+                {
+                    return ['code' => 1, 'data' => $city_delivery_price];
+                }
+            }
+            else 
+            {
+                return ['code' => 1, 'data' => $region_delivery_price];
+            }
+                            
 
-            return ['code' => 1, 'data' => $deliveryPrice];
+            
         }
         catch(Exception $ex)
         {
@@ -110,5 +127,6 @@ class DeliveryPriceService
                                 ->value('price');
         }
         return null;
+        
     }
 }

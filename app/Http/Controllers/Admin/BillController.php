@@ -56,6 +56,14 @@ class BillController extends Controller
 
             $orders = Bill::where('bill_number',$bill_number)->get();
             
+            $res_get_amount_due_to_customer = $this->billService->get_amount_due_to_customer($orders);
+            $res_get_amount_due_from_customer = $this->billService->get_amount_due_from_customer($orders);
+            if ($res_get_amount_due_to_customer['code'] == 0) {
+                dd($res_get_amount_due_to_customer['msg']);
+            }
+            if ($res_get_amount_due_from_customer['code'] == 0) {
+                dd($res_get_amount_due_from_customer['msg']);
+            }
             $pdf = PDF::loadView('admin.transactions.bill',
                                 [
                                 'orders'     => $orders,
@@ -63,6 +71,8 @@ class BillController extends Controller
                                 'client_name'=> $client_name,
                                 'bill_date_day' => $bill_date_day,
                                 'bill_date' => $bill_date,
+                                'amount_due_from_customer' => $res_get_amount_due_from_customer['data'],
+                                'amount_due_to_customer' => $res_get_amount_due_to_customer['data']
                                 ]);
             return $pdf->stream('bill-'.$bill_number.'.pdf');
        }

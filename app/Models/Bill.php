@@ -23,6 +23,7 @@ class Bill extends Model
         'customer_notes',
         'delegate_notes',
         'is_returned', 
+        'customer_delivery_price',
         'shipment_status_id',
         'bill_status_id'
     ];

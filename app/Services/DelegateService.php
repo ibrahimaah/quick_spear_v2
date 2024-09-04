@@ -11,6 +11,7 @@ use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DelegateService
 {
@@ -236,6 +237,8 @@ class DelegateService
 
     public function deport(Delegate $delegate)
     {
+        DB::beginTransaction();
+
         try 
         {
             $shipments = $delegate->shipments()
@@ -251,7 +254,7 @@ class DelegateService
 
            // Group shipments by shop_id
             $shipmentsByShop = $shipments->groupBy('shop_id');
-
+            
             foreach ($shipmentsByShop as $shopId => $shipments) 
             {
                 // Generate a unique bill number for the shop
@@ -264,32 +267,43 @@ class DelegateService
                 {
                     try 
                     {
-                        $billData = [
-                            'bill_number' => $billNumber,
-                            'shop_id' => $shipment->shop_id,
-                            'delegate_id' => $shipment->delegate_id,
-                            'consignee_name' => $shipment->consignee_name,
-                            'consignee_phone' => $shipment->consignee_phone,
-                            'consignee_city' => $shipment->consignee_city,
-                            'consignee_region' => $shipment->consignee_region,
-                            'order_price' => $shipment->order_price,
-                            'value_on_delivery' => $shipment->value_on_delivery,
-                            'customer_notes' => $shipment->customer_notes,
-                            'delegate_notes' => $shipment->delegate_notes,
-                            'is_returned' => $shipment->is_returned,
-                            'shipment_status_id' => $shipment->shipment_status_id,
-                            'bill_status_id' => BillStatus::UNDER_REVIEW
-                        ];
-                
-                        $bill = Bill::create($billData);
-
-                        if ($bill) {
-                            $shipment->update(['is_deported' => true]);
-                        }
-                        else {
-                            throw new Exception('Error in storing new bill');
-                        }
+                        $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($shipment->id);
+                        
+                        if ($res_get_delivery_price['code'] == 1) 
+                        {
+                            $delivery_price = $res_get_delivery_price['data'];
+                        
+                            $billData = [
+                                'bill_number' => $billNumber,
+                                'shop_id' => $shipment->shop_id,
+                                'delegate_id' => $shipment->delegate_id,
+                                'consignee_name' => $shipment->consignee_name,
+                                'consignee_phone' => $shipment->consignee_phone,
+                                'consignee_city' => $shipment->consignee_city,
+                                'consignee_region' => $shipment->consignee_region,
+                                'order_price' => $shipment->order_price,
+                                'value_on_delivery' => $shipment->value_on_delivery,
+                                'customer_notes' => $shipment->customer_notes,
+                                'delegate_notes' => $shipment->delegate_notes,
+                                'is_returned' => $shipment->is_returned,
+                                'shipment_status_id' => $shipment->shipment_status_id,
+                                'customer_delivery_price' => $delivery_price,
+                                'bill_status_id' => BillStatus::UNDER_REVIEW
+                            ];
                     
+                            $bill = Bill::create($billData);
+
+                            if ($bill) {
+                                $shipment->update(['is_deported' => true]);
+                            }
+                            else {
+                                throw new Exception('Error in storing new bill');
+                            }
+                        }
+                        else 
+                        {
+                            dd($res_get_delivery_price['msg']);
+                        }
                     } 
                     catch (Exception $ex) 
                     {
@@ -298,11 +312,13 @@ class DelegateService
                 });
             }
 
+            DB::commit();
             return ['code' => 1, 'data' => true];
 
         } 
         catch (Exception $ex) 
         {
+            DB::rollBack();
             return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }

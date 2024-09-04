@@ -85,29 +85,29 @@ if(!function_exists('get_arabic_day_from_bill_number'))
     }
 }
 
-if(!function_exists('get_delivery_price'))
-{
-    function get_delivery_price($bill_id)
-    { 
-        try 
-        {
-            $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($bill_id);
-            if ($res_get_delivery_price['code'] == 1) 
-            {
-                $delivery_price = $res_get_delivery_price['data'];
-                return $delivery_price;
-            }
-            else 
-            {
-                dd($res_get_delivery_price['msg']);
-            }
-        }
-        catch(Exception $ex)
-        {
-            dd($ex->getMessage());
-        }
-    }
-}
+// if(!function_exists('get_delivery_price'))
+// {
+//     function get_delivery_price($bill_id)
+//     { 
+//         try 
+//         {
+//             $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($bill_id);
+//             if ($res_get_delivery_price['code'] == 1) 
+//             {
+//                 $delivery_price = $res_get_delivery_price['data'];
+//                 return $delivery_price;
+//             }
+//             else 
+//             {
+//                 dd($res_get_delivery_price['msg']);
+//             }
+//         }
+//         catch(Exception $ex)
+//         {
+//             dd($ex->getMessage());
+//         }
+//     }
+// }
 
 
 

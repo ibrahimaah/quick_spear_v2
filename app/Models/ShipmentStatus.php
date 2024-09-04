@@ -13,6 +13,7 @@ class ShipmentStatus extends Model
 
     const UNDER_REVIEW = 1;
     const UNDER_DELIVERY = 2;
+    
     const DELIVERED = 3;
     const REJECTED_WITHOUT_PAY = 4;
     const REJECTED_WITH_PAY = 5;
