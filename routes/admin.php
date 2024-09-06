@@ -92,6 +92,7 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     // Route::get('prepare-bill',[BillController::class,'prepare_bill'])->name('prepare_bill');
     // Route::post('prepare-bill',[BillController::class,'prepare_bill'])->name('prepare_bill');
     Route::get('prepare-bill/{bill_number}',[BillController::class,'prepare_bill'])->name('prepare_bill');
+    Route::post('pay-bill',[BillController::class,'pay_bill'])->name('pay_bill');
     Route::post('/updateRequest/{id}', [TransactionController::class, 'updateRequest'])->name('requests.update');
     Route::resource('cities', CityController::class);
     Route::resource('regions', RegionController::class);

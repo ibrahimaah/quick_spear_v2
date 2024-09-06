@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
+use App\Models\BillStatus;
 use App\Models\Shop;
 use App\Services\BillService;
 use Exception;
@@ -20,6 +21,7 @@ class BillController extends Controller
     
     public function view_shop_bills(Shop $shop,$bill_status_id)
     {
+        // $res_get_bills_by_shop_id = $this->billService->get_bills_by_shop_id_and_bill_status($shop->id,$bill_status_id);
         $res_get_bills_by_shop_id = $this->billService->get_bills_by_shop_id_and_bill_status($shop->id,$bill_status_id);
 
         if ($res_get_bills_by_shop_id['code'] == 1) 
@@ -80,6 +82,25 @@ class BillController extends Controller
        {
             dd($ex->getMessage());
        }
+       
         
+    }
+
+    public function pay_bill(Request $request)
+    {
+        //bill_number
+        $validated = $request->validate([ 
+            'bill_number' => 'required',
+        ]);
+
+        $bill_number = $validated['bill_number'];
+
+        $res_update_bill_status = $this->billService->update_bill_status($bill_number,BillStatus::Payment_Made);
+        if ($res_update_bill_status['code'] == 1) {
+            return redirect()->back()->with("success","تمت العملية بنجاح");
+        }
+        else{
+            dd($res_update_bill_status['msg']);
+        }
     }
 }

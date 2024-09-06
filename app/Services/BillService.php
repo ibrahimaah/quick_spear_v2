@@ -159,34 +159,24 @@ class BillService
     {
         try 
         {
-            // Start transaction
-            DB::beginTransaction();
-
-            // Retrieve the bill orders based on the bill number
-            $bill_orders = Bill::where('bill_number', $bill_number)->get();
-
-            // Check if bill orders exist
-            if($bill_orders->isEmpty()) 
-            {
-                return ['code' => 0 , 'msg' => "No orders found with this bill_number : $bill_number"];
-            }
-
-            // Update the status for each bill order
-            foreach ($bill_orders as $bill_order) 
-            {
-                $bill_order->status = $bill_status_id; // Replace with the actual status value
-                $bill_order->save();
-            }
-
-            // Commit transaction if all are successful
-            DB::commit();
+             $bill_tracking = BillTracking::where('bill_number',$bill_number)->first();
+             if ($bill_tracking) 
+             {
+                $bill_tracking->bill_status_id = $bill_status_id;
+                if ($bill_tracking->save()) 
+                {
+                    return ['code' => 1 , 'data' => true];
+                }
+             }
+             else 
+             {
+                throw new Exception("There is no bill tracking record for bill_number $bill_number");
+             }
             
-            return ['code' => 1 , 'data' => true];
+            
         }
         catch(Exception $ex)
         {
-            // Rollback if there is an error
-            DB::rollBack();
             return ['code' => 0 , 'msg' => $ex->getMessage()];
         }
     }
