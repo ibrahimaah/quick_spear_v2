@@ -3,22 +3,43 @@
 namespace App\Services;
 
 use App\Models\Bill;
+use App\Models\BillStatus;
+use App\Models\BillTracking;
 use App\Models\CityDelegate;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use App\Models\Shop;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
+
 
 class BillService
 {
-    public function get_bills_by_shop_id($shop_id)
+    public function get_bills_by_shop_id_and_bill_status($shop_id,$bill_status_id=null)
     {
         try 
         {
             $shop = Shop::findOrFail($shop_id);
-            $shop_bills = $shop->bills->groupBy('bill_number');
-            return ['code' => 1, 'data' => $shop_bills];
+
+            $shop_bills_numbers_arr = BillTracking::where('shop_id', $shop->id)
+                                                //   ->where('bill_status_id', $bill_status_id)
+                                                  ->pluck('bill_number')
+                                                  ->toArray();
+                                                  
+            // dd($shop_id);
+            if (!empty($shop_bills_numbers_arr)) //  0 => "BILL-4-20240906"
+            {
+                $shop_bills = Bill::whereIn('bill_number',$shop_bills_numbers_arr)->get();
+                // dd($shop_bills);
+                return ['code' => 1, 'data' => $shop_bills];
+            }
+            else 
+            {
+                return ['code' => 1, 'data' => new Collection()];
+            }
+            
         } 
         catch (Exception $ex) 
         {
@@ -129,6 +150,43 @@ class BillService
         }
         catch(Exception $ex)
         {
+            return ['code' => 0 , 'msg' => $ex->getMessage()];
+        }
+    }
+
+
+    public function update_bill_status($bill_number,$bill_status_id)
+    {
+        try 
+        {
+            // Start transaction
+            DB::beginTransaction();
+
+            // Retrieve the bill orders based on the bill number
+            $bill_orders = Bill::where('bill_number', $bill_number)->get();
+
+            // Check if bill orders exist
+            if($bill_orders->isEmpty()) 
+            {
+                return ['code' => 0 , 'msg' => "No orders found with this bill_number : $bill_number"];
+            }
+
+            // Update the status for each bill order
+            foreach ($bill_orders as $bill_order) 
+            {
+                $bill_order->status = $bill_status_id; // Replace with the actual status value
+                $bill_order->save();
+            }
+
+            // Commit transaction if all are successful
+            DB::commit();
+            
+            return ['code' => 1 , 'data' => true];
+        }
+        catch(Exception $ex)
+        {
+            // Rollback if there is an error
+            DB::rollBack();
             return ['code' => 0 , 'msg' => $ex->getMessage()];
         }
     }

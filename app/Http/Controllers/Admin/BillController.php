@@ -18,13 +18,13 @@ class BillController extends Controller
         
     }
     
-    public function view_shop_bills(Shop $shop)
+    public function view_shop_bills(Shop $shop,$bill_status_id)
     {
-        $res_get_bills_by_shop_id = $this->billService->get_bills_by_shop_id($shop->id);
+        $res_get_bills_by_shop_id = $this->billService->get_bills_by_shop_id_and_bill_status($shop->id,$bill_status_id);
 
         if ($res_get_bills_by_shop_id['code'] == 1) 
         {
-            $shop_bills = $res_get_bills_by_shop_id['data'];
+            $shop_bills = $res_get_bills_by_shop_id['data']->groupBy('bill_number');
             // dd($shop_bills);
             return view('admin.transactions.shop_bills',compact(['shop_bills','shop']));
         }

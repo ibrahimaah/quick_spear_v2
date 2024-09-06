@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Address;
 use App\Models\Bill;
 use App\Models\BillStatus;
+use App\Models\BillTracking;
 use App\Models\City;
 use App\Models\Delegate;
 use App\Models\Shipment;
@@ -262,6 +263,16 @@ class DelegateService
                 $billNumber = 'BILL-' . $shopId . '-' . date('Ymd');
                 // Alternatively, use Str::random(6) for a random string
                 // $billNumber = 'BILL-' . $shopId . '-' . Str::random(6);
+
+                $is_bill_number_already_exist = BillTracking::where('bill_number',$billNumber)->exists();
+                if (!$is_bill_number_already_exist) {
+                    BillTracking::create([
+                        'shop_id' => $shopId,
+                        'bill_number' => $billNumber,
+                        'bill_status_id' => BillStatus::UNDER_REVIEW
+                    ]);
+                }
+                
 
                 $shipments->each(function ($shipment) use ($billNumber) 
                 {

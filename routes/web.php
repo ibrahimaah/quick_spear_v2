@@ -10,6 +10,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShipmentImportController;
 use App\Http\Controllers\TestController;
+use App\Models\BillTracking;
 use App\Models\City;
 use App\Models\Region;
 use App\Models\Shipment;
@@ -18,8 +19,10 @@ use App\Services\DeliveryPriceService;
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function(){
    
-        $dpr = (new DeliveryPriceService()) ->getDeliveryPrice(9);
-        dd($dpr);
+        $shop_bills_numbers = BillTracking::where('shop_id', 8)
+                                              ->where('bill_status_id', 1)
+                                              ->pluck('bill_number')->toArray();
+        dd($shop_bills_numbers);
         
     });
 Route::group(

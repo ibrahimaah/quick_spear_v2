@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\BillStatus;
+use App\Models\BillTracking;
 use App\Models\DeliveryPrice;
 use App\Services\DeliveryPriceService;
 use Illuminate\Support\Facades\Config;
@@ -84,6 +86,64 @@ if(!function_exists('get_arabic_day_from_bill_number'))
         }
     }
 }
+
+
+if(!function_exists('is_bill_status_under_review'))
+{
+    function is_bill_status_under_review($bill_number)
+    { 
+        try 
+        {
+            return BillTracking::where('bill_number',$bill_number)->where('bill_status',BillStatus::UNDER_REVIEW)->exists();
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
+    }
+}
+
+if(!function_exists('is_bill_status_payment_made'))
+{
+    function is_bill_status_payment_made($bill_number)
+    { 
+        try 
+        {
+            return BillTracking::where('bill_number',$bill_number)->where('bill_status_id',BillStatus::Payment_Made)->exists();
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
+    }
+}
+//get_bill_status_name_by_bill_number
+if(!function_exists('get_bill_status_name_by_bill_number'))
+{
+    function get_bill_status_name_by_bill_number($bill_number)
+    { 
+        try 
+        {
+            $bill_status_id =  BillTracking::where('bill_number',$bill_number)->value('bill_status_id');
+            if ($bill_status_id == BillStatus::UNDER_REVIEW) {
+                return "قيد المراجعة";
+            }elseif($bill_status_id == BillStatus::Payment_Made){
+                return "تم الدفع";
+            }elseif($bill_status_id == BillStatus::CANCELED){
+                return "ملغية";
+            }
+            else{
+                return "غير محددة";
+            }
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
+    }
+}
+
+
 
 // if(!function_exists('get_delivery_price'))
 // {

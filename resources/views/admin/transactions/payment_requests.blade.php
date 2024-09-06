@@ -10,7 +10,7 @@
 	      <div class="card-header">
 	        <div class="d-flex justify-content-between">
 				<h5>طلبات الدفع</h5>
-				<h4>عدد الطلبات غير المدفوعة</h4>
+				{{-- <h4>عدد الطلبات غير المدفوعة</h4> --}}
 				<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
 			</div>
 	      </div>
@@ -33,8 +33,8 @@
 							<td>{{ $shop->name }}</td> 
 							<td>
 								@if($shop->bills->isNotEmpty())
-									<a href="{{ route('admin.payments.view_shop_bills',['shop' => $shop->id]) }}" 
-										class="btn btn-primary">
+									<a href="{{ route('admin.payments.view_shop_bills',['shop' => $shop->id,'bill_status_id' => App\Models\BillStatus::UNDER_REVIEW]) }}" 
+										class="btn btn-primary" target="_blank">
 										عرض الفواتير
 									</a>
 								@else 

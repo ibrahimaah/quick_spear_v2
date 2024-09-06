@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,8 +25,7 @@ class Bill extends Model
         'delegate_notes',
         'is_returned', 
         'customer_delivery_price',
-        'shipment_status_id',
-        'bill_status_id'
+        'shipment_status_id'
     ];
 
     public function shop()
@@ -47,5 +47,43 @@ class Bill extends Model
     {
         return $this->belongsTo(ShipmentStatus::class, 'shipment_status_id', 'id');
     }
+
+    // public function is_bill_status_under_review($bill_number)
+    // {
+    //     try 
+    //     {
+    //         if ($this->bill_status_id == BillStatus::UNDER_REVIEW) 
+    //         {
+    //             return true;
+    //         }
+    //         else 
+    //         {
+    //             return false;
+    //         }
+    //     }
+    //     catch(Exception $ex)
+    //     {
+    //         dd($ex->getMessage());
+    //     }
+    // }
+
+    // public function is_bill_status_payment_made($bill_number)
+    // {
+    //     try 
+    //     {
+    //         if ($this->bill_status_id == BillStatus::Payment_Made) 
+    //         {
+    //             return true;
+    //         }
+    //         else 
+    //         {
+    //             return false;
+    //         }
+    //     }
+    //     catch(Exception $ex)
+    //     {
+    //         dd($ex->getMessage());
+    //     }
+    // }
 
 }

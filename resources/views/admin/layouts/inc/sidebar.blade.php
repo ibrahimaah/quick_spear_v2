@@ -82,8 +82,11 @@
                         </ul>
                         <span class="badge rounded-pill badge-success">{{ App\Models\EditOrder::count() }}</span>
                     </li> --}}
-                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
-                                data-feather="flag"></i><span class="">الشحنات</span></a>
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i data-feather="flag"></i>
+                            <span class="">الشحنات</span>
+                        </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.shipments.create') }}">إضافة شحنة</a></li>
                             
@@ -101,8 +104,9 @@
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                         data-feather="flag"></i><span class="">المدفوعات</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('admin.payments.index') }}">عرض كل طلبات الدفع </a> </li>
-                            <li><a href="{{ route('admin.transactions.index') }}">عرض كل المدفوعات </a></li>
+                            <li><a href="{{ route('admin.payments.index') }}">عرض كل المدفوعات</a> </li>
+                            {{-- <li><a href="{{ route('admin.payments.index') }}">عرض كل طلبات الدفع </a> </li> --}}
+                            {{-- <li><a href="{{ route('admin.payments.view_payments') }}">عرض كل المدفوعات </a></li> --}}
                         </ul>
                     </li>
                     {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i

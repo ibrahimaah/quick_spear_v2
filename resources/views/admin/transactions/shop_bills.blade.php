@@ -24,12 +24,13 @@
 	                <th>رقم الفاتورة</th>
 	                <th>قيمة الفاتورة</th>
 	                <th>تاريخ الفاتورة</th>
+	                <th>حالة الفاتورة</th>
 	                <th>العميات</th>
 	              </tr>
 	            </thead>
 	              <tbody>
 	              	@foreach($shop_bills as $billNumber => $bills)
-						<tr>
+						<tr  class="<?=is_bill_status_payment_made($billNumber) ? 'bg-success' : ''?>">
 							<td>{{ $loop->iteration++ }}</td>
 							<td>{{ $billNumber }}</td> 
 							<td>
@@ -45,6 +46,9 @@
 							<td> 
 								{{ get_bill_date_from_bill_number($billNumber) }}
 							</td> 
+							<td>
+								{{ get_bill_status_name_by_bill_number($billNumber) }}
+							</td>
 							<td>
 								<a href="{{ route('admin.prepare_bill',['bill_number' => $billNumber]) }}"
 								   class="btn btn-primary"
@@ -62,7 +66,7 @@
 	        </div>
 	      </div>
           @else  
-            <div class="alert alert-warning">لا يوجد فواتير لهذا المتجر</div>
+            <div class="alert alert-warning text-center fw-bold text-secondary">لا يوجد فواتير لهذا المتجر</div>
           @endif
 	    </div>
 	</div>
