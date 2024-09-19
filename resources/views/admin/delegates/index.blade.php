@@ -47,7 +47,7 @@
 										@method('delete')
 									</form> 
 
-									@if ($delegate->shipments->isNotEmpty())
+									@if ($delegate->shipments->where('is_deported',false)->isNotEmpty())
 									<a class="btn btn-primary"
 										href="{{ route('admin.delegates.get_shipments', ['delegate'=>$delegate->id]) }}">
 										عرض الشحنات

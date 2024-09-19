@@ -8,6 +8,7 @@ use App\Models\BillStatus;
 use App\Models\BillTracking;
 use App\Models\City;
 use App\Models\Delegate;
+use App\Models\DeportationLog;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use Exception;
@@ -235,6 +236,29 @@ class DelegateService
         }
     }
     
+    public function is_last_deported_report()
+    {
+        try 
+        {
+            $delegates = Delegate::all();
+            foreach ($delegates as $delegate) 
+            {
+                $shipments = $delegate->nonDeportedShipments();
+
+                if ($shipments->isNotEmpty()) 
+                {
+                    return ['code' => 1 , 'data' => false];
+                }
+                continue;
+            }
+
+            return ['code' => 1 , 'data' => true];
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0 , 'msg' => $ex->getMessage()];
+        }
+    }
 
     public function deport(Delegate $delegate)
     {
@@ -242,10 +266,7 @@ class DelegateService
 
         try 
         {
-            $shipments = $delegate->shipments()
-                                ->where('is_deported', false)
-                                ->where('shipment_status_id', '!=', ShipmentStatus::POSTPONED)
-                                ->get();
+            $shipments = $delegate->nonDeportedShipments();
 
 
             if ($shipments->isEmpty()) 
@@ -315,6 +336,9 @@ class DelegateService
                         {
                             dd($res_get_delivery_price['msg']);
                         }
+
+                        
+                       
                     } 
                     catch (Exception $ex) 
                     {
@@ -323,6 +347,21 @@ class DelegateService
                 });
             }
 
+
+            //check if it is the last deported report
+            $res_is_last_deported_report = $this->is_last_deported_report();
+            if ($res_is_last_deported_report['code'] == 0) 
+            {
+                dd($res_is_last_deported_report['msg']);
+            }
+            $is_last_deported_report = $res_is_last_deported_report['data'];
+            if ($is_last_deported_report) 
+            {
+                $log = DeportationLog::first();
+                // Update the last_deported_report_date
+                $log->update(['last_deported_report_date' => now()]);
+            }
+            
             DB::commit();
             return ['code' => 1, 'data' => true];
 
