@@ -21,6 +21,7 @@ class BillService
     {
         try 
         {
+            
             $shop = Shop::findOrFail($shop_id);
 
             $shop_bills_numbers_arr = BillTracking::where('shop_id', $shop->id)

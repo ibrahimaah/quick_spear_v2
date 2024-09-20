@@ -3,7 +3,9 @@
 @section('title', 'عرض كل طلبات الدفع')
 
 @section('content')
-
+@php 
+	use App\Models\BillStatus;
+@endphp 
 <div class="row">
 	<div class="col-sm-12">
 	    <div class="card">
@@ -32,8 +34,8 @@
 							<td>{{ $loop->iteration++ }}</td>
 							<td>{{ $shop->name }}</td> 
 							<td>
-								@if($shop->bills->isNotEmpty())
-									<a href="{{ route('admin.payments.view_shop_bills',['shop' => $shop->id,'bill_status_id' => App\Models\BillStatus::UNDER_REVIEW]) }}" 
+								@if($shop->billsTracking->where('bill_status_id' , BillStatus::UNDER_REVIEW)->isNotEmpty())
+									<a href="{{ route('admin.payments.view_shop_bills',['shop' => $shop->id,'bill_status_id' => BillStatus::UNDER_REVIEW]) }}" 
 										class="btn btn-primary" target="_blank">
 										عرض الفواتير
 									</a>

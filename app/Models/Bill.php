@@ -26,7 +26,8 @@ class Bill extends Model
         'is_returned', 
         'customer_delivery_price',
         'shipment_status_id',
-        'deportation_group_id'
+        'deportation_group_id',
+        'bill_tracking_id'
         // 'deportation_log_id'
     ];
 
@@ -38,6 +39,11 @@ class Bill extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class,'consignee_city','id');
+    }
+
+    public function bill_tracking(): BelongsTo
+    {
+        return $this->belongsTo(BillTracking::class);
     }
 
     public function region(): BelongsTo

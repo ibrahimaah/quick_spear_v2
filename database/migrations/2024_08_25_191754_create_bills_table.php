@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) 
         {
             $table->id();
-            $table->string('bill_number');
+            // $table->string('bill_number');
             $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('delegate_id');
             $table->string('consignee_name')->nullable();
@@ -38,6 +38,8 @@ return new class extends Migration
             //deportation_group_id for grouping deported orders that deported together
             $table->unsignedBigInteger('deportation_group_id'); //it is not foreign key
             // $table->unsignedBigInteger('deportation_log_id'); 
+
+            $table->unsignedBigInteger('bill_tracking_id');
             $table->timestamps();  
             
             $table->foreign('consignee_city')->references('id')->on('cities');
@@ -45,6 +47,7 @@ return new class extends Migration
             $table->foreign('delegate_id')->references('id')->on('delegates');
             $table->foreign('shop_id')->references('id')->on('shops');
             $table->foreign('shipment_status_id')->references('id')->on('shipment_statuses'); 
+            $table->foreign('bill_tracking_id')->references('id')->on('bills_tracking'); 
             // $table->foreign('deportation_log_id')->references('id')->on('deportation_logs'); 
            
         });

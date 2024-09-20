@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('bill_number')->unique();
             $table->timestamp('bill_date');
             $table->unsignedBigInteger('bill_status_id');
+            $table->unsignedBigInteger('deportation_group_id');
             $table->timestamps();
 
 

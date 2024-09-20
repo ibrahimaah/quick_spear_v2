@@ -15,6 +15,12 @@ class BillTracking extends Model
         'shop_id',
         'bill_number',
         'bill_status_id',
-        'bill_date'
+        'bill_date',
+        'deportation_group_id'
     ];
+
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
 }

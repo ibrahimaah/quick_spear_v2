@@ -35,6 +35,11 @@ class Shop extends Model
         return $this->hasMany(DeliveryPrice::class);
     }
 
+    public function billsTracking()
+    {
+        return $this->hasMany(BillTracking::class);
+    }
+
     // function getDeliveryPrice($location_id, $isRegion = false)
     // {
     //     // Determine the location type based on the $isRegion flag
