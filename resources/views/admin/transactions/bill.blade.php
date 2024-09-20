@@ -39,7 +39,7 @@
 	</head>
 
 	<body>
-		<h3 class="title">كشف استلام الطلبات</h3>
+		<h3 class="title"> فاتورة رقم <span>{{ $bill_number }}</span> </h3>
 		
 		
 		<div class="invoice-box">
@@ -71,11 +71,10 @@
                 </tr>
                 @foreach ($orders as $order)
                     <tr>
-                        <td>{{ ++$loop->iteration }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $order->city->name }}</td>
                         <td>{{ $order->consignee_phone }}</td> 
                         <td>{{ $order->value_on_delivery }}</td> 
-                        {{-- <td>{{ $shop->getDeliveryPrice($order->consignee_region,true) ?? $shop->getDeliveryPrice($order->consignee_city)}}</td>  --}}
                         <td>{{ $order->customer_delivery_price }}</td> 
                         <td>{{ __($order->status->name) }}</td> 
                         <td>{{ $order->delegate_notes }}</td> 
@@ -83,11 +82,32 @@
                 @endforeach
               
                 <tr>
-                    <th colspan="4">له : <span>{{ $amount_due_to_customer }}</span>
+                    <th colspan="4">المجموع الكلي : <span>{{ $total_value_on_delivery }}</span>
                     </th>
                 </tr>
                 <tr>
-                    <th colspan="4">عليه : <span>{{ $amount_due_from_customer }}</span>
+                    <th colspan="4">مجموع أجور التوصيل : <span>{{ $total_customer_delivery_price }}</span>
+                    </th> 
+                </tr>
+
+                @php 
+                  if ($total_value_on_delivery > $total_customer_delivery_price) 
+                    {
+                        $total_due_to_customer_amount = $total_value_on_delivery - $total_customer_delivery_price;
+                        $total_due_from_customer_amount = 0;
+                    }
+                    else 
+                    {
+                        $total_due_from_customer_amount = $total_customer_delivery_price - $total_value_on_delivery;
+                        $total_due_to_customer_amount =0;
+                    }
+                @endphp 
+                <tr>
+                    <th colspan="4">له : <span>{{ $total_due_to_customer_amount }}</span>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="4">عليه : <span>{{ $total_due_from_customer_amount }}</span>
                     </th> 
                 </tr>
               </table>

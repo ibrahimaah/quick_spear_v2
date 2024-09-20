@@ -104,9 +104,9 @@
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                         data-feather="flag"></i><span class="">المدفوعات</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('admin.payments.index') }}">عرض كل المدفوعات</a> </li>
-                            {{-- <li><a href="{{ route('admin.payments.index') }}">عرض كل طلبات الدفع </a> </li> --}}
-                            {{-- <li><a href="{{ route('admin.payments.view_payments') }}">عرض كل المدفوعات </a></li> --}}
+                            {{-- <li><a href="{{ route('admin.payments.index') }}">عرض كل المدفوعات</a> </li> --}}
+                            <li><a href="{{ route('admin.payments.index') }}">عرض كل طلبات الدفع </a> </li>
+                            <li><a href="{{ route('admin.payments.view_payments') }}">عرض كل المدفوعات </a></li>
                         </ul>
                     </li>
                     {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i

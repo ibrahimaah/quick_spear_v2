@@ -43,6 +43,22 @@ class TransactionController extends Controller
         }
         
     }
+
+
+    public function view_payments()
+    {
+        $res_get_all_shops = $this->shopService->get_all_shops();
+        if ($res_get_all_shops['code'] == 1) 
+        {
+            return view('admin.transactions.payments',['shops'=>$res_get_all_shops['data']]);
+        }
+        else 
+        {
+            // return redirect()->back()->with('Error',)
+            dd($res_get_all_shops['msg']);
+        }
+        
+    }
     
     // public function index()
     // {

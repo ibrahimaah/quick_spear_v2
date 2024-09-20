@@ -61,23 +61,31 @@ class BillController extends Controller
 
             $orders = $bill_tracking->bills;
             
-            $res_get_amount_due_to_customer = $this->billService->get_amount_due_to_customer($orders);
-            $res_get_amount_due_from_customer = $this->billService->get_amount_due_from_customer($orders);
-            if ($res_get_amount_due_to_customer['code'] == 0) {
-                dd($res_get_amount_due_to_customer['msg']);
+            // $res_get_amount_due_to_customer = $this->billService->get_amount_due_to_customer($orders);
+            // $res_get_amount_due_from_customer = $this->billService->get_amount_due_from_customer($orders);
+
+            $res_get_amount_due_from_and_to_customer = $this->billService->get_amount_due_from_and_to_customer($orders);
+            
+            if ($res_get_amount_due_from_and_to_customer['code'] == 0) {
+                dd($res_get_amount_due_from_and_to_customer['msg']);
             }
-            if ($res_get_amount_due_from_customer['code'] == 0) {
-                dd($res_get_amount_due_from_customer['msg']);
-            }
+
+            // if ($res_get_amount_due_to_customer['code'] == 0) {
+            //     dd($res_get_amount_due_to_customer['msg']);
+            // }
+            // if ($res_get_amount_due_from_customer['code'] == 0) {
+            //     dd($res_get_amount_due_from_customer['msg']);
+            // }
             $pdf = PDF::loadView('admin.transactions.bill',
                                 [
                                 'orders'     => $orders,
                                 'shop'  => $shop,
+                                'bill_number'  => $bill_number,
                                 'client_name'=> $client_name,
                                 'bill_date_day' => $bill_date_day,
                                 'bill_date' => $bill_date,
-                                'amount_due_from_customer' => $res_get_amount_due_from_customer['data'],
-                                'amount_due_to_customer' => $res_get_amount_due_to_customer['data']
+                                'total_value_on_delivery' => $res_get_amount_due_from_and_to_customer['data']['total_value_on_delivery'],
+                                'total_customer_delivery_price' => $res_get_amount_due_from_and_to_customer['data']['total_customer_delivery_price']
                                 ]);
             return $pdf->stream('bill-'.$bill_number.'.pdf');
        }
