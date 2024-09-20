@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
+use function PHPUnit\Framework\isEmpty;
 
 class BillService
 {
@@ -24,22 +25,18 @@ class BillService
             
             $shop = Shop::findOrFail($shop_id);
 
-            $shop_bills_numbers_arr = BillTracking::where('shop_id', $shop->id)
-                                                //   ->where('bill_status_id', $bill_status_id)
-                                                  ->pluck('bill_number')
-                                                  ->toArray();
-                                                  
-            // dd($shop_id);
-            if (!empty($shop_bills_numbers_arr)) //  0 => "BILL-4-20240906"
-            {
-                $shop_bills = Bill::whereIn('bill_number',$shop_bills_numbers_arr)->get();
-                // dd($shop_bills);
+            $shop_bills = BillTracking::where('shop_id', $shop->id)
+                                  ->where('bill_status_id', $bill_status_id)
+                                  ->get();
+             
+           if ($shop_bills->isNotEmpty()) 
+           {
                 return ['code' => 1, 'data' => $shop_bills];
-            }
-            else 
-            {
+           }
+           else
+           { 
                 return ['code' => 1, 'data' => new Collection()];
-            }
+           }
             
         } 
         catch (Exception $ex) 

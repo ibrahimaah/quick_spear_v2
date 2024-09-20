@@ -16,7 +16,7 @@
 				<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
 			</div>
 	      </div>
-
+		 {{-- @php dd($shop_bills); @endphp  --}}
 		  @if($shop_bills->isNotEmpty())
 	      <div class="card-body">
 	        <div class="table-responsive">
@@ -32,57 +32,32 @@
 	              </tr>
 	            </thead>
 	              <tbody>
-	              	@foreach($shop_bills as $billNumber => $bills)
+	              	@foreach($shop_bills as $shop_bill)
 					
-					  	@php 
-							$bill_date = Carbon::parse(get_bill_date_from_bill_number($billNumber));
-								// Get the current date
-							$currentDate = Carbon::now()->startOfDay(); // Use startOfDay to ignore time
-						@endphp 
+					  	 
 
-						<tr  class="<?=is_bill_status_payment_made($billNumber) ? 'bg-success' : ''?>">
-							<td>{{ $loop->iteration++ }}</td>
-							<td>{{ $billNumber }}</td> 
-							{{-- <td>
-								@php 
-									$total_bill_value = 0;
-									foreach($bills as $bill):
-										$total_bill_value+=$bill->value_on_delivery;
-									endforeach
-								  
-								@endphp 
-								{{  $total_bill_value  }}
-							</td> --}}
-							<td> 
-								{{ get_bill_date_from_bill_number($billNumber) }}
-							</td> 
+						<tr>
+							<td>{{ ++$loop->iteration }}</td>
+							<td>{{ $shop_bill->bill_number }}</td>  
+							<td> {{ Carbon::parse($shop_bill->bill_date)->format('Y-m-d') }}</td> 
+							<td>{{ __($shop_bill->billStatus->name) }}</td>
 							<td>
-								@if($currentDate->equalTo($bill_date->startOfDay()))
-									{{ "قيد التجهيز" }}
-								@else 
-									{{ get_bill_status_name_by_bill_number($billNumber) }}
-								@endif 
-								
-							</td>
-							<td>
-								
-								@if(!$currentDate->equalTo($bill_date->startOfDay()))
-									<div class="d-flex gap-3">
-										<a href="{{ route('admin.prepare_bill',['bill_number' => $billNumber]) }}"
-											class="btn btn-primary btn-sm d-block"
-											target="_blank">عرض الفاتورة</a>
-										
-										@if(!is_bill_status_payment_made($billNumber))
-										<div>
-											<form action="{{ route('admin.pay_bill') }}" method="POST">
-												@csrf 
-												<input type="hidden" name="bill_number" value="{{ $billNumber }}" required />
-												<input type="submit" class="btn btn-success btn-sm" value="تحديد الحالة كمدفوعة"/>
-											</form>
-										</div>
-										@endif
+								 
+								<div class="d-flex gap-3">
+									<a href="{{ route('admin.prepare_bill',['bill_number' => $shop_bill->bill_number]) }}"
+										class="btn btn-primary btn-sm d-block"
+										target="_blank">عرض الفاتورة</a>
+									
+									@if(!is_bill_status_payment_made($shop_bill->bill_number))
+									<div>
+										<form action="{{ route('admin.pay_bill') }}" method="POST">
+											@csrf 
+											<input type="hidden" name="bill_number" value="{{ $shop_bill->bill_number }}" required />
+											<input type="submit" class="btn btn-success btn-sm" value="تحديد الحالة كمدفوعة"/>
+										</form>
 									</div>
-								@endif
+									@endif
+								</div> 
 								
 							</td>
 						</tr>

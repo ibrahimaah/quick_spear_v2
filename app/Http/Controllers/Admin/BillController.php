@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\BillStatus;
+use App\Models\BillTracking;
 use App\Models\Shop;
 use App\Services\BillService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use PDF;
@@ -26,7 +28,7 @@ class BillController extends Controller
 
         if ($res_get_bills_by_shop_id['code'] == 1) 
         {
-            $shop_bills = $res_get_bills_by_shop_id['data']->groupBy('bill_number');
+            $shop_bills = $res_get_bills_by_shop_id['data']; 
             // dd($shop_bills);
             return view('admin.transactions.shop_bills',compact(['shop_bills','shop']));
         }
@@ -47,16 +49,17 @@ class BillController extends Controller
             // ]);
 
             // $bill_number = $validated['bill_number'];
-            
-            $shop = Shop::findOrFail(get_shop_id_from_bill_number($bill_number)); 
+            $bill_tracking = BillTracking::where('bill_number',$bill_number)->first();
+
+            $shop = $bill_tracking->shop; 
 
             $client_name = $shop->user->name;
 
             $bill_date_day = get_arabic_day_from_bill_number($bill_number);
 
-            $bill_date = get_date_from_bill_number($bill_number);
+            $bill_date =Carbon::parse($bill_tracking->bill_date)->format('Y-m-d');
 
-            $orders = Bill::where('bill_number',$bill_number)->get();
+            $orders = $bill_tracking->bills;
             
             $res_get_amount_due_to_customer = $this->billService->get_amount_due_to_customer($orders);
             $res_get_amount_due_from_customer = $this->billService->get_amount_due_from_customer($orders);

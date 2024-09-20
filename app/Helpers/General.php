@@ -67,11 +67,12 @@ if(!function_exists('get_arabic_day_from_bill_number'))
     { 
         try 
         {
-            $dateString = substr($bill_number, -8);
+            $bill_tracking = BillTracking::where('bill_number',$bill_number)->first();
+            // $dateString = substr($bill_number, -8);
 
-            // Create a Carbon instance from the extracted date
-            $date = Carbon::createFromFormat('Ymd', $dateString);
-
+            // // Create a Carbon instance from the extracted date
+            // $date = Carbon::createFromFormat('Ymd', $dateString);
+            $date = Carbon::parse($bill_tracking->bill_date);
             // Set the locale to Arabic
             $date->locale('ar');
 

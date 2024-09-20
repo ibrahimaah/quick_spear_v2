@@ -23,4 +23,16 @@ class BillTracking extends Model
     {
         return $this->hasMany(Bill::class);
     }
+
+    public function billStatus()
+    {
+        // Specify the foreign key in the `bills_tracking` table and the primary key in the `bill_statuses` table
+        return $this->belongsTo(BillStatus::class, 'bill_status_id', 'id');
+    }
+
+    public function shop()
+    {
+        // Specify the foreign key in the `bills_tracking` table and the primary key in the `bill_statuses` table
+        return $this->belongsTo(Shop::class);
+    }
 }

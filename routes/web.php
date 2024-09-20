@@ -22,11 +22,8 @@ use App\Services\DeliveryPriceService;
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function(){
    
-        // $deportation_group_id = LastDeportationLog::findOrFail(1)->value('deportation_group_id'); 
-        // dd(Shop::find(7)->billsTracking->where('bill_status_id', 4)->count());
-        // dd(Shop::find(7)->billsTracking->where('bill_status_id', 4));
-        $b = Bill::find(1);
-        dd($b->bill_tracking);
+        
+        dd(BillTracking::find(1)->shop->name);
         
     });
 Route::group(
