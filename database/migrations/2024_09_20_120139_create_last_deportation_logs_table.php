@@ -14,15 +14,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('deportation_logs', function (Blueprint $table) {
+        Schema::create('last_deportation_logs', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('last_deported_report_date')->nullable(); // Store as timestamp
+            $table->timestamp('last_deporation_time')->nullable();
+            $table->unsignedBigInteger('current_deportation_group_id');
             $table->timestamps();
         });
-    
-        // Insert a default row
-        DB::table('deportation_logs')->insert([
-            'last_deported_report_date' => null, // or an initial timestamp value
+
+        DB::table('last_deportation_logs')->insert([
+            'id'         => 1, 
+            'current_deportation_group_id' => 1, 
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('deportation_logs');
+        Schema::dropIfExists('last_deportation_logs');
     }
 };

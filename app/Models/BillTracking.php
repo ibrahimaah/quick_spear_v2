@@ -14,6 +14,7 @@ class BillTracking extends Model
     protected $fillable = [
         'shop_id',
         'bill_number',
-        'bill_status_id'
+        'bill_status_id',
+        'bill_date'
     ];
 }

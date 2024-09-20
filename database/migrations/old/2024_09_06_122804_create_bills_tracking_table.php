@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('shop_id');
             $table->string('bill_number')->unique();
+            $table->timestamp('bill_date');
             $table->unsignedBigInteger('bill_status_id');
             $table->timestamps();
 

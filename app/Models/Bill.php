@@ -25,7 +25,9 @@ class Bill extends Model
         'delegate_notes',
         'is_returned', 
         'customer_delivery_price',
-        'shipment_status_id'
+        'shipment_status_id',
+        'deportation_group_id'
+        // 'deportation_log_id'
     ];
 
     public function shop()

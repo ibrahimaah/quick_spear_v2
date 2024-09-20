@@ -7,8 +7,8 @@ use App\Models\Bill;
 use App\Models\BillStatus;
 use App\Models\BillTracking;
 use App\Models\City;
-use App\Models\Delegate;
-use App\Models\DeportationLog;
+use App\Models\Delegate; 
+use App\Models\LastDeportationLog;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use Exception;
@@ -266,8 +266,9 @@ class DelegateService
 
         try 
         {
+            $deportation_group_id = LastDeportationLog::findOrFail(1)->value('current_deportation_group_id'); 
+            
             $shipments = $delegate->nonDeportedShipments();
-
 
             if ($shipments->isEmpty()) 
             {
@@ -281,7 +282,7 @@ class DelegateService
             {
                 // Generate a unique bill number for the shop
                 // $billNumber = 'BILL-' . $shopId . '-' . time(); 
-                $billNumber = 'BILL-' . $shopId . '-' . date('Ymd');
+                $billNumber = 'BILL-' . $shopId . $deportation_group_id;
                 // Alternatively, use Str::random(6) for a random string
                 // $billNumber = 'BILL-' . $shopId . '-' . Str::random(6);
 
@@ -290,12 +291,13 @@ class DelegateService
                     BillTracking::create([
                         'shop_id' => $shopId,
                         'bill_number' => $billNumber,
-                        'bill_status_id' => BillStatus::UNDER_REVIEW
+                        'bill_date' => now(),
+                        'bill_status_id' => BillStatus::PENDING
                     ]);
                 }
                 
 
-                $shipments->each(function ($shipment) use ($billNumber) 
+                $shipments->each(function ($shipment) use ($billNumber,$deportation_group_id) 
                 {
                     try 
                     {
@@ -320,7 +322,8 @@ class DelegateService
                                 'is_returned' => $shipment->is_returned,
                                 'shipment_status_id' => $shipment->shipment_status_id,
                                 'customer_delivery_price' => $delivery_price,
-                                'bill_status_id' => BillStatus::UNDER_REVIEW
+                                'bill_status_id' => BillStatus::PENDING,
+                                'deportation_group_id' => $deportation_group_id
                             ];
                     
                             $bill = Bill::create($billData);
@@ -347,19 +350,31 @@ class DelegateService
                 });
             }
 
+            //Add deportation process to deportation_logs table
 
-            //check if it is the last deported report
+            
+
+           // check if it is the last deported report
+           //then update deportation_group_id
             $res_is_last_deported_report = $this->is_last_deported_report();
             if ($res_is_last_deported_report['code'] == 0) 
             {
                 dd($res_is_last_deported_report['msg']);
             }
+
             $is_last_deported_report = $res_is_last_deported_report['data'];
+
             if ($is_last_deported_report) 
-            {
-                $log = DeportationLog::first();
-                // Update the last_deported_report_date
-                $log->update(['last_deported_report_date' => now()]);
+            { 
+                //update bills status
+                $log = LastDeportationLog::updateOrCreate(
+                    ['id' => 1], 
+                    ['current_deportation_group_id' => $deportation_group_id + 1, 'last_deporation_time' => now()]
+                );
+                
+                if (!$log) {
+                    dd("Error in LastDeportationLog::updateOrCreate");
+                }
             }
             
             DB::commit();

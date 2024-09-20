@@ -14,5 +14,6 @@ class BillStatus extends Model
     const UNDER_REVIEW = 1;
     const Payment_Made = 2;
     const CANCELED = 3; 
+    const PENDING = 4; 
 
 }

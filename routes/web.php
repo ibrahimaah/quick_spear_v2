@@ -12,6 +12,7 @@ use App\Http\Controllers\ShipmentImportController;
 use App\Http\Controllers\TestController;
 use App\Models\BillTracking;
 use App\Models\City;
+use App\Models\LastDeportationLog;
 use App\Models\Region;
 use App\Models\Shipment;
 use App\Services\DeliveryPriceService;
@@ -19,10 +20,8 @@ use App\Services\DeliveryPriceService;
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function(){
    
-        $shop_bills_numbers = BillTracking::where('shop_id', 8)
-                                              ->where('bill_status_id', 1)
-                                              ->pluck('bill_number')->toArray();
-        dd($shop_bills_numbers);
+        $deportation_group_id = LastDeportationLog::findOrFail(1)->value('deportation_group_id'); 
+        dd($deportation_group_id);
         
     });
 Route::group(

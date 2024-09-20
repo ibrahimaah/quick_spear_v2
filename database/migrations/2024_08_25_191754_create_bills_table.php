@@ -35,6 +35,9 @@ return new class extends Migration
 
             $table->boolean('is_returned')->default(0); 
             $table->unsignedBigInteger('shipment_status_id'); 
+            //deportation_group_id for grouping deported orders that deported together
+            $table->unsignedBigInteger('deportation_group_id'); //it is not foreign key
+            // $table->unsignedBigInteger('deportation_log_id'); 
             $table->timestamps();  
             
             $table->foreign('consignee_city')->references('id')->on('cities');
@@ -42,6 +45,7 @@ return new class extends Migration
             $table->foreign('delegate_id')->references('id')->on('delegates');
             $table->foreign('shop_id')->references('id')->on('shops');
             $table->foreign('shipment_status_id')->references('id')->on('shipment_statuses'); 
+            // $table->foreign('deportation_log_id')->references('id')->on('deportation_logs'); 
            
         });
     }
