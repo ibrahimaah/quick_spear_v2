@@ -190,7 +190,7 @@ class DelegateService
     {
         try 
         {
-            $shipments = $delegate->shipments->where('is_deported', false);
+            $shipments = $delegate->nonDeportedShipments();
             
             if ($shipments->isEmpty()) 
             {
@@ -198,7 +198,7 @@ class DelegateService
             }
             
             $result = $shipments->every(function ($shipment) use ($status) {
-                return $shipment->shipment_status_id === $status;
+                return in_array($shipment->shipment_status_id , $status);
             });
             
             return ['code' => 1, 'data' => $result];

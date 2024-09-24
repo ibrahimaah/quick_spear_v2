@@ -44,7 +44,8 @@ class Shipment extends Model
             }
             else 
             {
-                return 'لا يوجد';
+                // return 'لا يوجد';
+                return '';
             }
     }
 

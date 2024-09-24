@@ -92,27 +92,9 @@
                             </div> 
                         </div>
                         <div class="row">
-                            <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Consignee Name') }}</label>
-                                <input class="form-control mt-2 ml-2" type="text" name="consignee_name"/>
-                                @error('consignee_name')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            
 
-                            <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Phone') }}</label><span class="text-danger">*</span>
-                                <input class="form-control mt-2 ml-2" 
-                                       type="text" 
-                                       id="phone_number"
-                                       pattern="[0-9]{10}" 
-                                       onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                       title="Please Enter Ten Digits"
-                                       name="consignee_phone" required/>
-                                @error('consignee_phone')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            
 
                            
                         
@@ -142,12 +124,19 @@
                                 <select id="choose-region-select2" name="consignee_region" required> 
                                 </select>
                             </div>
-
-
+                            
                             <div class="col-12 my-2 col-md-4">
-                                <label class="mb-2 d-block">{{ __('Delegate Name') }}</label> 
-                                <select id="choose-delegate-select2" name="delegate_id" required> 
-                                </select>
+                                <label>{{ __('Phone') }}</label><span class="text-danger">*</span>
+                                <input class="form-control mt-2 ml-2" 
+                                       type="text" 
+                                       id="phone_number"
+                                       pattern="[0-9]{10}" 
+                                       onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                       title="Please Enter Ten Digits"
+                                       name="consignee_phone" required/>
+                                @error('consignee_phone')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-12 my-2 col-md-4">
@@ -157,6 +146,14 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            
+                            <div class="col-12 my-2 col-md-4">
+                                <label class="mb-2 d-block">{{ __('Delegate Name') }}</label> 
+                                <select id="choose-delegate-select2" name="delegate_id" required> 
+                                </select>
+                            </div>
+
+                           
 
                       
                             <div class="col-12 my-2 col-md-4">
@@ -176,6 +173,13 @@
                                 @enderror
                             </div>
 
+                            <div class="col-12 my-2 col-md-4">
+                                <label>{{ __('Consignee Name') }}</label>
+                                <input class="form-control mt-2 ml-2" type="text" name="consignee_name"/>
+                                @error('consignee_name')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
                            
 

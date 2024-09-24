@@ -295,7 +295,7 @@ class DelegateController extends Controller
 
     public function get_initial_delivery_1st_btn_state(Delegate $delegate)
     {
-        $res_chk_all_delegate_shipments_has_status = $this->delegateService->chk_all_delegate_shipments_has_status($delegate,ShipmentStatus::UNDER_DELIVERY);
+        $res_chk_all_delegate_shipments_has_status = $this->delegateService->chk_all_delegate_shipments_has_status($delegate,[ShipmentStatus::UNDER_DELIVERY,ShipmentStatus::POSTPONED]);
 
         if ($res_chk_all_delegate_shipments_has_status['code'] == 1) 
         {
@@ -309,7 +309,7 @@ class DelegateController extends Controller
 
     public function get_initial_delivery_2nd_btn_state(Delegate $delegate)
     {
-        $res_chk_all_delegate_shipments_not_has_status = $this->delegateService->chk_all_delegate_shipments_not_has_status($delegate,[ShipmentStatus::UNDER_DELIVERY,ShipmentStatus::UNDER_REVIEW]);
+        $res_chk_all_delegate_shipments_not_has_status = $this->delegateService->chk_all_delegate_shipments_not_has_status($delegate,[ShipmentStatus::UNDER_DELIVERY,ShipmentStatus::UNDER_REVIEW,ShipmentStatus::CANCELED]);
         
         if ($res_chk_all_delegate_shipments_not_has_status['code'] == 1) 
         {

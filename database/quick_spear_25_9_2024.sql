@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 13, 2024 at 07:27 AM
+-- Generation Time: Sep 24, 2024 at 11:31 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `u903879112_spear_13_7`
+-- Database: `quick_spear`
 --
 
 -- --------------------------------------------------------
@@ -46,26 +46,8 @@ CREATE TABLE `addresses` (
 --
 
 INSERT INTO `addresses` (`id`, `name`, `phone`, `city`, `region`, `desc`, `user_id`, `admin_id`, `created_at`, `updated_at`, `type`) VALUES
-(1, 'طبربور', '0780097333', '1', 'دوار الدبابه', 'عماره 110', 2, NULL, '2024-02-02 00:07:53', '2024-02-02 00:07:53', 0),
-(2, 'Rooney Parrish', '+1 (388) 703-9615', '1', 'Do tempore molestia', 'Incidunt numquam am', 3, NULL, '2024-02-10 16:44:45', '2024-02-10 16:44:45', 0),
-(3, 'Igor Sweet', '+1 (347) 286-2466', '1', 'Ut officia illum no', 'Cillum sunt est irur', 4, NULL, '2024-02-10 12:11:42', '2024-02-10 12:11:42', 0),
-(5, 'Willa Brennan', '+1 (941) 246-9933', '2', 'Ex nesciunt obcaeca', 'Id porro sint porro', 4, NULL, '2024-02-10 16:15:39', '2024-02-10 16:15:39', 0),
-(6, 'تمام حمود', '0935456789', '2', 'باء', 'وصف', 2, NULL, '2024-02-10 16:16:05', '2024-02-10 16:16:05', 0),
-(7, 'William Haynes', '1324567893', '3', 'Molestias sit quia', 'Tempore id explicab', 4, NULL, '2024-02-14 17:30:21', '2024-02-14 17:30:21', 0),
-(8, 'الهيثم للتجارة', '0912345678', '3', 'الوادي', 'بالقرب من العبارة', 4, NULL, '2024-03-26 18:01:34', '2024-03-26 18:01:34', 0),
-(9, 'إياد', '9654123654', '1', 'المنطقة الصناعية', 'قرب المحولة', 4, NULL, '2024-03-26 19:34:39', '2024-03-26 19:34:39', 0),
-(10, 'برهوم', '1234567896', '1', 'Iste ullamco ratione', 'Dolores anim ad exce', 4, NULL, '2024-03-31 04:56:00', '2024-03-31 04:56:00', 0),
-(11, 'Kennedy Maxwell', '1234567896', '1', 'Perferendis dolores', 'Adipisicing incididu', 4, NULL, '2024-04-01 05:11:17', '2024-04-01 05:11:17', 0),
-(12, 'qqqqq', '1234567894', '1', 'Itaque molestias inc', 'Dolorum veritatis su', 4, NULL, '2024-04-01 05:11:33', '2024-04-01 05:11:33', 0),
-(15, 'Phillip Kane', '3216549875', '1', 'Beatae quidem dolore', 'Mollitia voluptas li', 1, NULL, '2024-04-01 05:27:02', '2024-04-01 05:27:02', 0),
-(16, 'Keely Forbes', '3216549876', '1', 'Quia optio maxime n', 'Provident adipisici', 1, NULL, '2024-04-01 05:31:08', '2024-04-01 05:31:08', 0),
-(17, 'Gwendolyn Morse', '1234567893', '1', 'Quia sunt sed animi', 'Ut veniam deserunt', 1, NULL, '2024-04-01 05:32:59', '2024-04-01 05:32:59', 0),
-(18, 'Madeline Mcintosh', '3216549876', '2', 'Enim eius quidem sun', 'Aliquid nulla est e', 1, NULL, '2024-04-01 05:33:23', '2024-04-01 05:33:23', 0),
-(19, 'Dillard', '1365478963', '1', 'منطقة', 'وصف', 1, NULL, '2024-04-13 16:20:52', '2024-04-13 16:20:52', 0),
 (20, 'Yeo Combs', '1234567893', '1', 'Et aut obcaecati ame', 'Exercitation fugiat', NULL, 1, '2024-04-13 16:42:54', '2024-04-13 16:42:54', 0),
-(21, 'Francis Tanner', '3216549873', '2', 'Laboris et in nulla', 'Eos ut consequuntur', NULL, 1, '2024-04-26 12:44:52', '2024-04-26 12:44:52', 0),
-(22, 'متجر الدلفين', '2316549875', '2', 'المنطقة ش', 'وصف المنطقة', 4, NULL, '2024-04-26 13:07:42', '2024-04-26 13:07:42', 0),
-(23, 'محلات الوادي', '1234567988', '2', 'شتىستنشى', 'نتىسؤىسن', 4, NULL, '2024-05-12 15:17:54', '2024-05-12 15:17:54', 0);
+(21, 'Francis Tanner', '3216549873', '2', 'Laboris et in nulla', 'Eos ut consequuntur', NULL, 1, '2024-04-26 12:44:52', '2024-04-26 12:44:52', 0);
 
 -- --------------------------------------------------------
 
@@ -96,6 +78,103 @@ INSERT INTO `admins` (`id`, `name`, `email`, `phone`, `email_verified_at`, `pass
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bills`
+--
+
+CREATE TABLE `bills` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `shop_id` bigint(20) UNSIGNED NOT NULL,
+  `delegate_id` bigint(20) UNSIGNED NOT NULL,
+  `consignee_name` varchar(255) DEFAULT NULL,
+  `consignee_phone` varchar(255) NOT NULL,
+  `consignee_city` bigint(20) UNSIGNED NOT NULL,
+  `consignee_region` bigint(20) UNSIGNED NOT NULL,
+  `order_price` decimal(8,2) NOT NULL,
+  `value_on_delivery` decimal(8,3) NOT NULL DEFAULT 0.000,
+  `customer_delivery_price` decimal(8,2) NOT NULL,
+  `customer_notes` text DEFAULT NULL,
+  `delegate_notes` text DEFAULT NULL,
+  `is_returned` tinyint(1) NOT NULL DEFAULT 0,
+  `shipment_status_id` bigint(20) UNSIGNED NOT NULL,
+  `deportation_group_id` bigint(20) UNSIGNED NOT NULL,
+  `bill_tracking_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bills`
+--
+
+INSERT INTO `bills` (`id`, `shop_id`, `delegate_id`, `consignee_name`, `consignee_phone`, `consignee_city`, `consignee_region`, `order_price`, `value_on_delivery`, `customer_delivery_price`, `customer_notes`, `delegate_notes`, `is_returned`, `shipment_status_id`, `deportation_group_id`, `bill_tracking_id`, `created_at`, `updated_at`) VALUES
+(1, 7, 24, 'Nathaniel Rush', '6549873216', 8, 10, '212.00', '0.000', '2.00', 'Quia irure non aut v', 'Dolore laborum Recu', 0, 4, 1, 9, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(2, 7, 24, 'Nita Branch', '9518476235', 5, 4, '205.00', '205.000', '3.00', 'Veritatis velit maxi', 'Ut sint libero magna', 0, 3, 1, 9, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(3, 7, 24, 'alaa', '0938258963', 6, 5, '20.00', '20.000', '2.00', NULL, 'Fuga Enim velit au', 1, 3, 1, 9, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(4, 7, 24, 'Guinevere Young', '1346794625', 5, 9, '80.00', '0.000', '3.00', 'Aliquid voluptatem r', NULL, 1, 8, 1, 9, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(5, 7, 24, 'حمد', '1034567896', 5, 8, '50.00', '50.000', '3.00', NULL, NULL, 0, 3, 1, 9, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(6, 8, 24, 'aaaaaaaa', '1234567896', 5, 4, '15.00', '1.500', '6.00', 'no comments', 'bbb', 1, 5, 1, 10, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(7, 8, 24, 'Serina Waters', '1236549875', 5, 4, '427.00', '427.000', '6.00', 'Qui esse et qui ear', NULL, 0, 5, 1, 10, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(8, 8, 24, 'Claudia Weeks', '3216549870', 5, 4, '376.00', '376.000', '6.00', 'Id ullamco ut adipis', NULL, 0, 3, 1, 10, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(9, 4, 24, 'محمد', '1236048972', 5, 8, '30.00', '30.000', '6.00', NULL, NULL, 0, 3, 1, 11, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(10, 4, 24, 'مصطفى', '1234560096', 6, 5, '10.00', '10.000', '1.00', NULL, NULL, 0, 3, 1, 11, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(11, 4, 24, 'أبو صطيف', '1202567896', 5, 4, '12.00', '12.000', '2.00', NULL, NULL, 0, 3, 1, 11, '2024-09-24 20:50:24', '2024-09-24 20:50:24'),
+(12, 7, 27, NULL, '2316549874', 5, 6, '10.00', '10.000', '3.00', 'Suscipit et corporis', NULL, 0, 3, 1, 9, '2024-09-24 20:51:03', '2024-09-24 20:51:03'),
+(13, 4, 27, 'أحمد', '1234567896', 5, 7, '20.00', '20.000', '6.00', NULL, NULL, 0, 3, 1, 11, '2024-09-24 20:51:03', '2024-09-24 20:51:03'),
+(14, 4, 25, 'Herman Mcdonald', '1234567896', 5, 4, '25.00', '25.000', '2.00', 'Excepteur repudianda', 'In eius est et dign', 0, 3, 1, 11, '2024-09-24 20:52:21', '2024-09-24 20:52:21'),
+(15, 4, 25, NULL, '3211475555', 5, 8, '30.00', '30.000', '6.00', NULL, NULL, 1, 3, 1, 11, '2024-09-24 20:52:22', '2024-09-24 20:52:22'),
+(16, 7, 25, 'Dolan Vazquez', '9517538526', 5, 4, '660.00', '0.000', '3.00', 'Eiusmod sit repudia', 'Architecto quibusdam', 0, 4, 1, 9, '2024-09-24 20:52:22', '2024-09-24 20:52:22'),
+(17, 7, 25, 'Orlando Dean', '1034567896', 5, 4, '20.00', '0.000', '3.00', NULL, NULL, 0, 8, 1, 9, '2024-09-24 20:52:22', '2024-09-24 20:52:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bills_tracking`
+--
+
+CREATE TABLE `bills_tracking` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `shop_id` bigint(20) UNSIGNED NOT NULL,
+  `bill_number` varchar(255) NOT NULL,
+  `bill_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `bill_status_id` bigint(20) UNSIGNED NOT NULL,
+  `deportation_group_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bills_tracking`
+--
+
+INSERT INTO `bills_tracking` (`id`, `shop_id`, `bill_number`, `bill_date`, `bill_status_id`, `deportation_group_id`, `created_at`, `updated_at`) VALUES
+(9, 7, 'BILL-7B1', '2024-09-24 20:52:22', 1, 1, '2024-09-24 20:50:24', '2024-09-24 20:52:22'),
+(10, 8, 'BILL-8B1', '2024-09-24 20:52:22', 1, 1, '2024-09-24 20:50:24', '2024-09-24 20:52:22'),
+(11, 4, 'BILL-4B1', '2024-09-24 20:52:22', 1, 1, '2024-09-24 20:50:24', '2024-09-24 20:52:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bill_statuses`
+--
+
+CREATE TABLE `bill_statuses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bill_statuses`
+--
+
+INSERT INTO `bill_statuses` (`id`, `name`) VALUES
+(3, 'Canceled'),
+(2, 'Payment Made'),
+(4, 'Pending'),
+(1, 'Under Review');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cities`
 --
 
@@ -110,9 +189,22 @@ CREATE TABLE `cities` (
 --
 
 INSERT INTO `cities` (`id`, `name`, `territory_id`) VALUES
-(1, 'عمان', 2),
-(2, 'الزرقاء', 2),
-(3, 'الكرك', 3);
+(5, 'عمان', 2),
+(6, 'السلط', 2),
+(7, 'مادبا', 2),
+(8, 'الزرقاء', 2),
+(9, 'المفرق', 1),
+(10, 'الرمثا', 1),
+(11, 'اربد', 1),
+(12, 'عجلون', 1),
+(13, 'جرش', 1),
+(14, 'الشونه الشماليه', 1),
+(15, 'الشونه الجنوبيه', 3),
+(16, 'العقبه', 3),
+(17, 'معان', 3),
+(18, 'الطفيله', 3),
+(19, 'الكرك', 3),
+(20, 'الشوبك', 3);
 
 -- --------------------------------------------------------
 
@@ -134,16 +226,15 @@ CREATE TABLE `city_delegate` (
 --
 
 INSERT INTO `city_delegate` (`id`, `city_id`, `delegate_id`, `price`, `created_at`, `updated_at`) VALUES
-(1, 1, 5, '2.000', NULL, NULL),
-(2, 3, 5, '3.000', NULL, NULL),
-(5, 2, 7, '236.000', NULL, NULL),
-(8, 3, 9, '3.000', NULL, NULL),
-(9, 1, 9, '6.000', NULL, NULL),
-(10, 1, 10, '9.000', NULL, NULL),
-(11, 2, 11, '503.000', NULL, NULL),
-(12, 1, 12, '1.000', NULL, '2024-06-07 13:05:10'),
-(25, 2, 18, '5.000', '2024-06-09 20:45:45', '2024-06-09 20:45:45'),
-(26, 2, 19, '5.000', '2024-07-13 04:55:28', '2024-07-13 04:55:28');
+(46, 6, 26, '2.000', '2024-07-21 10:41:14', '2024-07-21 10:41:14'),
+(49, 6, 24, '1.520', '2024-07-29 16:53:15', '2024-07-29 16:57:01'),
+(50, 5, 24, '2.000', '2024-07-29 16:53:15', '2024-07-29 16:57:01'),
+(51, 8, 25, '3.000', '2024-07-29 16:54:50', '2024-07-29 16:54:50'),
+(52, 8, 24, '1.000', '2024-07-29 16:57:02', '2024-07-29 16:57:02'),
+(53, 5, 27, '1.000', '2024-07-29 16:57:49', '2024-07-29 16:57:49'),
+(54, 6, 27, '2.000', '2024-07-29 16:57:49', '2024-07-29 16:57:49'),
+(55, 8, 27, '8.000', '2024-07-29 16:57:49', '2024-07-29 16:57:49'),
+(56, 9, 28, '3.000', '2024-07-30 16:44:23', '2024-07-30 16:44:23');
 
 -- --------------------------------------------------------
 
@@ -168,33 +259,6 @@ CREATE TABLE `companies` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contact_expresses`
---
-
-CREATE TABLE `contact_expresses` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` text DEFAULT NULL,
-  `email` text DEFAULT NULL,
-  `phone` text DEFAULT NULL,
-  `message` longtext DEFAULT NULL,
-  `has_support_reply` tinyint(4) NOT NULL DEFAULT 0,
-  `status` varchar(255) NOT NULL DEFAULT 'PENDING',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `contact_expresses`
---
-
-INSERT INTO `contact_expresses` (`id`, `user_id`, `name`, `email`, `phone`, `message`, `has_support_reply`, `status`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'Diana Cruz', 'dianacruz.mkt@gmail.com', '1234567890', 'Hi team,\r\n\r\nI came across your Website, when searching on Google and noticed that you do not show in the organic listings.\r\n\r\nOur main focus will be to help generate more sales & online traffic.\r\n\r\nWe can place your website on Google\'s 1st page. We will improve your website’s position on Google and get more traffic.\r\n\r\nIf interested, kindly provide me your name, phone number, and email.\r\n\r\nYour sincerely,\r\nDiana', 0, 'PENDING', '2024-02-04 19:37:44', '2024-02-04 19:37:44'),
-(2, NULL, 'Nishant Sharma', 'nishant.developer22@gmail.com', '1234567890', 'Hi,\r\n\r\nI was just browsing your website and I came up with a great plan to re-develop your website using the latest technology to generate additional revenue and beat your opponents. (quickspeardelivery.com)\r\n\r\nI\'m an excellent web developer capable of almost anything you can come up with, and my costs are affordable for nearly everyone.\r\n\r\nI would be happy to send you \"Quotes\", “Proposal” Past work Details, \"Our Packages\", and “Offers”!\r\n\r\nThanks in advance,\r\nNishant (Business Development Executive)', 0, 'PENDING', '2024-02-06 18:45:57', '2024-02-06 18:45:57');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `delegates`
 --
 
@@ -211,17 +275,11 @@ CREATE TABLE `delegates` (
 --
 
 INSERT INTO `delegates` (`id`, `name`, `phone`, `created_at`, `updated_at`) VALUES
-(1, 'ابراهيم', '06599599', '2024-04-23 18:13:45', '2024-04-23 18:13:45'),
-(4, 'يس بقوش', '0936987456', '2024-05-18 14:17:38', '2024-05-18 14:17:38'),
-(5, 'مصطفى الأحدب', '0791234567', '2024-06-05 16:54:34', '2024-06-05 16:54:34'),
-(7, 'Blaze Cabrera', '0794567893', '2024-06-05 16:57:56', '2024-06-05 16:57:56'),
-(9, 'مصطفى شاكر', '0781234568', '2024-06-07 04:54:28', '2024-06-07 04:54:28'),
-(10, 'يوسف عثمان', '0793216549', '2024-06-07 04:58:09', '2024-06-07 04:58:09'),
-(11, 'Fritz Calderon', '0789632587', '2024-06-07 04:59:40', '2024-06-07 04:59:40'),
-(12, 'Riley Lott', '0797894563', '2024-06-07 05:11:59', '2024-06-07 05:11:59'),
-(13, 'أنس', '0778974563', '2024-06-07 05:30:46', '2024-06-07 05:30:46'),
-(18, 'أحمد أبو ليلى', '0786549513', '2024-06-09 20:43:26', '2024-06-09 20:43:26'),
-(19, 'خالد السعداني', '0787756321', '2024-07-13 04:55:28', '2024-07-13 04:55:28');
+(24, 'Gavin Buck', '0778974561', '2024-07-19 06:23:09', '2024-07-19 06:23:09'),
+(25, 'Aubrey Lang', '0778970561', '2024-07-20 10:11:56', '2024-07-20 10:11:56'),
+(26, 'Essa', '0778974501', '2024-07-21 10:41:14', '2024-07-21 10:41:14'),
+(27, 'Eugenia Marshall', '0784567893', '2024-07-29 16:57:49', '2024-07-29 16:57:49'),
+(28, 'Halee Norris', '0770004561', '2024-07-30 16:44:22', '2024-07-30 16:44:22');
 
 -- --------------------------------------------------------
 
@@ -244,49 +302,16 @@ CREATE TABLE `delivery_prices` (
 --
 
 INSERT INTO `delivery_prices` (`id`, `shop_id`, `location_type`, `location_id`, `price`, `created_at`, `updated_at`) VALUES
-(1, 3, 'App\\Models\\Region', 1, '38.00', '2024-07-08 13:22:20', '2024-07-08 13:22:20'),
-(2, 3, 'App\\Models\\City', 1, '3.00', '2024-07-08 13:23:21', '2024-07-08 13:23:21'),
-(4, 3, 'App\\Models\\City', 3, '3.00', '2024-07-08 13:24:22', '2024-07-08 13:24:22');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `documents`
---
-
-CREATE TABLE `documents` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `document` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `statusVerify` int(11) NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `edit_orders`
---
-
-CREATE TABLE `edit_orders` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `desc` text NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `shipment_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `edit_orders`
---
-
-INSERT INTO `edit_orders` (`id`, `type`, `desc`, `user_id`, `shipment_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'تعديل بيانات الحساب الشخصي', 'شرح التعديلات المطلوبة <br /> الاسم : AHMAD ALAILA <br /> البريد الالكتروني : abulailaa12@gmail.com <br /> رقم الهاتف : 0798711008', 1, NULL, 0, '2024-02-02 22:07:11', '2024-02-02 22:07:11');
+(5, 8, 'App\\Models\\City', 5, '2.75', '2024-07-21 12:04:51', '2024-07-21 12:05:25'),
+(7, 8, 'App\\Models\\City', 6, '1.00', '2024-07-22 08:37:57', '2024-07-22 08:37:57'),
+(8, 8, 'App\\Models\\Region', 4, '6.00', NULL, NULL),
+(9, 8, 'App\\Models\\Region', 6, '6.00', NULL, NULL),
+(11, 4, 'App\\Models\\Region', 4, '2.00', NULL, NULL),
+(13, 7, 'App\\Models\\City', 8, '2.00', NULL, NULL),
+(14, 4, 'App\\Models\\City', 5, '6.00', NULL, NULL),
+(15, 7, 'App\\Models\\City', 5, '3.00', NULL, NULL),
+(16, 7, 'App\\Models\\City', 6, '2.00', NULL, NULL),
+(17, 4, 'App\\Models\\City', 6, '1.00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -319,6 +344,27 @@ CREATE TABLE `jobs` (
   `available_at` int(10) UNSIGNED NOT NULL,
   `created_at` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `last_deportation_logs`
+--
+
+CREATE TABLE `last_deportation_logs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `last_deporation_time` timestamp NULL DEFAULT NULL,
+  `current_deportation_group_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `last_deportation_logs`
+--
+
+INSERT INTO `last_deportation_logs` (`id`, `last_deporation_time`, `current_deportation_group_id`, `created_at`, `updated_at`) VALUES
+(1, '2024-09-24 20:52:22', 2, '2024-09-20 09:50:21', '2024-09-24 20:52:22');
 
 -- --------------------------------------------------------
 
@@ -365,13 +411,18 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (27, '2024_04_19_115306_create_delegates_table', 2),
 (28, '2024_04_19_115307_create_delegates_table', 3),
 (29, '2024_04_19_115309_create_delegates_table', 4),
-(33, '2024_05_15_112555_create_shops_table', 5),
 (34, '2024_04_23_200950_create_city_delegate_table', 6),
 (35, '2024_06_25_082334_create_shipment_statuses_table', 7),
 (36, '2024_06_28_081434_create_territories_table', 8),
 (37, '2022_05_10_213537_create_cities_table', 9),
 (38, '2024_06_28_083357_create_regions_table', 10),
-(40, '2024_07_07_084222_create_delivery_prices_table', 11);
+(40, '2024_07_07_084222_create_delivery_prices_table', 11),
+(41, '2024_05_15_112555_create_shops_table', 12),
+(47, '2024_08_24_120914_create_bill_statuses_table', 14),
+(54, '2024_09_19_222125_create_deportation_logs_table', 19),
+(60, '2024_09_20_120139_create_last_deportation_logs_table', 20),
+(62, '2024_08_25_191754_create_bills_table', 22),
+(64, '2024_07_06_122804_create_bills_tracking_table', 23);
 
 -- --------------------------------------------------------
 
@@ -405,22 +456,6 @@ INSERT INTO `notifications` (`ID_id`, `id`, `type`, `notifiable_type`, `notifiab
 (7, '733abcbc-4651-4825-beef-d5038eaa6016', 'App\\Notifications\\NewUserNotification', 'App\\Models\\Admin', 1, '{\"user_id\":5,\"body\":\"\\u0645\\u0633\\u062a\\u062e\\u062f\\u0645 \\u062c\\u062f\\u064a\\u062f : \\u0627\\u0628\\u0631\\u0627\\u0647\\u064a\\u0645 \\u0645\\u0635\\u0637\\u0641\\u0649\",\"link\":\"http:\\/\\/localhost:8000\\/superAdmin\\/admin\\/dashboard\\/users\\/5\"}', '2024-03-02 15:39:16', '2024-03-02 15:38:20', '2024-03-02 15:39:16'),
 (8, '4a1204aa-de6a-43c6-9bf7-b4674fae7724', 'App\\Notifications\\NewUserNotification', 'App\\Models\\Admin', 1, '{\"user_id\":6,\"body\":\"\\u0645\\u0633\\u062a\\u062e\\u062f\\u0645 \\u062c\\u062f\\u064a\\u062f : testaaaaa\",\"link\":\"http:\\/\\/localhost:8000\\/superAdmin\\/admin\\/dashboard\\/users\\/6\"}', '2024-04-01 04:34:11', '2024-04-01 04:04:56', '2024-04-01 04:34:11'),
 (9, 'd9e08a2d-16a9-4ede-ba92-f82a463cc59e', 'App\\Notifications\\NewUserNotification', 'App\\Models\\Admin', 1, '{\"user_id\":15,\"body\":\"\\u0645\\u0633\\u062a\\u062e\\u062f\\u0645 \\u062c\\u062f\\u064a\\u062f : Ahmad Mohammad\",\"link\":\"http:\\/\\/localhost:8000\\/superAdmin\\/admin\\/dashboard\\/users\\/15\"}', '2024-05-18 13:58:27', '2024-05-18 13:43:00', '2024-05-18 13:58:27');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payment_methods`
---
-
-CREATE TABLE `payment_methods` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `provider` varchar(255) NOT NULL,
-  `iban_or_number` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -459,24 +494,6 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pickups`
---
-
-CREATE TABLE `pickups` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `reference` varchar(255) NOT NULL,
-  `CollectionDate` datetime NOT NULL,
-  `LastStatus` varchar(255) NOT NULL,
-  `LastStatusDescription` text DEFAULT NULL,
-  `shipper` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `regions`
 --
 
@@ -491,7 +508,14 @@ CREATE TABLE `regions` (
 --
 
 INSERT INTO `regions` (`id`, `name`, `city_id`) VALUES
-(1, 'حي الزواهرة', 2);
+(4, 'جبل طارق', 5),
+(5, 'تدمر', 6),
+(6, 'المنطقة الصناعية', 5),
+(7, 'الضفة', 5),
+(8, 'م1', 5),
+(9, 'م2', 5),
+(10, 'زرقاوي', 8),
+(11, 'tmpoo', 11);
 
 -- --------------------------------------------------------
 
@@ -531,17 +555,18 @@ CREATE TABLE `shipments` (
   `consignee_phone` varchar(255) NOT NULL,
   `consignee_phone_2` varchar(255) DEFAULT NULL,
   `consignee_city` bigint(20) UNSIGNED NOT NULL,
-  `consignee_region` varchar(255) NOT NULL,
+  `consignee_region` bigint(20) UNSIGNED NOT NULL,
   `consignee_zip_code` varchar(255) DEFAULT NULL,
-  `shipping_date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `shipping_date_time` timestamp NULL DEFAULT NULL,
   `accepted_by_admin_at` timestamp NULL DEFAULT NULL,
-  `due_date` varchar(255) NOT NULL,
+  `due_date` varchar(255) DEFAULT NULL,
   `order_price` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `value_on_delivery` decimal(8,3) DEFAULT 0.000,
   `customer_notes` text CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `delegate_notes` text DEFAULT NULL,
   `is_returned` tinyint(1) NOT NULL DEFAULT 0,
   `is_deported` tinyint(1) NOT NULL DEFAULT 0,
+  `deported_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `shipment_status_id` bigint(20) UNSIGNED NOT NULL
@@ -551,16 +576,26 @@ CREATE TABLE `shipments` (
 -- Dumping data for table `shipments`
 --
 
-INSERT INTO `shipments` (`id`, `shop_id`, `delegate_id`, `consignee_name`, `consignee_phone`, `consignee_phone_2`, `consignee_city`, `consignee_region`, `consignee_zip_code`, `shipping_date_time`, `accepted_by_admin_at`, `due_date`, `order_price`, `value_on_delivery`, `customer_notes`, `delegate_notes`, `is_returned`, `is_deported`, `created_at`, `updated_at`, `shipment_status_id`) VALUES
-(3, 2, NULL, 'عبود الشامي', '0773214569', '365894', 1, 'جنوب عمان', NULL, '2024-06-25 06:57:51', NULL, '2024-06-28 09:56:14', '100', NULL, 'معرض للكسر', NULL, 0, 0, '2024-06-25 06:56:14', '2024-06-25 06:56:14', 2),
-(5, 2, 13, 'مصطفى الحايك', '3164976431', '90', 3, 'شمال الكرك', NULL, '2024-06-26 05:16:05', NULL, '2024-06-28 12:01:40', '300', NULL, 'لا يوجد', NULL, 0, 0, '2024-06-25 09:01:40', '2024-06-26 05:16:05', 6),
-(6, 2, 10, 'أحمد حلاق', '1234167895', '321323', 1, 'المنطقة عمان', NULL, '2024-06-26 15:59:59', NULL, '2024-06-28 12:44:11', '200', NULL, 'يوجد 3 كراتين', 'قابل لكسر', 0, 0, '2024-06-25 09:44:11', '2024-06-26 15:59:59', 2),
-(7, 3, 5, 'ماهر الحميدي', '3216549876', '54654789', 1, 'شمال عمان', NULL, '2024-07-13 04:49:36', NULL, '2024-07-16 07:49:36', '50', '50.000', NULL, NULL, 0, 0, '2024-06-26 15:43:18', '2024-07-13 04:49:36', 3),
-(8, 1, 5, 'محمد لبابيدي', '8963215478', '123132', 1, 'شرق عمان', NULL, '2024-07-13 04:45:10', NULL, '2024-07-16 07:45:10', '90', '90.000', NULL, NULL, 1, 0, '2024-06-26 15:44:02', '2024-07-13 04:45:10', 3),
-(9, 3, 5, 'Cleo Freeman', '3216549875', '35', 3, 'الجويهرة', NULL, '2024-07-13 04:50:26', NULL, '2024-07-16 07:50:26', '200', '200.000', 'لايوجد ملاحظات', 'Reiciendis sunt dolo', 0, 0, '2024-06-29 11:56:27', '2024-07-13 04:50:26', 3),
-(10, 2, 5, 'Yoshio Mejia', '6549634568', '42', 1, 'Et hic officia aute', NULL, '2024-07-13 04:49:27', NULL, '2024-07-16 07:49:27', '388', '388.000', 'Aspernatur ut adipis', 'Accusantium ab sint', 0, 0, '2024-06-29 11:56:58', '2024-07-13 04:49:27', 3),
-(11, 1, 19, 'ياسر جولاق', '0925895175', '564564654', 2, 'المنطقة الغربية', NULL, '2024-07-13 05:05:14', NULL, '2024-07-16 08:05:14', '50', '50.000', NULL, NULL, 0, 0, '2024-07-13 04:56:34', '2024-07-13 05:05:14', 3),
-(12, 3, 19, 'جميل الحمصي', '0965478963', '2312313', 2, 'المنطقة الشمالية', NULL, '2024-07-13 05:05:23', NULL, '2024-07-16 08:05:23', '100', '100.000', NULL, NULL, 0, 0, '2024-07-13 04:57:22', '2024-07-13 05:05:23', 3);
+INSERT INTO `shipments` (`id`, `shop_id`, `delegate_id`, `consignee_name`, `consignee_phone`, `consignee_phone_2`, `consignee_city`, `consignee_region`, `consignee_zip_code`, `shipping_date_time`, `accepted_by_admin_at`, `due_date`, `order_price`, `value_on_delivery`, `customer_notes`, `delegate_notes`, `is_returned`, `is_deported`, `deported_at`, `created_at`, `updated_at`, `shipment_status_id`) VALUES
+(15, 4, 25, 'Herman Mcdonald', '1234567896', '68', 5, 4, NULL, '2024-07-20 10:27:11', NULL, '2024-07-23 13:12:11', '25', '25.000', 'Excepteur repudianda', 'In eius est et dign', 0, 1, NULL, '2024-07-20 10:12:11', '2024-09-24 20:52:21', 3),
+(16, 7, 25, 'Dolan Vazquez', '9517538526', '66', 5, 4, NULL, '2024-07-20 10:49:28', NULL, '2024-07-23 13:49:28', '660', '0.000', 'Eiusmod sit repudia', 'Architecto quibusdam', 0, 1, NULL, '2024-07-20 10:49:28', '2024-09-24 20:52:22', 4),
+(17, 7, 24, 'Nathaniel Rush', '6549873216', '98', 8, 10, NULL, '2024-07-20 10:50:37', NULL, '2024-07-23 13:50:37', '212', '0.000', 'Quia irure non aut v', 'Dolore laborum Recu', 0, 1, NULL, '2024-07-20 10:50:37', '2024-09-24 20:50:24', 4),
+(18, 8, 24, 'aaaaaaaa', '1234567896', '44', 5, 4, NULL, '2024-07-20 13:13:50', '2024-07-20 13:12:57', NULL, '15', '1.500', 'no comments', 'bbb', 1, 1, NULL, '2024-07-20 13:04:36', '2024-09-24 20:50:24', 5),
+(21, 7, 25, 'Orlando Dean', '1034567896', NULL, 5, 4, NULL, NULL, NULL, NULL, '20', '0.000', NULL, NULL, 0, 1, NULL, '2024-07-20 14:14:33', '2024-09-24 20:52:22', 8),
+(22, 7, 24, 'Odessa Wells', '3216548523', '29', 5, 4, NULL, NULL, NULL, NULL, '12.75', '0.000', 'Id voluptates est n', 'Omnis expedita place', 1, 0, NULL, '2024-07-20 14:32:26', '2024-09-24 21:08:07', 8),
+(23, 7, 24, 'Nita Branch', '9518476235', '44', 5, 4, NULL, NULL, NULL, NULL, '205', '205.000', 'Veritatis velit maxi', 'Ut sint libero magna', 0, 1, NULL, '2024-07-21 09:08:15', '2024-09-24 20:50:24', 3),
+(24, 8, 24, 'Serina Waters', '1236549875', '15', 5, 4, NULL, NULL, NULL, NULL, '427', '427.000', 'Qui esse et qui ear', NULL, 0, 1, NULL, '2024-07-21 09:20:22', '2024-09-24 20:50:24', 5),
+(25, 8, 24, 'Claudia Weeks', '3216549870', '27', 5, 4, NULL, NULL, NULL, NULL, '376', '376.000', 'Id ullamco ut adipis', NULL, 0, 1, NULL, '2024-07-21 09:23:28', '2024-09-24 20:50:24', 3),
+(27, 7, 24, 'alaa', '0938258963', NULL, 6, 5, NULL, NULL, NULL, NULL, '20', '20.000', NULL, 'Fuga Enim velit au', 1, 1, NULL, '2024-07-21 10:04:36', '2024-09-24 20:50:24', 3),
+(28, 4, 25, NULL, '3211475555', NULL, 5, 8, NULL, NULL, NULL, NULL, '30', '30.000', NULL, NULL, 1, 1, NULL, '2024-07-27 06:45:51', '2024-09-24 20:52:22', 3),
+(29, 7, 24, 'Guinevere Young', '1346794625', '95', 5, 9, NULL, NULL, NULL, NULL, '80', '0.000', 'Aliquid voluptatem r', NULL, 1, 1, NULL, '2024-07-30 16:55:42', '2024-09-24 20:50:24', 8),
+(30, 7, 27, NULL, '2316549874', '56', 5, 6, NULL, NULL, NULL, NULL, '10', '10.000', 'Suscipit et corporis', NULL, 0, 1, NULL, '2024-09-03 13:54:03', '2024-09-24 20:51:03', 3),
+(31, 4, 27, 'أحمد', '1234567896', NULL, 5, 7, NULL, NULL, NULL, NULL, '20', '20.000', NULL, NULL, 0, 1, NULL, '2024-09-20 12:27:18', '2024-09-24 20:51:03', 3),
+(32, 4, 24, 'محمد', '1236048972', NULL, 5, 8, NULL, NULL, NULL, NULL, '30', '30.000', NULL, NULL, 0, 1, NULL, '2024-09-20 12:27:48', '2024-09-24 20:50:24', 3),
+(33, 7, 24, 'حمد', '1034567896', NULL, 5, 8, NULL, NULL, NULL, NULL, '50', '50.000', NULL, NULL, 0, 1, NULL, '2024-09-20 12:30:40', '2024-09-24 20:50:24', 3),
+(34, 4, 24, 'مصطفى', '1234560096', NULL, 6, 5, NULL, NULL, NULL, NULL, '10', '10.000', NULL, NULL, 0, 1, NULL, '2024-09-20 14:14:47', '2024-09-24 20:50:24', 3),
+(35, 4, 24, 'أبو صطيف', '1202567896', NULL, 5, 4, NULL, NULL, NULL, NULL, '12', '12.000', NULL, NULL, 0, 1, NULL, '2024-09-20 14:36:12', '2024-09-24 20:50:24', 3),
+(36, 4, 24, 'Cody Pugh', '2316549875', '1', 5, 4, NULL, NULL, NULL, NULL, '9', '0.000', 'Harum vel voluptatum', NULL, 1, 0, NULL, '2024-09-24 20:53:13', '2024-09-24 21:08:14', 8);
 
 -- --------------------------------------------------------
 
@@ -603,10 +638,6 @@ CREATE TABLE `shipment_rates` (
 --
 
 INSERT INTO `shipment_rates` (`id`, `city_from`, `city_to`, `user_id`, `rate`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 0, 1.5, '2024-02-02 00:05:47', '2024-02-02 00:05:47'),
-(2, 1, 2, 0, 2.5, '2024-02-02 00:05:59', '2024-02-02 00:05:59'),
-(3, 1, 1, 2, 1, '2024-02-02 19:46:10', '2024-02-02 19:46:10'),
-(4, 1, 2, 2, 2, '2024-02-02 19:46:39', '2024-02-02 19:46:39'),
 (5, 3, 2, 0, 10, '2024-03-30 04:09:12', '2024-03-30 04:09:12'),
 (6, 3, 2, 0, 20, '2024-03-30 04:09:31', '2024-03-30 04:09:31');
 
@@ -657,30 +688,9 @@ CREATE TABLE `shops` (
 --
 
 INSERT INTO `shops` (`id`, `user_id`, `name`, `city_id`, `region`, `description`, `created_at`, `updated_at`) VALUES
-(1, 14, 'Lababidi-Bau', 3, 'اللمباد', 'مقابل البلدية', '2024-05-15 10:18:25', '2024-05-15 10:22:45'),
-(2, 4, 'وايت', 2, 'جديدة عرطوز', 'جنوب ريف دمشق', NULL, NULL),
-(3, 16, 'الأنوار', 2, 'وادي الشاطئ', 'بناء لطش', '2024-05-18 13:59:48', '2024-05-18 13:59:48');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `team_members`
---
-
-CREATE TABLE `team_members` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `account_number` varchar(255) NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(4, 17, 'pink she in jo', 5, 'طبربور', 'حي الاتراك _ خلف مدارس المنار', '2024-07-18 00:32:11', '2024-07-18 00:32:11'),
+(7, 20, 'Raja Patterson', 11, 'Consequatur nulla r', 'Aut rerum qui sunt e', '2024-07-20 10:48:50', '2024-07-20 10:48:50'),
+(8, 21, 'Emerson Merritt', 19, 'Aut quis nisi rerum', 'Perspiciatis ea qui', '2024-07-20 11:00:20', '2024-07-20 11:00:20');
 
 -- --------------------------------------------------------
 
@@ -728,7 +738,7 @@ CREATE TABLE `transactions` (
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `phone` varchar(255) NOT NULL,
   `account_number` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
@@ -746,21 +756,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `account_number`, `email_verified_at`, `password`, `status`, `codeVerfiy`, `codeForget`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'AHMAD ALAILA', 'abulailaa12@gmail.com', '0798711008', '819', NULL, '$2y$10$2t.hRM.U5u5pTr2oBRBMf.WlObvrVNpAxRbk/gX10fRjuxsIQN1r.', 0, NULL, NULL, 'pqqfI4854kStRYX37b4z3YzDy5hfvRTHh2Q3dawNXMNux7BSPFseFV1x5H97', '2024-02-01 22:21:10', '2024-04-01 04:41:36'),
-(2, 'محمد الشاويش', 'mhamadalshawesh101@gmail.com', '+962780997332', '757', NULL, '$2y$10$OK8dU48QCZ5uxoBTPphRtu2mpbm4Dp9uxHqxiOHUh3LB0dQ7lifIa', 0, NULL, NULL, 'gea1Y4BLrr5cWH291ob4uIjll2HgpWE2PUCed5OzaHPyuWtDt3Frao0i9hoP', '2024-02-02 00:07:11', '2024-04-01 04:41:36'),
-(3, 'اختباروت', 'ibrahim.a.a.h.2017@gmail.com', '1236547895', '960', NULL, '$2y$10$BNoapVqJFzmQzbP3Zqkr2u1IXvpdp7CXLpMd5tI7OB.fyfD/9JLvC', 0, NULL, NULL, 'ioDqUHmIEEFpHGYwT1lF0wQgV1VC9wDsuY3k5GjYgII8cNLJUJDIeeDECNpZ', '2024-02-10 16:09:23', '2024-04-01 04:41:36'),
-(4, 'Casey Mayo', 'zenynivuvu@mailinator.com', '1234567897', '408', NULL, '$2y$10$./bDST9LrkWSHGhi5eCK9.Gz.sbniWxTVH/ADLHFC.P4ksV7c59fO', 0, NULL, NULL, '7jvuBbNhHfUm1FIOWNO1abA36G1bR6wyOoP2dJnAg1eYDPydZ37qKMkNlk0Q', '2024-02-10 10:55:26', '2024-04-01 04:41:36'),
-(5, 'ابراهيم مصطفى', 'ib@gmail.com', '0956565656', '313', NULL, '$2y$10$xpxYyu6MPW4fzQ7Jl0Y1fOqh.lHuhZ7WHog9MAUnCXtnrrcc4geLu', 0, NULL, NULL, '7iTzjYx0i7XNt2mT4z8z4HWMVrl9JdnUllphPzzKHopU9ZtWjJCfuJ5OvFnZ', '2024-03-02 15:38:18', '2024-04-01 04:41:36'),
-(6, 'testaaaaa', 'i@gmail.com', '12365478965', '594', NULL, '$2y$10$kKJPhD.bLNjYYLaodlGRfOWCbeXV9yC8TFWoX2grx2dZ36Xp8SI2O', 0, NULL, NULL, '0MIw0N7xVnWzmaqq0qqKo0Ob7gdx1Zpz4Q9OBy3pnQEkQ7xdwZFmse3vBldD', '2024-04-01 04:04:50', '2024-04-01 04:41:36'),
-(7, 'Wing Sosa', 'cysomit@mailinator.com', '32132123', '426', NULL, '$2y$10$iG4NgEtpiDNjS57w7Q97x.vMCnliy/c1FB5s6bP3vQwULwwbGog2y', 0, NULL, NULL, NULL, '2024-05-07 15:03:05', '2024-05-07 15:03:05'),
-(9, 'Helen Pace', 'hiwubufyw@mailinator.com', '32165497', '208', NULL, '$2y$10$GxnW4g9Xk82NK0WYhkwnleQZBDwjlxmSNZ4.szqi2j77hQCwNoyeS', 0, NULL, NULL, NULL, '2024-05-15 09:08:29', '2024-05-15 09:08:29'),
-(10, 'Yoko Owens', 'takoruhi@mailinator.com', '2123132', '351', NULL, '$2y$10$iupzXoDlWYeg3BzCRr6ns./4o4ETrw431VJwd8utGnnm39iKzg6Ou', 0, NULL, NULL, NULL, '2024-05-15 09:15:33', '2024-05-15 09:15:33'),
-(11, 'Victoria Paul', 'wunypewom@mailinator.com', '321654', '186', NULL, '$2y$10$L4K8vnJqnZKuq2sAPcAd.eh53HITKn9vjPgwTypVbAhDu2O6J.tSa', 0, NULL, NULL, NULL, '2024-05-15 09:16:12', '2024-05-15 09:16:12'),
-(12, 'Simone Rowe', 'guva@mailinator.com', '12345', '986', NULL, '$2y$10$9iIzHppJdodiWasY5L736.J.C75DyUZi9iScXtBg1/teqvsYWNOQ2', 0, NULL, NULL, NULL, '2024-05-15 09:16:56', '2024-05-15 09:16:56'),
-(13, 'Roth Phelps', 'nexifa@mailinator.com', '222222222', '925', NULL, '$2y$10$JFMAQuWXpgDHsR6PcpjWee0eah8yqbgEWm5o6jkG9UwZa0MFCOBAa', 0, NULL, NULL, NULL, '2024-05-15 09:17:36', '2024-05-15 10:09:29'),
-(14, 'محمد لبابيدي.', 'mohaa@gmail.com', '09688888866', '561', NULL, '$2y$10$1ro4xST.mVWOxqr/wC3Z1.TCo2fbmU86LPGBuGPg.12UDuJ85iy6i', 0, NULL, NULL, NULL, '2024-05-15 10:18:25', '2024-05-15 10:22:44'),
-(15, 'Ahmad Mohammad', 'ahm@gmail.com', '0912345678', '619', NULL, '$2y$10$gsGm6kz8cHKDfGr6DV2f/.Tc0uHZe.OdIxdKu4Ymlm38yCUAENZV2', 0, NULL, NULL, 'SwsEv22BxGAOchBrY8893Uho3yqWEu7qOWHxONQSMwgm5L95L76EVZadwLTV', '2024-05-18 13:42:58', '2024-05-18 13:42:58'),
-(16, 'أحمد محمد', 'ah@gmail.com', '09123456789', '382', NULL, '123456ش', 0, NULL, NULL, '$2y$12$l03O1kT8dcZZX3HB02Rwj.YDfHRN6cxmiSCw4Mr2WYTgZol0vAWmm', '2024-05-18 13:59:48', '2024-06-30 05:29:03');
+(17, 'بتول ابو ليلى', 'www.0792841453@yahoo', '0792841453', '503', NULL, '$2y$10$/yRLdOOVkLykuFZtEJylae41Rn/iRinCOvwXrQZ5qUymlUfh5k0pS', 0, NULL, NULL, NULL, '2024-07-18 03:32:11', '2024-07-18 03:32:11'),
+(20, 'Noah Parrish', 'racyfy@mailinator.com', '0784567893', '108', NULL, '$2y$10$8a3skhztf8eHNPkrOHbPWObBykMLhH00HxFt/z95k5RJFoBVxSvXy', 0, NULL, NULL, NULL, '2024-07-20 10:48:50', '2024-07-20 10:48:50'),
+(21, 'Harlan Mcconnell', 'ibrahim@gmail.com', '0791234567', '402', NULL, '$2y$10$kUkzF/SS1KdW0cyuJ5JVyetPXM3UFOxtdlC52hAyZfhdEbdkelazS', 0, NULL, NULL, 'DUw9iau4o7pHm8Mkrvu473zyQ4qdrr0GNZn3BpK7h40a8Hkt8pGCWmrXlqfi', '2024-07-20 11:00:20', '2024-07-20 11:00:20');
 
 --
 -- Indexes for dumped tables
@@ -780,6 +778,34 @@ ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `admins_email_unique` (`email`),
   ADD UNIQUE KEY `admins_phone_unique` (`phone`);
+
+--
+-- Indexes for table `bills`
+--
+ALTER TABLE `bills`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bills_consignee_city_foreign` (`consignee_city`),
+  ADD KEY `bills_consignee_region_foreign` (`consignee_region`),
+  ADD KEY `bills_delegate_id_foreign` (`delegate_id`),
+  ADD KEY `bills_shop_id_foreign` (`shop_id`),
+  ADD KEY `bills_shipment_status_id_foreign` (`shipment_status_id`),
+  ADD KEY `bills_bill_tracking_id_foreign` (`bill_tracking_id`);
+
+--
+-- Indexes for table `bills_tracking`
+--
+ALTER TABLE `bills_tracking`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `bills_tracking_bill_number_unique` (`bill_number`),
+  ADD KEY `bills_tracking_shop_id_foreign` (`shop_id`),
+  ADD KEY `bills_tracking_bill_status_id_foreign` (`bill_status_id`);
+
+--
+-- Indexes for table `bill_statuses`
+--
+ALTER TABLE `bill_statuses`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `bill_statuses_name_unique` (`name`);
 
 --
 -- Indexes for table `cities`
@@ -803,13 +829,6 @@ ALTER TABLE `companies`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `contact_expresses`
---
-ALTER TABLE `contact_expresses`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `contact_expresses_user_id_foreign` (`user_id`);
-
---
 -- Indexes for table `delegates`
 --
 ALTER TABLE `delegates`
@@ -823,20 +842,6 @@ ALTER TABLE `delivery_prices`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `delivery_prices_shop_id_location_type_location_id_unique` (`shop_id`,`location_type`,`location_id`),
   ADD KEY `delivery_prices_location_type_location_id_index` (`location_type`,`location_id`);
-
---
--- Indexes for table `documents`
---
-ALTER TABLE `documents`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `edit_orders`
---
-ALTER TABLE `edit_orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `edit_orders_user_id_foreign` (`user_id`),
-  ADD KEY `edit_orders_shipment_id_foreign` (`shipment_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -853,6 +858,12 @@ ALTER TABLE `jobs`
   ADD KEY `jobs_queue_index` (`queue`);
 
 --
+-- Indexes for table `last_deportation_logs`
+--
+ALTER TABLE `last_deportation_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -864,13 +875,6 @@ ALTER TABLE `migrations`
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`ID_id`),
   ADD KEY `notifications_notifiable_type_notifiable_id_index` (`notifiable_type`,`notifiable_id`);
-
---
--- Indexes for table `payment_methods`
---
-ALTER TABLE `payment_methods`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `payment_methods_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `payment_requests`
@@ -885,12 +889,6 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
-
---
--- Indexes for table `pickups`
---
-ALTER TABLE `pickups`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `regions`
@@ -936,16 +934,8 @@ ALTER TABLE `shipment_statuses`
 -- Indexes for table `shops`
 --
 ALTER TABLE `shops`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `team_members`
---
-ALTER TABLE `team_members`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `team_members_email_unique` (`email`),
-  ADD UNIQUE KEY `team_members_phone_unique` (`phone`),
-  ADD UNIQUE KEY `team_members_account_number_unique` (`account_number`);
+  ADD KEY `shops_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `territories`
@@ -986,16 +976,34 @@ ALTER TABLE `admins`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `bills`
+--
+ALTER TABLE `bills`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `bills_tracking`
+--
+ALTER TABLE `bills_tracking`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `bill_statuses`
+--
+ALTER TABLE `bill_statuses`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `city_delegate`
 --
 ALTER TABLE `city_delegate`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `companies`
@@ -1004,34 +1012,16 @@ ALTER TABLE `companies`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `contact_expresses`
---
-ALTER TABLE `contact_expresses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT for table `delegates`
 --
 ALTER TABLE `delegates`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `delivery_prices`
 --
 ALTER TABLE `delivery_prices`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `documents`
---
-ALTER TABLE `documents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `edit_orders`
---
-ALTER TABLE `edit_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -1046,22 +1036,22 @@ ALTER TABLE `jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `last_deportation_logs`
+--
+ALTER TABLE `last_deportation_logs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
   MODIFY `ID_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `payment_methods`
---
-ALTER TABLE `payment_methods`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `payment_requests`
@@ -1076,16 +1066,10 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `pickups`
---
-ALTER TABLE `pickups`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `regions`
 --
 ALTER TABLE `regions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -1097,7 +1081,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `shipments`
 --
 ALTER TABLE `shipments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `shipment_imports`
@@ -1121,13 +1105,7 @@ ALTER TABLE `shipment_statuses`
 -- AUTO_INCREMENT for table `shops`
 --
 ALTER TABLE `shops`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `team_members`
---
-ALTER TABLE `team_members`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `territories`
@@ -1145,7 +1123,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
@@ -1156,6 +1134,24 @@ ALTER TABLE `users`
 --
 ALTER TABLE `addresses`
   ADD CONSTRAINT `addresses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bills`
+--
+ALTER TABLE `bills`
+  ADD CONSTRAINT `bills_bill_tracking_id_foreign` FOREIGN KEY (`bill_tracking_id`) REFERENCES `bills_tracking` (`id`),
+  ADD CONSTRAINT `bills_consignee_city_foreign` FOREIGN KEY (`consignee_city`) REFERENCES `cities` (`id`),
+  ADD CONSTRAINT `bills_consignee_region_foreign` FOREIGN KEY (`consignee_region`) REFERENCES `regions` (`id`),
+  ADD CONSTRAINT `bills_delegate_id_foreign` FOREIGN KEY (`delegate_id`) REFERENCES `delegates` (`id`),
+  ADD CONSTRAINT `bills_shipment_status_id_foreign` FOREIGN KEY (`shipment_status_id`) REFERENCES `shipment_statuses` (`id`),
+  ADD CONSTRAINT `bills_shop_id_foreign` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`);
+
+--
+-- Constraints for table `bills_tracking`
+--
+ALTER TABLE `bills_tracking`
+  ADD CONSTRAINT `bills_tracking_bill_status_id_foreign` FOREIGN KEY (`bill_status_id`) REFERENCES `bill_statuses` (`id`),
+  ADD CONSTRAINT `bills_tracking_shop_id_foreign` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`);
 
 --
 -- Constraints for table `cities`
@@ -1171,35 +1167,16 @@ ALTER TABLE `city_delegate`
   ADD CONSTRAINT `city_delegate_delegate_id_foreign` FOREIGN KEY (`delegate_id`) REFERENCES `delegates` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `contact_expresses`
---
-ALTER TABLE `contact_expresses`
-  ADD CONSTRAINT `contact_expresses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
 -- Constraints for table `delivery_prices`
 --
 ALTER TABLE `delivery_prices`
   ADD CONSTRAINT `delivery_prices_shop_id_foreign` FOREIGN KEY (`shop_id`) REFERENCES `shops` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `edit_orders`
---
-ALTER TABLE `edit_orders`
-  ADD CONSTRAINT `edit_orders_shipment_id_foreign` FOREIGN KEY (`shipment_id`) REFERENCES `shipments` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `edit_orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `payment_methods`
---
-ALTER TABLE `payment_methods`
-  ADD CONSTRAINT `payment_methods_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
 -- Constraints for table `regions`
 --
 ALTER TABLE `regions`
-  ADD CONSTRAINT `regions_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
+  ADD CONSTRAINT `regions_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `shipment_rates`
@@ -1207,6 +1184,12 @@ ALTER TABLE `regions`
 ALTER TABLE `shipment_rates`
   ADD CONSTRAINT `shipment_rates_city_from_foreign` FOREIGN KEY (`city_from`) REFERENCES `cities` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `shipment_rates_city_to_foreign` FOREIGN KEY (`city_to`) REFERENCES `cities` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `shops`
+--
+ALTER TABLE `shops`
+  ADD CONSTRAINT `shops_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

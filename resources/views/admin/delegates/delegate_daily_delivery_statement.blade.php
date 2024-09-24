@@ -109,7 +109,7 @@
                     <th>هاتف الزبون</th>
                     <th>ملاحظات جانبية</th>
                 </tr>
-                @foreach ($delegate->shipments as $shipment)
+                @foreach ($delegate->nonDeportedShipments() as $shipment)
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $shipment->city_to->name }}</td>
