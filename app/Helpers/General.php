@@ -145,7 +145,16 @@ if(!function_exists('get_bill_status_name_by_bill_number'))
 }
 
 
-
+  // Convert Arabic numerals if needed
+  if(!function_exists('convertToArabicNumerals'))
+  {
+    function convertToArabicNumerals($number) {
+        $westernArabic = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        $easternArabic = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        return str_replace($westernArabic, $easternArabic, $number);
+    }
+  }
+  
 // if(!function_exists('get_delivery_price'))
 // {
 //     function get_delivery_price($bill_id)

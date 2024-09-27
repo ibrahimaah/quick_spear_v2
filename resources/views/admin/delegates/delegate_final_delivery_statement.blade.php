@@ -94,9 +94,9 @@
 		<div class="invoice-box">
 			<table id="invoice-table">
                 <tr> 
-                  <th colspan="2" class="text-center">{{ $statement['current_day'] }}</th>
-                  <th colspan="3" class="text-center">{{ $delegate->name }}</th>
-                  <th colspan="3" class="text-center">{{ $statement['current_date'] }}</th> 
+                    <th colspan="2" class="text-center">{{ $currentDayInArabic }}</th>
+                    <th colspan="3" class="text-center">{{ $delegate_name }}</th>
+                    <th colspan="3" class="text-center">{{ $currentDateInArabic }}</th> 
                 </tr>
              
                 <tr>
@@ -110,32 +110,20 @@
                     <th>ملاحظات جانبية</th>
                 </tr>
                
-                @foreach ($delegate->nonDeportedShipments() as $shipment)
+                @foreach ($shipments as $shipment)
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $shipment->city_to->name }}</td>
                         <td>{{ $shipment->region->name }}</td>
                         <td>{{ $shipment->shop->name }}</td> 
                         <td>{{ $shipment->is_returned ? ' (مرتجع)' : '' }} {{ $shipment->value_on_delivery }}</td> 
-                        {{-- <td>{{ getStatusInfo($shipment->status) }}</td> --}}
                         <td>{{ __($shipment->status->name) }}</td>
                         <td>{{ $shipment->consignee_phone }}</td>
                         <td class="text-right">{{ $shipment->notes }}</td>
                         
                     </tr>
               
-                @endforeach
-                {{-- <tr>
-                    <th colspan="4">المدفوع:</th>
-                    <th colspan="3" rowspan="2">اسم المندوب وتوقيعه :</th>
-                </tr>
-                <tr>
-                    <th colspan="4">له :</th>
-                </tr>
-                <tr>
-                    <th colspan="4">عليه :</th>
-                    <th colspan="3">اسم المستلم وتوقيعه :</th>
-                </tr> --}}
+                @endforeach 
               </table>
 
               <h4 class="mr-50">المجموع الكلي : {{ $total_summation }}</h4>

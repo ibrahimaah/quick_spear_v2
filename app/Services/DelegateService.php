@@ -300,7 +300,7 @@ class DelegateService
                         'deportation_group_id' => $deportation_group_id
                     ]);
                 }
-                
+               
                 // dd($bill_tracking);
                 $shipments->each(function ($shipment) use ($bill_tracking,$deportation_group_id) 
                 {
@@ -334,7 +334,8 @@ class DelegateService
                     
                             $bill = Bill::create($billData);
 
-                            if ($bill) {
+                            if ($bill) 
+                            { 
                                 $shipment->update(['is_deported' => true]);
                             }
                             else {

@@ -161,7 +161,8 @@ class Shipment extends Model
 
     public function scopeNonDeported($query)
     {
-        return $query->where('is_deported', false)->where('shipment_status_id', '!=', ShipmentStatus::POSTPONED);
+        // return $query->where('is_deported', false)->where('shipment_status_id', '!=', ShipmentStatus::POSTPONED);
+        return $query->where('is_deported', false);
     }
 
     public function scopeDeported($query)

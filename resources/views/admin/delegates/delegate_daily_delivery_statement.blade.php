@@ -94,9 +94,9 @@
 		<div class="invoice-box">
 			<table id="invoice-table">
                 <tr> 
-                  <th colspan="2" class="text-center">{{ $statement['current_day'] }}</th>
-                  <th colspan="3" class="text-center">{{ $delegate->name }}</th>
-                  <th colspan="3" class="text-center">{{ $statement['current_date'] }}</th> 
+                  <th colspan="2" class="text-center">{{ $currentDayInArabic }}</th>
+                  <th colspan="3" class="text-center">{{ $delegate_name }}</th>
+                  <th colspan="3" class="text-center">{{ $currentDateInArabic }}</th> 
                 </tr>
              
                 <tr>
@@ -109,7 +109,8 @@
                     <th>هاتف الزبون</th>
                     <th>ملاحظات جانبية</th>
                 </tr>
-                @foreach ($delegate->nonDeportedShipments() as $shipment)
+                @if($shipments->isNotEmpty())
+                @foreach ($shipments as $shipment)
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $shipment->city_to->name }}</td>
@@ -122,18 +123,10 @@
                         <td class="text-right">{{ $shipment->notes }}</td>
                         
                     </tr>
-                @endforeach
-                {{-- <tr>
-                    <th colspan="4">المدفوع:</th>
-                    <th colspan="3" rowspan="2">اسم المندوب وتوقيعه :</th>
-                </tr>
-                <tr>
-                    <th colspan="4">له :</th>
-                </tr>
-                <tr>
-                    <th colspan="4">عليه :</th>
-                    <th colspan="3">اسم المستلم وتوقيعه :</th>
-                </tr> --}}
+                @endforeach 
+                @else   
+                    <div class="alert alert-warning text-center">There is no shipments</div>
+                @endif
               </table>
 
               <h4 class="mr-50">المجموع الكلي :</h4>

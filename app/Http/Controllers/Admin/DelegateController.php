@@ -8,9 +8,11 @@ use App\Http\Requests\StoreDelegateRequest;
 use App\Http\Requests\UpdateDelegateRequest;
 use App\Models\City;
 use App\Models\Delegate;
+use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use App\Services\DelegateService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -135,22 +137,6 @@ class DelegateController extends Controller
     public function get_shipments(Delegate $delegate)
     {
         $dataTable = new ExpressDataTable(false,null,$delegate->id);
-
-        // $is_disable_1st_btn = true;
-        // foreach($delegate->shipments->where('is_deported',false) as $shipment)
-        // {
-        //     if($shipment->shipment_status_id != ShipmentStatus::UNDER_DELIVERY)
-        //     {
-        //         $is_disable_1st_btn = true;
-        //         break;
-        //     }
-        //     else 
-        //     {
-        //         $is_disable_1st_btn = false;
-        //     }
-        // }
- 
-        // return $dataTable->render('admin.delegates.show_shipments',['delegate' => $delegate,'is_disable_1st_btn'=>$is_disable_1st_btn]);
         return $dataTable->render('admin.delegates.show_shipments',compact(['delegate']));
     }
 
@@ -202,65 +188,49 @@ class DelegateController extends Controller
         }
     }
 
-
-    // Convert Arabic numerals if needed
-    function convertToArabicNumerals($number) {
-        $westernArabic = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        $easternArabic = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-        return str_replace($westernArabic, $easternArabic, $number);
-    }
+ 
 
     public function delegate_daily_delivery_statement(Delegate $delegate)
     {
+        try 
+        {
+            $delegate_name = $delegate->name;
+            $now = Carbon::now(); 
+            $currentDayInArabic = $now->translatedFormat('l');
+            $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d')); 
+            $shipments = Shipment::where([
+                ['delegate_id', $delegate->id],
+                ['is_deported', false]
+            ])
+            ->whereIn('shipment_status_id', [
+                ShipmentStatus::UNDER_DELIVERY,
+                ShipmentStatus::POSTPONED
+            ])
+            ->get();
         
-        // Set the locale to Arabic
-        Carbon::setLocale('ar');
-        // Get the current date
-        $now = Carbon::now();
+            
+            $pdf = PDF::loadView('admin.delegates.delegate_daily_delivery_statement',compact('currentDayInArabic',
+                                                                                            'currentDateInArabic',
+                                                                                            'shipments',
+                                                                                            'delegate_name'));
 
-        // Get the current day in Arabic
-        $currentDayInArabic = $now->translatedFormat('l');
-        $currentDate = $now->format('Y/m/d');
-        $currentDateInArabic = $this->convertToArabicNumerals($currentDate);
-        Carbon::setLocale('en');
+            $pdf_file_name = 'delegate_daily_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
         
-        $statement_data = [];
-        $statement_data['current_day'] = $currentDayInArabic;
-        $statement_data['current_date'] = $currentDateInArabic; 
-
-   
-        $pdf = PDF::loadView('admin.delegates.delegate_daily_delivery_statement',['statement' => $statement_data,
-                                                                                  'delegate' => $delegate]);
-
-        $pdf_file_name = 'delegate_daily_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
-        // return $pdf->stream('invoice.pdf');
-        return response()->streamDownload(function() use ($pdf) {
-            echo $pdf->output();
-        }, $pdf_file_name.'.pdf', [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$pdf_file_name.'.pdf"'
-        ]);
-        // return view('admin.delegates.delegate_daily_delivery_statement');
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, $pdf_file_name.'.pdf', [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$pdf_file_name.'.pdf"'
+            ]); 
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
     }
 
     public function delegate_final_delivery_statement(Delegate $delegate)
     {
-        
-        // Set the locale to Arabic
-        Carbon::setLocale('ar');
-        // Get the current date
-        $now = Carbon::now();
-
-        // Get the current day in Arabic
-        $currentDayInArabic = $now->translatedFormat('l');
-        $currentDate = $now->format('Y/m/d');
-        $currentDateInArabic = $this->convertToArabicNumerals($currentDate);
-        Carbon::setLocale('en');
-        
-        $statement_data = [];
-        $statement_data['current_day'] = $currentDayInArabic;
-        $statement_data['current_date'] = $currentDateInArabic; 
-
         $res_get_total_summation = $this->delegateService->get_total_summation($delegate);
         $res_get_total_delegate_commission = $this->delegateService->get_total_delegate_commission($delegate);
 
@@ -274,11 +244,24 @@ class DelegateController extends Controller
             return back()->with('error',$res_get_total_delegate_commission['msg']);
         }
 
+        $now = Carbon::now();
 
-        $pdf = PDF::loadView('admin.delegates.delegate_final_delivery_statement',['statement' => $statement_data,
-                                                                                  'delegate' => $delegate,
-                                                                                  'total_summation' => $res_get_total_summation['data'],
-                                                                                  'total_delegate_commission' => $res_get_total_delegate_commission['data']]);
+        $delegate_name = $delegate->name;
+        $currentDayInArabic = $now->translatedFormat('l');
+        $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d'));  
+        $total_summation = $res_get_total_summation['data'];
+        $total_delegate_commission = $res_get_total_delegate_commission['data'];
+        $shipments = Shipment::where([
+            ['delegate_id', $delegate->id],
+            ['is_deported', false]
+        ])->get();
+
+        $pdf = PDF::loadView('admin.delegates.delegate_final_delivery_statement',compact('delegate_name', 
+                                                                                         'currentDayInArabic', 
+                                                                                         'currentDateInArabic', 
+                                                                                         'total_summation', 
+                                                                                         'total_delegate_commission', 
+                                                                                         'shipments'));
 
         $pdf_file_name = 'delegate_final_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
         // return $pdf->stream('invoice.pdf');
@@ -287,8 +270,7 @@ class DelegateController extends Controller
         }, $pdf_file_name.'.pdf', [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="'.$pdf_file_name.'.pdf"'
-        ]);
-        // return view('admin.delegates.delegate_daily_delivery_statement');
+        ]); 
     }
 
 
@@ -309,7 +291,7 @@ class DelegateController extends Controller
 
     public function get_initial_delivery_2nd_btn_state(Delegate $delegate)
     {
-        $res_chk_all_delegate_shipments_not_has_status = $this->delegateService->chk_all_delegate_shipments_not_has_status($delegate,[ShipmentStatus::UNDER_DELIVERY,ShipmentStatus::UNDER_REVIEW,ShipmentStatus::CANCELED]);
+        $res_chk_all_delegate_shipments_not_has_status = $this->delegateService->chk_all_delegate_shipments_not_has_status($delegate,[ShipmentStatus::UNDER_DELIVERY,ShipmentStatus::UNDER_REVIEW]);
         
         if ($res_chk_all_delegate_shipments_not_has_status['code'] == 1) 
         {

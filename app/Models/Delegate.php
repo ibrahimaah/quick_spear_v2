@@ -42,6 +42,13 @@ class Delegate extends Model
     public function nonDeportedShipments()
     {
         return $this->shipments()->nonDeported()->get();
+        // return $this->shipments()
+        //             ->nonDeported()
+        //             ->join('cities', 'shipments.consignee_city', '=', 'cities.id')
+        //             ->select('shipments.*')
+        //             ->orderBy('cities.name')
+        //             ->get();
+
     }
 
     public function deportedShipments()
