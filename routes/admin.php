@@ -89,8 +89,6 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::get('/view-all-payment-requests', [TransactionController::class, 'view_all_payment_requests'])->name('payments.index');
     Route::get('/view-payments', [TransactionController::class, 'view_payments'])->name('payments.view_payments');
     Route::get('view_shop_bills/{shop}/{bill_status_id}',[BillController::class,'view_shop_bills'])->name('payments.view_shop_bills');
-    // Route::get('prepare-bill',[BillController::class,'prepare_bill'])->name('prepare_bill');
-    // Route::post('prepare-bill',[BillController::class,'prepare_bill'])->name('prepare_bill');
     Route::get('prepare-bill/{bill_number}',[BillController::class,'prepare_bill'])->name('prepare_bill');
     Route::post('pay-bill',[BillController::class,'pay_bill'])->name('pay_bill');
     Route::post('/updateRequest/{id}', [TransactionController::class, 'updateRequest'])->name('requests.update');
