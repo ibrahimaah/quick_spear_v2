@@ -39,6 +39,15 @@
 	</head>
 
 	<body>
+
+        @php 
+            use App\Models\ShipmentStatus;
+            $not_important_statuses = [ShipmentStatus::POSTPONED,
+                                       ShipmentStatus::CANCELED,
+                                       ShipmentStatus::UNDER_DELIVERY,
+                                       ShipmentStatus::UNDER_REVIEW];
+        @endphp 
+
 		<h3 class="title"> فاتورة رقم <span>{{ $bill_number }}</span> </h3>
 		
 		
@@ -75,7 +84,7 @@
                         <td>{{ $order->city->name }}</td>
                         <td>{{ $order->consignee_phone }}</td> 
                         <td>{{ $order->value_on_delivery }}</td> 
-                        <td>{{ $order->customer_delivery_price }}</td> 
+                        <td>{{ !in_array($order->shipment_status_id,$not_important_statuses) ? $order->customer_delivery_price : '0.00' }}</td> 
                         <td>{{ __($order->status->name) }}</td> 
                         <td>{{ $order->delegate_notes }}</td> 
                     </tr>

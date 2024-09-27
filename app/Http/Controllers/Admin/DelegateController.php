@@ -190,14 +190,130 @@ class DelegateController extends Controller
 
  
 
+    // public function delegate_daily_delivery_statement(Delegate $delegate)
+    // {
+    //     try 
+    //     {
+    //         $delegate_name = $delegate->name;
+    //         $now = Carbon::now(); 
+    //         $currentDayInArabic = $now->translatedFormat('l');
+    //         $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d')); 
+
+    //         $shipments = Shipment::where([
+    //             ['delegate_id', $delegate->id],
+    //             ['is_deported', false]
+    //         ])
+    //         ->whereIn('shipment_status_id', [
+    //             ShipmentStatus::UNDER_DELIVERY,
+    //             ShipmentStatus::POSTPONED
+    //         ])
+    //         ->get();
+        
+            
+    //         $pdf = PDF::loadView('admin.delegates.delegate_daily_delivery_statement',compact('currentDayInArabic',
+    //                                                                                         'currentDateInArabic',
+    //                                                                                         'shipments',
+    //                                                                                         'delegate_name'));
+
+    //         $pdf_file_name = 'delegate_daily_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
+        
+    //         return response()->streamDownload(function() use ($pdf) {
+    //             echo $pdf->output();
+    //         }, $pdf_file_name.'.pdf', [
+    //             'Content-Type' => 'application/pdf',
+    //             'Content-Disposition' => 'inline; filename="'.$pdf_file_name.'.pdf"'
+    //         ]); 
+    //     }
+    //     catch(Exception $ex)
+    //     {
+    //         dd($ex->getMessage());
+    //     }
+    // }
+
+    // public function delegate_final_delivery_statement(Delegate $delegate)
+    // {
+    //     try 
+    //     {
+    //         $res_get_total_summation = $this->delegateService->get_total_summation($delegate);
+    //         $res_get_total_delegate_commission = $this->delegateService->get_total_delegate_commission($delegate);
+
+    //         if ($res_get_total_summation['code'] == 0) 
+    //         {
+    //             // return back()->with('error',$res_get_total_summation['msg']);
+    //             dd($res_get_total_summation['msg']);
+    //         }
+
+    //         if ($res_get_total_delegate_commission['code'] == 0) 
+    //         {
+    //             // return back()->with('error',$res_get_total_delegate_commission['msg']);
+    //             dd($res_get_total_delegate_commission['msg']);
+    //         }
+
+    //         $now = Carbon::now();
+
+    //         $delegate_name = $delegate->name;
+    //         $currentDayInArabic = $now->translatedFormat('l');
+    //         $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d'));  
+    //         $total_summation = $res_get_total_summation['data'];
+    //         $total_delegate_commission = $res_get_total_delegate_commission['data'];
+    //         $shipments = Shipment::where([
+    //             ['delegate_id', $delegate->id],
+    //             ['is_deported', false]
+    //         ])->get();
+
+    //         $pdf = PDF::loadView('admin.delegates.delegate_final_delivery_statement',compact('delegate_name', 
+    //                                                                                         'currentDayInArabic', 
+    //                                                                                         'currentDateInArabic', 
+    //                                                                                         'total_summation', 
+    //                                                                                         'total_delegate_commission', 
+    //                                                                                         'shipments'));
+
+    //         $pdf_file_name = 'delegate_final_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
+    //         // return $pdf->stream('invoice.pdf');
+    //         return response()->streamDownload(function() use ($pdf) {
+    //             echo $pdf->output();
+    //         }, $pdf_file_name.'.pdf', [
+    //             'Content-Type' => 'application/pdf',
+    //             'Content-Disposition' => 'inline; filename="'.$pdf_file_name.'.pdf"'
+    //         ]); 
+    //     }
+    //     catch(Exception $ex)
+    //     {
+    //         dd($ex->getMessage());
+    //     }
+    // }
+
+    private function generateDelegatePDF($view, $data, $delegate)
+    {
+        $now = Carbon::now();
+        $delegate_name = $delegate->name;
+        $currentDayInArabic = $now->translatedFormat('l');
+        $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d'));
+        
+        // Prepare data for the PDF view
+        $data = array_merge($data, [
+            'delegate_name' => $delegate_name,
+            'currentDayInArabic' => $currentDayInArabic,
+            'currentDateInArabic' => $currentDateInArabic,
+        ]);
+
+        // Generate the PDF
+        $pdf = PDF::loadView($view, $data);
+
+        $pdf_file_name = str_replace('admin.delegates.delegate_', '', $view) . '_' . $now->format('Y-m-d') . '_' . floor(time() - 999999999);
+
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $pdf_file_name . '.pdf', [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $pdf_file_name . '.pdf"'
+        ]);
+    }
+
     public function delegate_daily_delivery_statement(Delegate $delegate)
     {
         try 
         {
-            $delegate_name = $delegate->name;
-            $now = Carbon::now(); 
-            $currentDayInArabic = $now->translatedFormat('l');
-            $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d')); 
             $shipments = Shipment::where([
                 ['delegate_id', $delegate->id],
                 ['is_deported', false]
@@ -207,21 +323,8 @@ class DelegateController extends Controller
                 ShipmentStatus::POSTPONED
             ])
             ->get();
-        
-            
-            $pdf = PDF::loadView('admin.delegates.delegate_daily_delivery_statement',compact('currentDayInArabic',
-                                                                                            'currentDateInArabic',
-                                                                                            'shipments',
-                                                                                            'delegate_name'));
 
-            $pdf_file_name = 'delegate_daily_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
-        
-            return response()->streamDownload(function() use ($pdf) {
-                echo $pdf->output();
-            }, $pdf_file_name.'.pdf', [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="'.$pdf_file_name.'.pdf"'
-            ]); 
+            return $this->generateDelegatePDF('admin.delegates.delegate_daily_delivery_statement', ['shipments' => $shipments], $delegate);
         }
         catch(Exception $ex)
         {
@@ -231,48 +334,39 @@ class DelegateController extends Controller
 
     public function delegate_final_delivery_statement(Delegate $delegate)
     {
-        $res_get_total_summation = $this->delegateService->get_total_summation($delegate);
-        $res_get_total_delegate_commission = $this->delegateService->get_total_delegate_commission($delegate);
-
-        if ($res_get_total_summation['code'] == 0) 
+        try 
         {
-            return back()->with('error',$res_get_total_summation['msg']);
-        }
+            $res_get_total_summation = $this->delegateService->get_total_summation($delegate);
+            $res_get_total_delegate_commission = $this->delegateService->get_total_delegate_commission($delegate);
 
-        if ($res_get_total_delegate_commission['code'] == 0) 
+            if ($res_get_total_summation['code'] == 0) 
+            {
+                dd($res_get_total_summation['msg']);
+            }
+
+            if ($res_get_total_delegate_commission['code'] == 0) 
+            {
+                dd($res_get_total_delegate_commission['msg']);
+            }
+
+            $total_summation = $res_get_total_summation['data'];
+            $total_delegate_commission = $res_get_total_delegate_commission['data'];
+            $shipments = Shipment::where([
+                ['delegate_id', $delegate->id],
+                ['is_deported', false]
+            ])->get();
+
+            return $this->generateDelegatePDF('admin.delegates.delegate_final_delivery_statement', [
+                'total_summation' => $total_summation,
+                'total_delegate_commission' => $total_delegate_commission,
+                'shipments' => $shipments
+            ], $delegate);
+        }
+        catch(Exception $ex)
         {
-            return back()->with('error',$res_get_total_delegate_commission['msg']);
+            dd($ex->getMessage());
         }
-
-        $now = Carbon::now();
-
-        $delegate_name = $delegate->name;
-        $currentDayInArabic = $now->translatedFormat('l');
-        $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d'));  
-        $total_summation = $res_get_total_summation['data'];
-        $total_delegate_commission = $res_get_total_delegate_commission['data'];
-        $shipments = Shipment::where([
-            ['delegate_id', $delegate->id],
-            ['is_deported', false]
-        ])->get();
-
-        $pdf = PDF::loadView('admin.delegates.delegate_final_delivery_statement',compact('delegate_name', 
-                                                                                         'currentDayInArabic', 
-                                                                                         'currentDateInArabic', 
-                                                                                         'total_summation', 
-                                                                                         'total_delegate_commission', 
-                                                                                         'shipments'));
-
-        $pdf_file_name = 'delegate_final_statement_'.$now->format('Y-m-d').'_'.floor(time()-999999999);
-        // return $pdf->stream('invoice.pdf');
-        return response()->streamDownload(function() use ($pdf) {
-            echo $pdf->output();
-        }, $pdf_file_name.'.pdf', [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$pdf_file_name.'.pdf"'
-        ]); 
     }
-
 
 
     public function get_initial_delivery_1st_btn_state(Delegate $delegate)

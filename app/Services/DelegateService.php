@@ -243,7 +243,7 @@ class DelegateService
             $delegates = Delegate::all();
             foreach ($delegates as $delegate) 
             {
-                $shipments = $delegate->nonDeportedShipments();
+                $shipments = $delegate->shipments()->nonDeported()->where('shipment_status_id', '!=',ShipmentStatus::POSTPONED)->get();
 
                 if ($shipments->isNotEmpty()) 
                 {
@@ -271,120 +271,49 @@ class DelegateService
             
             $shipments = $delegate->nonDeportedShipments();
 
-            if ($shipments->isEmpty()) 
-            {
-                return ['code' => 0, 'msg' => 'This delegate does not have any shipment'];
-            }
+            if ($shipments->isEmpty()) throw new Exception('This delegate does not have any shipment');
 
-            
            // Group shipments by shop_id
             $shipmentsByShop = $shipments->groupBy('shop_id');
             
             foreach ($shipmentsByShop as $shopId => $shipments) 
             {
-                
-                // Generate a unique bill number for the shop
-                // $billNumber = 'BILL-' . $shopId . '-' . time(); 
-                $billNumber = 'BILL-' . $shopId .'B'. $deportation_group_id;
-                // Alternatively, use Str::random(6) for a random string
-                // $billNumber = 'BILL-' . $shopId . '-' . Str::random(6);
-
-                $bill_tracking = BillTracking::where('bill_number',$billNumber)->first();
-                
-                if (!$bill_tracking) {
-                    $bill_tracking = BillTracking::create([
-                        'shop_id' => $shopId,
-                        'bill_number' => $billNumber,
-                        'bill_date' => now(),
-                        'bill_status_id' => BillStatus::PENDING,
-                        'deportation_group_id' => $deportation_group_id
-                    ]);
-                }
-               
-                // dd($bill_tracking);
-                $shipments->each(function ($shipment) use ($bill_tracking,$deportation_group_id) 
+                try 
                 {
-                    try 
-                    {
-                        $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($shipment->id);
-                        
-                        if ($res_get_delivery_price['code'] == 1) 
-                        {
-                            $delivery_price = $res_get_delivery_price['data'];
-                        
-                            $billData = [
-                                // 'bill_number' => $billNumber,
-                                'shop_id' => $shipment->shop_id,
-                                'delegate_id' => $shipment->delegate_id,
-                                'consignee_name' => $shipment->consignee_name,
-                                'consignee_phone' => $shipment->consignee_phone,
-                                'consignee_city' => $shipment->consignee_city,
-                                'consignee_region' => $shipment->consignee_region,
-                                'order_price' => $shipment->order_price,
-                                'value_on_delivery' => $shipment->value_on_delivery,
-                                'customer_notes' => $shipment->customer_notes,
-                                'delegate_notes' => $shipment->delegate_notes,
-                                'is_returned' => $shipment->is_returned,
-                                'shipment_status_id' => $shipment->shipment_status_id,
-                                'customer_delivery_price' => $delivery_price,
-                                // 'bill_status_id' => BillStatus::PENDING,
-                                'deportation_group_id' => $deportation_group_id,
-                                'bill_tracking_id' => $bill_tracking->id
-                            ];
                     
-                            $bill = Bill::create($billData);
+                    // Generate a unique bill number for the shop
+                    // $billNumber = 'BILL-' . $shopId . '-' . time(); 
+                    $billNumber = 'BILL-' . $shopId .'B'. $deportation_group_id;
+                    // Alternatively, use Str::random(6) for a random string
+                    // $billNumber = 'BILL-' . $shopId . '-' . Str::random(6);
 
-                            if ($bill) 
-                            { 
-                                $shipment->update(['is_deported' => true]);
-                            }
-                            else {
-                                throw new Exception('Error in storing new bill');
-                            }
-                        }
-                        else 
-                        {
-                            dd($res_get_delivery_price['msg']);
-                        }
-
-                        
-                       
-                    } 
-                    catch (Exception $ex) 
-                    {
-                        throw new Exception($ex->getMessage());
-                    }
-                });
+                    $bill_tracking = BillTracking::firstOrCreate(
+                        ['bill_number' => $billNumber],
+                        [
+                            'shop_id' => $shopId,
+                            'bill_date' => now(),
+                            'bill_status_id' => BillStatus::PENDING,
+                            'deportation_group_id' => $deportation_group_id
+                        ]
+                    );
+                
+                    if (!$bill_tracking) throw new Exception('Can not create or find bill_tracking');
+                    
+                    $this->create_bills($shipments, $bill_tracking, $deportation_group_id);
+                }
+                catch(Exception $ex)
+                {
+                    DB::rollBack();
+                    return ['code' => 0 ,'msg' => $ex->getMessage()];
+                }
+                
             }
 
             //Add deportation process to deportation_logs table
 
-            
-
            // check if it is the last deported report
            //then update deportation_group_id
-            $res_is_last_deported_report = $this->is_last_deported_report();
-
-            if ($res_is_last_deported_report['code'] == 0) 
-            {
-                dd($res_is_last_deported_report['msg']);
-            }
-
-            $is_last_deported_report = $res_is_last_deported_report['data'];
-
-            if ($is_last_deported_report) 
-            { 
-                //update bills status
-                BillTracking::where('deportation_group_id', $deportation_group_id)
-                             ->update(['bill_status_id' => BillStatus::UNDER_REVIEW]);
-
-                LastDeportationLog::updateOrCreate(
-                    ['id' => 1], 
-                    ['current_deportation_group_id' => $deportation_group_id + 1, 'last_deporation_time' => now()]
-                );
-                
-                
-            }
+            $this->handleDeportationLog($deportation_group_id);
             
             DB::commit();
             return ['code' => 1, 'data' => true];
@@ -397,6 +326,84 @@ class DelegateService
         }
     }
 
+
+    private function create_bills($shipments, $billTracking, $deportationGroupId)
+    {
+        $shipments->each(function ($shipment) use ($billTracking,$deportationGroupId) 
+        {
+            try 
+            {
+                $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($shipment->id);
+                
+                if ($res_get_delivery_price['code'] != 1) 
+                {
+                    DB::rollBack();
+                    throw new Exception($res_get_delivery_price['msg']);
+                }
+                
+                $delivery_price = $res_get_delivery_price['data'];
+                
+        
+                $bill = Bill::create([
+                    // 'bill_number' => $billNumber,
+                    'shop_id' => $shipment->shop_id,
+                    'delegate_id' => $shipment->delegate_id,
+                    'consignee_name' => $shipment->consignee_name,
+                    'consignee_phone' => $shipment->consignee_phone,
+                    'consignee_city' => $shipment->consignee_city,
+                    'consignee_region' => $shipment->consignee_region,
+                    'order_price' => $shipment->order_price,
+                    'value_on_delivery' => $shipment->value_on_delivery,
+                    'customer_notes' => $shipment->customer_notes,
+                    'delegate_notes' => $shipment->delegate_notes,
+                    'is_returned' => $shipment->is_returned,
+                    'shipment_status_id' => $shipment->shipment_status_id,
+                    'customer_delivery_price' => $delivery_price,
+                    // 'bill_status_id' => BillStatus::PENDING,
+                    'deportation_group_id' => $deportationGroupId,
+                    'bill_tracking_id' => $billTracking->id
+                ]);
+
+                if (!$bill) throw new Exception('Error in storing new bill');
+                
+                if ($shipment->shipment_status_id != ShipmentStatus::POSTPONED) 
+                {
+                    $shipment->update(['is_deported' => true]);
+                } 
+            } 
+            catch (Exception $ex) 
+            {
+                DB::rollBack();
+                return ['code' => 0 , 'msg' => $ex->getMessage()];
+            }
+        });
+    }
+
+
+    private function handleDeportationLog($deportationGroupId)
+    {
+        $res_is_last_deported_report = $this->is_last_deported_report();
+
+        if ($res_is_last_deported_report['code'] != 1) 
+        {
+            DB::rollBack();
+            dd($res_is_last_deported_report['msg']);
+        }
+       
+        $is_last_deported_report = $res_is_last_deported_report['data'];
+
+        if ($is_last_deported_report) 
+        { 
+            //update bills status
+            BillTracking::where('deportation_group_id', $deportationGroupId)
+                         ->update(['bill_status_id' => BillStatus::UNDER_REVIEW]);
+
+            LastDeportationLog::updateOrCreate(
+                ['id' => 1], 
+                ['current_deportation_group_id' => $deportationGroupId + 1, 'last_deporation_time' => now()]
+            );
+        }
+    }
 
     public function get_total_summation(Delegate $delegate)
     {
