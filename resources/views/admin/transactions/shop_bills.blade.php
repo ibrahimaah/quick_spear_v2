@@ -56,6 +56,12 @@
 											<input type="submit" class="btn btn-success btn-sm" value="تحديد الحالة كمدفوعة"/>
 										</form>
 									</div>
+									@else
+									<a onclick="confirm('برجاء تأكيد العملية') ? document.getElementById('delete_bill{{ $shop_bill->bill_number }}').submit() : '';" class="btn btn-sm btn-danger"> <i class="bi bi-trash"></i></a>
+
+									<form action="{{ route('admin.bills.destroy',['bill_number'=>$shop_bill->bill_number])}}" id="delete_bill{{ $shop_bill->bill_number }}" method="post">
+										@csrf 
+									</form>
 									@endif
 								</div> 
 								

@@ -322,6 +322,9 @@ class DelegateController extends Controller
                 ShipmentStatus::UNDER_DELIVERY,
                 ShipmentStatus::POSTPONED
             ])
+            ->orderBy('consignee_city')
+            ->orderBy('consignee_region')
+            ->orderBy('shop_id')
             ->get();
 
             return $this->generateDelegatePDF('admin.delegates.delegate_daily_delivery_statement', ['shipments' => $shipments], $delegate);
@@ -354,7 +357,11 @@ class DelegateController extends Controller
             $shipments = Shipment::where([
                 ['delegate_id', $delegate->id],
                 ['is_deported', false]
-            ])->get();
+            ])
+            ->orderBy('consignee_city')
+            ->orderBy('consignee_region')
+            ->orderBy('shop_id')
+            ->get();
 
             return $this->generateDelegatePDF('admin.delegates.delegate_final_delivery_statement', [
                 'total_summation' => $total_summation,

@@ -91,6 +91,7 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::get('view_shop_bills/{shop}/{bill_status_id}',[BillController::class,'view_shop_bills'])->name('payments.view_shop_bills');
     Route::get('prepare-bill/{bill_number}',[BillController::class,'prepare_bill'])->name('prepare_bill');
     Route::post('pay-bill',[BillController::class,'pay_bill'])->name('pay_bill');
+    Route::post('delete-bill/{bill_number}',[BillController::class,'delete_bill'])->name('bills.destroy');
     Route::post('/updateRequest/{id}', [TransactionController::class, 'updateRequest'])->name('requests.update');
     Route::resource('cities', CityController::class);
     Route::resource('regions', RegionController::class);

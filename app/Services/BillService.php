@@ -250,7 +250,39 @@ class BillService
     }
 
     
+    public function remove($bill_number)
+    {
+        DB::beginTransaction();
 
+        try 
+        {
+            $bill_tracking = BillTracking::where('bill_number', $bill_number)->first();
+
+            if ($bill_tracking) 
+            {
+                // Delete the related bills first
+                Bill::where('bill_tracking_id', $bill_tracking->id)->delete();
+                
+                // Then delete the bill_tracking
+                $bill_tracking->delete();
+                
+                DB::commit(); // Commit only if everything is successful
+
+                return ['code' => 1, 'data' => true];
+            } 
+            else 
+            {
+                DB::rollBack(); // Rollback if $bill_tracking is not found
+                throw new Exception("There is no bill_tracking record with bill_number : $bill_number");
+            }
+        } 
+        catch (Exception $ex) {
+            DB::rollBack(); // Rollback in case of any exceptions
+            return ['code' => 0 , 'msg' => $ex->getMessage()];
+        }
+
+        
+    }
     
 }
 

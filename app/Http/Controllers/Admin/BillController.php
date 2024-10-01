@@ -114,4 +114,17 @@ class BillController extends Controller
             dd($res_update_bill_status['msg']);
         }
     }
+
+    public function delete_bill($bill_number)
+    {
+        $res_remove = $this->billService->remove($bill_number);
+        if ($res_remove['code'] ==1 ) 
+        {
+            return back()->with('success',"تمت العملية بنجاح");
+        }
+        else 
+        {
+            dd($res_remove['msg']);
+        }
+    }
 }
