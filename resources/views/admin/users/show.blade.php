@@ -86,7 +86,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         
-                            <h5>اسعار التوصيل لهذا المستخدم</h5>
+                        <h5>اسعار التوصيل لهذا المستخدم</h5>
                             
                         
                         <div class="d-flex justify-content-between">
@@ -96,84 +96,84 @@
                             <a href="{{ url()->previous() }}" class="btn btn-danger d-block mx-1">رجوع</a>
                         </div>
 
-                                <div class="modal fade" id="store-price-modal" tabindex="-1">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <form method="post"
-                                                action="{{ route('admin.delivery_price.store') }}">
-                                                @csrf
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">
-                                                        إضافة سعر توصيل جديد
-                                                    </h5>
-                                                    <button type="button" 
-                                                            class="btn-close"
-                                                            data-bs-dismiss="modal" >
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="hidden" name="shop_id" value="{{ $user->shop->id }}">
-                                                    <div class="mb-3 row">
-                                                        <label class="col-sm-3 col-form-label" >
-                                                            اختر المحافظة
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select class="form-control" name="city" id="select-city" required>
-                                                                @foreach ($cities as $city)
-                                                                <option value="{{ $city->id }}">{{ $city->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            @error('city')
-                                                                <div class="invalid-feedback">
-                                                                    {{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-3 row">
-                                                        <label class="col-sm-3 col-form-label" >
-                                                            اختر المنطقة
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <select class="form-control" name="regions[]" id="select-region" multiple="multiple">
-                                                                
-                                                            </select>
-                                                            @error('region')
-                                                                <div class="invalid-feedback">
-                                                                    {{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-3 row">
-                                                        <label class="col-sm-3 col-form-label" >
-                                                            سعر التوصيل
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <input
-                                                                class="form-control @error('price') is-invalid @enderror"
-                                                                name="price" 
-                                                                type="text"
-                                                                value=""
-                                                                required 
-                                                            >
-                                                            @error('price')
-                                                                <div class="invalid-feedback">
-                                                                    {{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit"
-                                                            id="store-price-save-btn"
-                                                            class="btn btn-primary">إضافة</button> 
-                                                    
-                                                </div>
-                                            </form>
+                        <div class="modal fade" id="store-price-modal" tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <form method="post"
+                                        action="{{ route('admin.delivery_price.store') }}">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">
+                                                إضافة سعر توصيل جديد
+                                            </h5>
+                                            <button type="button" 
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal" >
+                                            </button>
                                         </div>
-                                    </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="shop_id" value="{{ $user->shop->id }}">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label" >
+                                                    اختر المحافظة
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="cities[]" id="select-city" multiple="multiple" required>
+                                                    @foreach ($cities as $city)
+                                                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                                    @endforeach
+                                                    </select>
+                                                    @error('city')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label" >
+                                                    اختر المنطقة
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" name="regions[]" id="select-region" multiple="multiple">
+                                                        
+                                                    </select>
+                                                    @error('region')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label" >
+                                                    سعر التوصيل
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <input
+                                                        class="form-control @error('price') is-invalid @enderror"
+                                                        name="price" 
+                                                        type="text"
+                                                        value=""
+                                                        required 
+                                                    >
+                                                    @error('price')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit"
+                                                    id="store-price-save-btn"
+                                                    class="btn btn-primary">إضافة</button> 
+                                            
+                                        </div>
+                                    </form>
                                 </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="card-body">
@@ -341,7 +341,7 @@
         }
 
         $(document).ready(function() 
-          {
+        {
             $('#select-city').select2(); 
             $('#select-region').select2(); 
             
@@ -351,7 +351,7 @@
             $('#select-region').select2({
                 dropdownParent: $('#store-price-modal')
             });  
-          });
+        });
 
 
           var initialCityId = $('#select-city').val();
@@ -361,10 +361,29 @@
 
             // Fetch regions on change event
             $('#select-city').on('change', function (e) {
-                var cityId = $("option:selected", this).val();
-                if (cityId) {
-                    fetchRegions(cityId);
+                /*
+                    في حال اختار محافظة ... يمكن تحديد مناطق
+                    في حال اختيار اكثر من محافظة عندئذ لا يمكن اختيار مناطق
+                */
+                let selectedOptions = $(this).val();
+
+                if (selectedOptions && selectedOptions.length > 0) {
+                    if (selectedOptions.length === 1) 
+                    { 
+                        var cityId = $("option:selected", this).val();
+                        if (cityId) 
+                        {
+                            fetchRegions(cityId);
+                        }
+                    } 
+                    else 
+                    {
+                        $('#select-region').empty(); 
+                    }
+                } else {
+                    console.log("No city selected");
                 }
+                
             });
       
       </script>

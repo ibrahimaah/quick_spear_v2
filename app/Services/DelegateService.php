@@ -264,7 +264,7 @@ class DelegateService
     {
         
         DB::beginTransaction();
-
+       
         try 
         {
             $deportation_group_id = LastDeportationLog::findOrFail(1)->value('current_deportation_group_id'); 
@@ -299,22 +299,31 @@ class DelegateService
                 
                     if (!$bill_tracking) throw new Exception('Can not create or find bill_tracking');
                     
-                    $this->create_bills($shipments, $bill_tracking, $deportation_group_id);
+                    $res_create_bills = $this->create_bills($shipments, $bill_tracking, $deportation_group_id);
+                    
+                    if ($res_create_bills['code'] != 1) 
+                    {
+                        throw new Exception($res_create_bills['msg']);
+                    }
+                    
                 }
                 catch(Exception $ex)
-                {
+                { 
                     DB::rollBack();
                     return ['code' => 0 ,'msg' => $ex->getMessage()];
                 }
                 
             }
-
+           
             //Add deportation process to deportation_logs table
 
            // check if it is the last deported report
            //then update deportation_group_id
-            $this->handleDeportationLog($deportation_group_id);
-            
+            $res_handleDeportationLog = $this->handleDeportationLog($deportation_group_id);
+            if ($res_handleDeportationLog['code'] != 1) 
+            {
+                throw new Exception($res_handleDeportationLog['msg']);
+            }
             DB::commit();
             return ['code' => 1, 'data' => true];
 
@@ -329,7 +338,10 @@ class DelegateService
 
     private function create_bills($shipments, $billTracking, $deportationGroupId)
     {
-        $shipments->each(function ($shipment) use ($billTracking,$deportationGroupId) 
+        
+        // $shipments->each(function ($shipment) use ($billTracking,$deportationGroupId) 
+        // {
+        foreach($shipments as $shipment)
         {
             try 
             {
@@ -337,7 +349,6 @@ class DelegateService
                 
                 if ($res_get_delivery_price['code'] != 1) 
                 {
-                    DB::rollBack();
                     throw new Exception($res_get_delivery_price['msg']);
                 }
                 
@@ -363,45 +374,60 @@ class DelegateService
                     'deportation_group_id' => $deportationGroupId,
                     'bill_tracking_id' => $billTracking->id
                 ]);
-
+                
                 if (!$bill) throw new Exception('Error in storing new bill');
                 
                 if ($shipment->shipment_status_id != ShipmentStatus::POSTPONED) 
                 {
                     $shipment->update(['is_deported' => true]);
                 } 
+                
+                
             } 
             catch (Exception $ex) 
             {
-                DB::rollBack();
+                DB::rollBack(); 
                 return ['code' => 0 , 'msg' => $ex->getMessage()];
             }
-        });
+        // });
+        }
+
+        return ['code' => 1 , 'data' => true];
     }
 
 
     private function handleDeportationLog($deportationGroupId)
     {
-        $res_is_last_deported_report = $this->is_last_deported_report();
+        try 
+        {
+            $res_is_last_deported_report = $this->is_last_deported_report();
 
-        if ($res_is_last_deported_report['code'] != 1) 
+            if ($res_is_last_deported_report['code'] != 1) 
+            {
+                DB::rollBack();
+                dd($res_is_last_deported_report['msg']);
+            }
+        
+            $is_last_deported_report = $res_is_last_deported_report['data'];
+
+            if ($is_last_deported_report) 
+            { 
+                //update bills status
+                BillTracking::where('deportation_group_id', $deportationGroupId)
+                            ->update(['bill_status_id' => BillStatus::UNDER_REVIEW]);
+
+                LastDeportationLog::updateOrCreate(
+                    ['id' => 1], 
+                    ['current_deportation_group_id' => $deportationGroupId + 1, 'last_deporation_time' => now()]
+                );
+            }
+
+            return ['code' => 1 , 'data' => true];
+        }
+        catch(Exception $ex)
         {
             DB::rollBack();
-            dd($res_is_last_deported_report['msg']);
-        }
-       
-        $is_last_deported_report = $res_is_last_deported_report['data'];
-
-        if ($is_last_deported_report) 
-        { 
-            //update bills status
-            BillTracking::where('deportation_group_id', $deportationGroupId)
-                         ->update(['bill_status_id' => BillStatus::UNDER_REVIEW]);
-
-            LastDeportationLog::updateOrCreate(
-                ['id' => 1], 
-                ['current_deportation_group_id' => $deportationGroupId + 1, 'last_deporation_time' => now()]
-            );
+            return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }
 

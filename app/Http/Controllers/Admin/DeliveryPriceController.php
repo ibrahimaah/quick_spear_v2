@@ -30,53 +30,79 @@ class DeliveryPriceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'shop_id' => 'required',
+    //         'cities' => 'required',
+    //         'regions' => 'nullable',
+    //         'price' => 'required|numeric|gt:0'
+    //     ]);
+          
+    //     /*
+    //         في حال اختار محافظة ... يمكن تحديد مناطق
+    //         في حال اختيار اكثر من محافظة عندئذ لا يمكن اختيار مناطق     
+    //     */
+    //     $locations_ids = $request->has('regions') ? $validated['regions'] : $validated['cities']; 
+    //     $data=[];
+    //     $i=0;
+    //     foreach($locations_ids as $location_id)
+    //     {
+    //         $data[$i] = [
+    //             'shop_id' => $validated['shop_id'],
+    //             'location_type' => 'App\Models'.$request->has('regions') ? '\Region' : '\City',
+    //             'location_id' => $location_id,
+    //             'price' => $validated['price'],
+    //         ];
+
+    //         $i++;
+    //     }
+  
+        
+    //     $res_store = $this->deliveryPriceService->store($data);
+        
+    //     if ($res_store['code'] == 1) 
+    //     {
+    //         return back()->with('success','تم حفظ البيانات بنجاح');
+    //     }else 
+    //     {
+    //         return back()->with('error',$res_store['msg']);
+    //     }
+    // }
+ 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'shop_id' => 'required',
-            'city' => 'required',
+            'cities' => 'required',
             'regions' => 'nullable',
-            'price' => 'required|numeric|gt:0'
+            'price' => 'required|numeric|gt:0',
         ]);
-         
-        if(!$request->has('regions'))
-        {
-            $data = [
+
+        /*
+            في حال اختار محافظة ... يمكن تحديد مناطق
+            في حال اختيار اكثر من محافظة عندئذ لا يمكن اختيار مناطق 
+        */
+
+        $locationType = $request->has('regions') ? \App\Models\Region::class : \App\Models\City::class;
+        $locations    = $validated['regions'] ?? $validated['cities'];
+
+        $data = array_map(function ($locationId) use ($validated, $locationType) {
+            return [
                 'shop_id' => $validated['shop_id'],
-                'location_type' => 'App\Models\City',
-                'location_id' => $validated['city'],
+                'location_type' => $locationType,
+                'location_id' => $locationId,
                 'price' => $validated['price'],
             ];
-        }
-        else 
-        {  
-            $regions_ids = $validated['regions']; 
-            $data=[];
-            $i=0;
-            foreach($regions_ids as $region_id)
-            {
-                $data[$i] = [
-                    'shop_id' => $validated['shop_id'],
-                    'location_type' => 'App\Models\Region',
-                    'location_id' => $region_id,
-                    'price' => $validated['price'],
-                ];
-    
-                $i++;
-            }
-        }
+        }, $locations); 
         
-        $res_store = $this->deliveryPriceService->store($data,true);
-        
-        if ($res_store['code'] == 1) 
-        {
-            return back()->with('success','تم حفظ البيانات بنجاح');
-        }else 
-        {
-            return back()->with('error',$res_store['msg']);
-        }
+        $resStore = $this->deliveryPriceService->store($data);
+
+        return back()->with(
+            $resStore['code'] === 1 ? 'success' : 'error',
+            $resStore['code'] === 1 ? 'تم حفظ البيانات بنجاح' : $resStore['msg']
+        );
     }
- 
 
      
 

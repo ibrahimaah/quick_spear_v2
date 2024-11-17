@@ -8,36 +8,47 @@ use App\Models\DeliveryPrice;
 use App\Models\Region;
 use App\Models\Shipment;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class DeliveryPriceService
 {
 
-    public function store($data,$has_regions = false)
+    public function store($data)
     {
         try 
         {
-            if (!$has_regions) 
+            DB::beginTransaction();
+
+            foreach ($data as $entry) 
             {
-                $delivery_price = DeliveryPrice::create($data);
-            }
-            else 
-            {
-                $delivery_price = DeliveryPrice::insert($data);
+                // Check if the price already exists for the given combination
+                $exists = DeliveryPrice::where('shop_id', $entry['shop_id'])
+                                       ->where('location_type', $entry['location_type'])
+                                       ->where('location_id', $entry['location_id']) 
+                                       ->exists();
+
+                // dd($exists);
+                if (!$exists) 
+                { 
+                    // Insert the record if it doesn't exist
+                    $deliveryPrice = DeliveryPrice::create($entry); // Use create() for single insertions
+                    if(!$deliveryPrice)
+                    {
+                        throw new Exception("Can not create DeliveyPrice");
+                    }
+                }
+                else 
+                {
+                    continue; // Skip the insertion for this entry
+                }   
             }
 
-
-            if ($delivery_price) 
-            {
-                return ['code' => 1 , 'data' => true];
-            }
-            else
-            {
-                throw new Exception('Can not store this deliveryPrice');
-            }
-           
+            DB::commit();
+            return ['code' => 1 , 'data' => true];  
         }
         catch(Exception $ex)
         {
+            DB::rollBack();
             return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }
