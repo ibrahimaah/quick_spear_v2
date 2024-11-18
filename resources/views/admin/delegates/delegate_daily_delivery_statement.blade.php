@@ -120,7 +120,11 @@
                         {{-- <td>{{ getStatusInfo($shipment->status) }}</td> --}}
                         <td></td>
                         <td>{{ $shipment->consignee_phone }}</td>
-                        <td class="text-right">{{ $shipment->notes }}</td>
+                        <td class="text-right">
+                             {{ $shipment->notes }} 
+                             <br>
+                             {{ $shipment->consignee_phone_2 ? 'رقم هاتف بديل : '.$shipment->consignee_phone_2 : '' }}
+                        </td>
                         
                     </tr>
                 @endforeach 

@@ -101,7 +101,7 @@ class DeliveryPriceController extends Controller
         return back()->with(
             $resStore['code'] === 1 ? 'success' : 'error',
             $resStore['code'] === 1 ? 'تم حفظ البيانات بنجاح' : $resStore['msg']
-        );
+        )->with('is_active_delivery_price_tab', true);
     }
 
      
@@ -122,11 +122,11 @@ class DeliveryPriceController extends Controller
         $res_update = $this->deliveryPriceService->update($validated['price'],$id);
         if ($res_update['code'] == 1) 
         {
-            return back()->with('success','تم تعديل السعر بنجاح');
+            return back()->with('success','تم تعديل السعر بنجاح')->with('is_active_delivery_price_tab', true);
         }
         else 
         {
-            return back('error',$res_update['msg']);
+            return back('error',$res_update['msg'])->with('is_active_delivery_price_tab', true);
         }
     }
 
@@ -141,11 +141,11 @@ class DeliveryPriceController extends Controller
         $res_destroy = $this->deliveryPriceService->destroy($id);
         if ($res_destroy['code'] == 1) 
         {
-            return redirect()->back()->with("success","تم حذف البيانات بنجاح");
+            return redirect()->back()->with("success","تم حذف البيانات بنجاح")->with('is_active_delivery_price_tab', true);
         }
         else 
         {
-            return redirect()->back()->with("error",$res_destroy['msg']);
+            return redirect()->back()->with("error",$res_destroy['msg'])->with('is_active_delivery_price_tab', true);
         }
     }
 

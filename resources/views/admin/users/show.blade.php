@@ -2,19 +2,23 @@
 @section('title', 'المستخدمين')
 @section('content')
 
+@php 
+ $isDeliveryPriceActiveTab = session('is_active_delivery_price_tab', false);
+@endphp 
+
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#main-info" type="button" role="tab">البيانات الرئيسية</button>
+      <button class="nav-link <?=$isDeliveryPriceActiveTab ? '' : 'active' ?>" id="home-tab" data-bs-toggle="tab" data-bs-target="#main-info" type="button" role="tab">البيانات الرئيسية</button>
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#shipments" type="button" role="tab">الشحن</button>
     </li> 
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="price-tab" data-bs-toggle="tab" data-bs-target="#delivery_prices" type="button" role="tab">أسعار التوصيل</button>
+        <button class="nav-link <?=$isDeliveryPriceActiveTab ? 'active' : '' ?>" id="price-tab" data-bs-toggle="tab" data-bs-target="#delivery_prices" type="button" role="tab">أسعار التوصيل</button>
     </li> 
   </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="main-info" role="tabpanel">
+    <div class="tab-pane fade <?=$isDeliveryPriceActiveTab ? '' : 'show active' ?>" id="main-info" role="tabpanel">
         <div class="row mt-5">
             <div class="col-sm-8">
                 <div class="d-flex justify-content-between">
@@ -78,7 +82,7 @@
         </div> 
         
     </div> 
-    <div class="tab-pane fade" id="delivery_prices" role="tabpanel">
+    <div class="tab-pane fade <?=$isDeliveryPriceActiveTab ? 'show active' : '' ?>" id="delivery_prices" role="tabpanel">
          
         <div class="row mt-5">
             <div class="col-sm-12">
