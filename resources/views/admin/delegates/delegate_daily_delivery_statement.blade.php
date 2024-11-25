@@ -116,14 +116,17 @@
                         <td>{{ $shipment->city_to->name }}</td>
                         <td>{{ $shipment->region->name }}</td>
                         <td>{{ $shipment->shop->name }}</td> 
-                        <td>{{ $shipment->order_price }}</td> 
-                        {{-- <td>{{ getStatusInfo($shipment->status) }}</td> --}}
+                        <td>
+                            {{ $shipment->order_price }} {!! $shipment->is_returned ? '<br> (مرتجع)' : '' !!} 
+                        </td>  
                         <td></td>
-                        <td>{{ $shipment->consignee_phone }}</td>
+                        <td>
+                            {{ $shipment->consignee_phone }}
+                            <br>
+                            {{ $shipment->consignee_phone_2 ? ', '.$shipment->consignee_phone_2 : '' }}
+                        </td>
                         <td class="text-right">
                              {{ $shipment->notes }} 
-                             <br>
-                             {{ $shipment->consignee_phone_2 ? 'رقم هاتف بديل : '.$shipment->consignee_phone_2 : '' }}
                         </td>
                         
                     </tr>
