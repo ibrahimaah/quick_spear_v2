@@ -486,4 +486,22 @@ class DelegateService
         }
     }
 
+
+    public function get_delegate_statements_ids(Delegate $delegate)
+    {
+        try 
+        {
+            $delegate_statements_ids = Bill::where('delegate_id', $delegate->id)
+                                           ->pluck('deportation_group_id')
+                                           ->unique()
+                                           ->toArray();
+                                           
+            return ['code' => 1 , 'data' => $delegate_statements_ids];
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0 , 'msg' => $ex->getMessage()];
+        }
+    }
+
 }

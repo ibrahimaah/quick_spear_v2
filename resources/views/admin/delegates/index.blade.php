@@ -3,7 +3,9 @@
 @section('content')
 
 
-
+@php 
+ use App\Models\Bill;
+@endphp 
 <div class="row">
 	<div class="col-sm-12">
 		<div class="card">
@@ -51,6 +53,13 @@
 									<a class="btn btn-primary"
 										href="{{ route('admin.delegates.get_shipments', ['delegate'=>$delegate->id]) }}">
 										عرض الشحنات
+									</a>
+									@endif
+
+									@if (Bill::where('delegate_id', $delegate->id)->exists())
+									<a class="btn btn-secondary"
+									   href="{{ route('admin.delegates.get_statements', ['delegate'=>$delegate->id]) }}">
+										 الكشوفات
 									</a>
 									@endif
 								</td>

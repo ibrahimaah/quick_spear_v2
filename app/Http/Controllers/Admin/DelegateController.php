@@ -6,6 +6,7 @@ use App\DataTables\ExpressDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDelegateRequest;
 use App\Http\Requests\UpdateDelegateRequest;
+use App\Models\Bill;
 use App\Models\City;
 use App\Models\Delegate;
 use App\Models\Shipment;
@@ -138,6 +139,25 @@ class DelegateController extends Controller
     {
         $dataTable = new ExpressDataTable(false,null,$delegate->id);
         return $dataTable->render('admin.delegates.show_shipments',compact(['delegate']));
+    }
+
+
+    public function get_statements(Delegate $delegate)
+    {
+        $res_get_delegate_statements_ids = $this->delegateService->get_delegate_statements_ids($delegate);
+        if ($res_get_delegate_statements_ids['code'] != 1) 
+        {
+            dd($res_get_delegate_statements_ids['msg']);
+        }
+
+        $delegate_statements_ids = $res_get_delegate_statements_ids['data'];
+
+        return view('admin.delegates.statements',['delegate' => $delegate, 'delegate_statements_ids' => $delegate_statements_ids]);
+    }
+
+    public function view_delegate_statment($delegate_statements_id)
+    {
+        
     }
 
     public function get_delegates_by_city_id(City $city)
@@ -417,4 +437,6 @@ class DelegateController extends Controller
             return back()->with('error',$res_deport['msg']);
         }
     }
+
+
 }

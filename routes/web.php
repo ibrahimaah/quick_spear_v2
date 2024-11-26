@@ -22,8 +22,9 @@ use App\Services\DeliveryPriceService;
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function(){
    
+        $bills = Bill::where('delegate_id', 24)->pluck('deportation_group_id')->unique()->toArray();
         
-        dd(BillTracking::find(1)->shop->name);
+        dd($bills); 
         
     });
 Route::group(

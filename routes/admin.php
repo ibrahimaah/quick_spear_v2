@@ -62,6 +62,8 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
 
     Route::resource('delegates', DelegateController::class);
     Route::get('get-shipments/{delegate}', [DelegateController::class,'get_shipments'])->name('delegates.get_shipments');
+    Route::get('get_statements/{delegate}', [DelegateController::class,'get_statements'])->name('delegates.get_statements');
+    Route::get('view-delegate-statment/{delegate_statements_id}', [DelegateController::class,'view_delegate_statment'])->name('delegates.view_delegate_statment');
     
     Route::get('get-delegates-by-city-id/{city}', [DelegateController::class,'get_delegates_by_city_id'])->name('delegates.get_delegates_by_city_id');
     Route::get('get-delegates-by-shipments-ids', [DelegateController::class,'get_delegates_by_shipments_ids'])->name('delegates.get_delegates_by_shipments_ids');
