@@ -11,6 +11,7 @@ use App\Models\City;
 use App\Models\Delegate;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
+use App\Models\Statement;
 use App\Services\DelegateService;
 use Carbon\Carbon;
 use Exception;
@@ -152,7 +153,8 @@ class DelegateController extends Controller
 
         $delegate_statements_ids = $res_get_delegate_statements_ids['data'];
 
-        return view('admin.delegates.statements',['delegate' => $delegate, 'delegate_statements_ids' => $delegate_statements_ids]);
+        $statements = Statement::whereIn('deportation_group_id',$delegate_statements_ids)->where('delegate_id',$delegate->id)->get();
+        return view('admin.delegates.statements',['statements' => $statements,'delegate'=>$delegate]);
     }
 
     public function view_delegate_statment($delegate_statements_id)
@@ -303,7 +305,7 @@ class DelegateController extends Controller
     //     }
     // }
 
-    private function generateDelegatePDF($view, $data, $delegate)
+    private function generateDelegatePDF($view, $data, $delegate,$deportation_group_id = null)
     {
         $now = Carbon::now();
         $delegate_name = $delegate->name;
@@ -322,12 +324,34 @@ class DelegateController extends Controller
 
         $pdf_file_name = str_replace('admin.delegates.delegate_', '', $view) . '_' . $now->format('Y-m-d') . '_' . floor(time() - 999999999);
 
-        return response()->streamDownload(function() use ($pdf) {
-            echo $pdf->output();
-        }, $pdf_file_name . '.pdf', [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $pdf_file_name . '.pdf"'
-        ]);
+
+
+        if($deportation_group_id)
+        {
+            $pdf_file_name = 'statment_delegate_'.$delegate->id.'_id_'.$deportation_group_id;
+            
+            $storagePath = 'pdf/' . $pdf_file_name; // Relative path for public storage
+
+            $publicPath = storage_path('app/public/' . $storagePath);
+        
+            // Store the PDF file
+            $pdf->save($publicPath);
+        
+            // Return the public path for the file
+            return $storagePath;
+        }
+        else 
+        {
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, $pdf_file_name . '.pdf', [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $pdf_file_name . '.pdf"'
+            ]);
+        }
+
+
+       
     }
 
     public function delegate_daily_delivery_statement(Delegate $delegate)
@@ -355,7 +379,7 @@ class DelegateController extends Controller
         }
     }
 
-    public function delegate_final_delivery_statement(Delegate $delegate)
+    public function delegate_final_delivery_statement(Delegate $delegate,$deportation_group_id = null)
     {
         try 
         {
@@ -387,7 +411,7 @@ class DelegateController extends Controller
                 'total_summation' => $total_summation,
                 'total_delegate_commission' => $total_delegate_commission,
                 'shipments' => $shipments
-            ], $delegate);
+            ], $delegate,$deportation_group_id);
         }
         catch(Exception $ex)
         {

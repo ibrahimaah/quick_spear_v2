@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Admin\DelegateController;
 use App\Models\Address;
 use App\Models\Bill;
 use App\Models\BillStatus;
@@ -11,6 +12,7 @@ use App\Models\Delegate;
 use App\Models\LastDeportationLog;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
+use App\Models\Statement;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -268,6 +270,20 @@ class DelegateService
         try 
         {
             $deportation_group_id = LastDeportationLog::findOrFail(1)->value('current_deportation_group_id'); 
+            
+            
+            $delegateController = new DelegateController($this);
+            $storagePath = $delegateController->delegate_final_delivery_statement($delegate,$deportation_group_id);
+            $statment = Statement::create([
+                'delegate_id' => $delegate->id,
+                'deportation_group_id' => $deportation_group_id,
+                'pdf_path' => $storagePath
+            ]);
+            if (!$statment) 
+            {
+                throw new Exception('Can not create a new statement');
+            }
+
             
             $shipments = $delegate->nonDeportedShipments();
 

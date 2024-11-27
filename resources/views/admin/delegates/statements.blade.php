@@ -9,9 +9,9 @@
 			<div class="card-header">
                 <div class="d-flex justify-content-between">
                     <h5>
-                        @if($delegate)
+                    
                         <span>الكشوفات الخاصة بالمندوب</span><span class="text-success"> {{ $delegate->name }}</span>
-                        @endif
+                     
                     </h5>
                     <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
                 </div>
@@ -30,11 +30,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($delegate_statements_ids as $delegate_statements_id)
+							@foreach($statements as $statement)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ 'test' }}</td>
-                                        <td><a class="btn btn-sm btn-success" href="{{ route('admin.delegates.view_delegate_statment',['delegate_statements_id' => $delegate_statements_id]) }}">عرض الكشف</a></td> 
+                                        <td>{{ $statement->created_at }}</td>
+                                        <td><a class="btn btn-sm btn-success" href="{{ asset('storage/' . $statement->pdf_path) }}">عرض الكشف</a></td> 
                                     </tr>
 							@endforeach
 						</tbody>
