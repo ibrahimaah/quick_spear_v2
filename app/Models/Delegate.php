@@ -19,6 +19,11 @@ class Delegate extends Model
         return $this->hasMany(Shipment::class);
     }
 
+    public function statements(): HasMany
+    {
+        return $this->hasMany(Statement::class);
+    }
+
     // public function cities(): HasMany
     // {
     //     return $this->hasMany(City::class);
@@ -60,6 +65,8 @@ class Delegate extends Model
     {
         return $this->shipments()->nonDeported()->hasDelegateCommission()->get();
     }
+
+
 
    
 }

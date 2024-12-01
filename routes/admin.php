@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShipmentImportController;
+use App\Http\Controllers\Admin\StatementController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Models\City;
 use App\Models\Delegate;
@@ -64,6 +65,8 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::get('get-shipments/{delegate}', [DelegateController::class,'get_shipments'])->name('delegates.get_shipments');
     Route::get('get_statements/{delegate}', [DelegateController::class,'get_statements'])->name('delegates.get_statements');
     Route::get('view-delegate-statment/{delegate_statements_id}', [DelegateController::class,'view_delegate_statment'])->name('delegates.view_delegate_statment');
+    Route::post('delete-statment/{statement}', [StatementController::class,'remove_statement'])->name('statements.destroy');
+    Route::post('delete-statments/{delegate}', [DelegateController::class,'remove_delegate_statements'])->name('delegate.statements.destroy');
     
     Route::get('get-delegates-by-city-id/{city}', [DelegateController::class,'get_delegates_by_city_id'])->name('delegates.get_delegates_by_city_id');
     Route::get('get-delegates-by-shipments-ids', [DelegateController::class,'get_delegates_by_shipments_ids'])->name('delegates.get_delegates_by_shipments_ids');

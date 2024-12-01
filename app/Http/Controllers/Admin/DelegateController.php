@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 use Illuminate\Support\Str;
 
@@ -459,6 +460,36 @@ class DelegateController extends Controller
         {
             dd($res_deport['msg']);
             return back()->with('error',$res_deport['msg']);
+        }
+    }
+
+
+    public function remove_delegate_statements(Delegate $delegate)
+    {
+        try 
+        {
+            // Get all statements related to the delegate
+            $statements = $delegate->statements;
+
+            foreach ($statements as $statement) 
+            {
+                // Check if the file exists in the storage
+                if ($statement->pdf_path && Storage::disk('public')->exists($statement->pdf_path)) 
+                {
+                    $statementFilePath = storage_path('app/public/' . $statement->pdf_path);
+                    // Delete the file from storage
+                    unlink($statementFilePath);
+                }
+
+                // Delete the statement record from the database
+                $statement->delete();
+            }
+
+            return back()->with('success', 'تم الحذف بنجاح');
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
         }
     }
 

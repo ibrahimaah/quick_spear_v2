@@ -4,7 +4,7 @@
 
 
 @php 
- use App\Models\Bill;
+ use App\Models\Statement;
 @endphp 
 <div class="row">
 	<div class="col-sm-12">
@@ -56,7 +56,7 @@
 									</a>
 									@endif
 
-									@if (Bill::where('delegate_id', $delegate->id)->exists())
+									@if (Statement::where('delegate_id', $delegate->id)->exists())
 									<a class="btn btn-secondary"
 									   href="{{ route('admin.delegates.get_statements', ['delegate'=>$delegate->id]) }}">
 										 الكشوفات

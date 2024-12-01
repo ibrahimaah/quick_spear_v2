@@ -18,13 +18,16 @@ use App\Models\Region;
 use App\Models\Shipment;
 use App\Models\Shop;
 use App\Services\DeliveryPriceService;
+use Illuminate\Support\Facades\Storage;
 
 // Route::post('testupload', [TestController::class, 'store']);
-    Route::get('/tmp', function(){
-   
-        $bills = Bill::where('delegate_id', 24)->pluck('deportation_group_id')->unique()->toArray();
-        
-        dd($bills); 
+    Route::get('/tmp', function()
+    {
+         // Check if the file exists in the storage
+         $statementFilePath = storage_path('app/public/' . 'pdf/statment_delegate_24_id_16');
+        //  dd($statementFilePath);
+         // Delete the file from storage
+         unlink($statementFilePath);
         
     });
 Route::group(
