@@ -98,19 +98,6 @@
                     <th colspan="4">مجموع أجور التوصيل : <span>{{ $total_customer_delivery_price }}</span>
                     </th> 
                 </tr>
-
-                @php 
-                  if ($total_value_on_delivery > $total_customer_delivery_price) 
-                    {
-                        $total_due_to_customer_amount = $total_value_on_delivery - $total_customer_delivery_price;
-                        $total_due_from_customer_amount = 0;
-                    }
-                    else 
-                    {
-                        $total_due_from_customer_amount = $total_customer_delivery_price - $total_value_on_delivery;
-                        $total_due_to_customer_amount =0;
-                    }
-                @endphp 
                 <tr>
                     <th colspan="4">له : <span>{{ $total_due_to_customer_amount }}</span>
                     </th>

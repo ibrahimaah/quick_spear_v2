@@ -283,6 +283,19 @@ class BillService
 
         
     }
+
+    public function get_total_due_to_customer_amount()
+    {
+        try 
+        {
+            $total_due_to_customer_amount = BillTracking::where('bill_status_id',BillStatus::UNDER_REVIEW)->sum('bill_value');
+            return ['code' => 1 , 'data' => $total_due_to_customer_amount]; 
+        }
+        catch(Exception $ex)
+        {
+            return ['code' => 0 , 'msg' => $ex->getMessage()];
+        }
+    }
     
 }
 

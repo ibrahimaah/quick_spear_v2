@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\PaymentRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
+use App\Services\BillService;
 use App\Services\ShopService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -25,22 +26,28 @@ class TransactionController extends Controller
     //     $this->middleware(['super_admin']);
     // }
 
-    public function __construct(private ShopService $shopService)
+    public function __construct(private ShopService $shopService,private BillService $billService)
     {
         
     }
     public function view_all_payment_requests()
     {
         $res_get_all_shops = $this->shopService->get_all_shops();
-        if ($res_get_all_shops['code'] == 1) 
+        $res_get_total_due_to_customer_amount = $this->billService->get_total_due_to_customer_amount();
+
+        if ($res_get_all_shops['code'] !== 1) 
         {
-            return view('admin.transactions.payment_requests',['shops'=>$res_get_all_shops['data']]);
-        }
-        else 
-        {
-            // return redirect()->back()->with('Error',)
             dd($res_get_all_shops['msg']);
         }
+
+        if ($res_get_total_due_to_customer_amount['code'] !== 1) 
+        {
+            dd($res_get_total_due_to_customer_amount['msg']);
+        }
+
+        
+        return view('admin.transactions.payment_requests',['shops'=>$res_get_all_shops['data'],'total_due_to_customer_amount' => $res_get_total_due_to_customer_amount['data']]);
+     
         
     }
 

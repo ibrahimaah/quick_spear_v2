@@ -17,12 +17,16 @@ use App\Models\LastDeportationLog;
 use App\Models\Region;
 use App\Models\Shipment;
 use App\Models\Shop;
+use App\Services\BillService;
 use App\Services\DeliveryPriceService;
 use Illuminate\Support\Facades\Storage;
 
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function()
     {
+        $billService = new BillService();
+        $res = $billService->get_total_due_to_customer_amount();
+        dd($res['data']);
          // Check if the file exists in the storage
          $statementFilePath = storage_path('app/public/' . 'pdf/statment_delegate_24_id_16');
         //  dd($statementFilePath);

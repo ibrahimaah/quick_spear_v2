@@ -12,7 +12,10 @@
 	      <div class="card-header">
 	        <div class="d-flex justify-content-between">
 				<h5>طلبات الدفع</h5>
-				{{-- <h4>عدد الطلبات غير المدفوعة</h4> --}}
+				<h5 class="mb-0 text-secondary">
+					<span>المجموع :</span> 
+					<span class="fw-bold">{{ $total_due_to_customer_amount }}</span>
+				</h5>
 				<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
 			</div>
 	      </div>
