@@ -835,5 +835,6 @@
     "Rejected With Pay":"رفض الاستلام مع دفع أجور",
     "Postponed":"مؤجلة",
     "No Response":"لا رد بعد الوصول لزبون",
-    "Canceled":"إلغاء"
+    "Canceled":"إلغاء",
+    "Payment Made":"تم الدفع",
 }

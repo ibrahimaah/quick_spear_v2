@@ -48,12 +48,13 @@ class TransactionController extends Controller
         // }
 
         $shops = $res_get_all_shops['data'];
-        
+
         $sortedShops = $shops->sortByDesc(function($shop) {
             return $shop->billsTracking->where('bill_status_id', BillStatus::UNDER_REVIEW)->isNotEmpty();
         });
 
         $num_of_unpaid_bills = BillTracking::where('bill_status_id',BillStatus::UNDER_REVIEW)->count();
+        
         return view('admin.transactions.payment_requests',['shops'=> $sortedShops,'num_of_unpaid_bills' => $num_of_unpaid_bills]);
      
         
