@@ -1,6 +1,9 @@
 @extends('pages.user.express.index')
 
+@section('active2', 'active')
 @section('expressContent')
+
+
 
 {{-- @php
     $shipment_status_id = App\Models\ShipmentStatus::UNDER_REVIEW;

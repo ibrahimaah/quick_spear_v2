@@ -17,7 +17,7 @@
     @if (session()->has('success'))
         <div class="text-center py-4 text-light my-3 bg-success">{{ session()->get('success') }}</div>
     @endif
-    <a class="btn btn-primary mb-3" href="{{ route('front.express.create') }}">{{ __('Create') }}</a>
+    
     
     @php 
         $status_numbers = config('constants.STATUS_NUMBER');

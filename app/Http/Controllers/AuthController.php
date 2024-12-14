@@ -61,16 +61,19 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+       
         $rules = [
             'password'  => 'required|string',
         ];
 
         $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
+        if ($validator->fails()) 
+        {
             return back()->withErrors($validator)->withInput();
         }
         // dd($request->all());
-        try {
+        try 
+        {
             $type = $request->type;
             // $user = User::whereIn($type, [$request->email, $request->phone, $request->name])->first();
             // if ($user && $user->status == 0) {
@@ -78,20 +81,21 @@ class AuthController extends Controller
             // }
             // $credentials = request()->only(['phone', 'password']);
             // dd(auth('team')->attempt($credentials, true));
-            if ($type == 'phone') {
+            if ($type == 'phone') 
+            {
                 $credentials = request()->only(['phone', 'password']);
-                if (auth()->attempt($credentials, true) or auth('team')->attempt($credentials, true)) {
-                    return redirect()->route('front.user.dashboard');
+                if (auth()->attempt($credentials, true)) {
+                    return redirect()->route('front.express.index');
                 }
             } elseif ($type == 'email') {
                 $credentials = request()->only(['email', 'password']);
-                if (auth()->attempt($credentials, true) or auth('team')->attempt($credentials, true)) {
-                    return redirect()->route('front.user.dashboard');
+                if (auth()->attempt($credentials, true)) {
+                    return redirect()->route('front.express.index');
                 }
             } elseif ($type == 'name') {
                 $credentials = request()->only(['name', 'password']);
-                if (auth()->attempt($credentials, true) or auth('team')->attempt($credentials, true)) {
-                    return redirect()->route('front.user.dashboard');
+                if (auth()->attempt($credentials, true)) {
+                    return redirect()->route('front.express.index');
                 }
             }
             return back()->with('error', 'البيانات غير صحيحة');

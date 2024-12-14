@@ -19,8 +19,13 @@
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li>
                         <a href="{{ route('front.express.index') }}" class="nav-link link-dark @yield('active1')">
-                            {{ __('Local Shipping') }}
+                            الشحنات
                         </a>
+
+                        <a href="{{ route('front.express.create') }}" class="nav-link link-dark @yield('active2')">
+                            إنشاء شحنة
+                        </a>
+                         
                     </li>
                     {{--<li>
                         <a href="{{ route('front.contact') }}" class="nav-link link-dark">

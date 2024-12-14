@@ -59,25 +59,27 @@
                 <i class="bi bi-list mobile-nav-toggle"></i>
                 <ul class="justify-content-between">
                     @if (auth()->check())
-                    <li><a class="nav-link mx-1 scrollto {{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('front.user.dashboard') }}">{{ __('Home') }}</a></li>
-                    <li><a class="nav-link mx-1 scrollto {{ request()->is('express') || request()->is('express/*') ? 'active' : '' }}" href="{{ route('front.express.index') }}">{{ __('Shipping') }}</a></li>
+                    {{-- <li><a class="nav-link mx-1 scrollto {{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('front.user.dashboard') }}">{{ __('Home') }}</a></li> --}}
+                    {{-- <li><a class="nav-link mx-1 scrollto {{ request()->is('express') || request()->is('express/*') ? 'active' : '' }}" href="{{ route('front.express.index') }}">{{ __('Shipping') }}</a></li> --}}
                     {{-- <li><a class="nav-link mx-1 scrollto" href="{{ route('front.payments.index') }}">{{ __('Payments') }}</a></li> --}}
-                    <li><a class="nav-link mx-1 scrollto {{ request()->is('profile/*') ? 'active' : '' }}" href="{{ route('front.user.account') }}">{{ __('Account') }}</a></li>
-                    @elseif(auth('team')->check() && auth('team')->user()->role == 'all')
+                    
+                    {{-- <li><a class="nav-link mx-1 scrollto {{ request()->is('profile/*') ? 'active' : '' }}" href="{{ route('front.user.account') }}">{{ __('Account') }}</a></li> --}}
+
+                    {{-- @elseif(auth('team')->check() && auth('team')->user()->role == 'all')
                     <li><a class="nav-link mx-1 scrollto {{ request()->is('express') || request()->is('express/*') ? 'active' : '' }}" href="{{ route('front.express.index') }}">{{ __('Shipping') }}</a></li>
-                    <li><a class="nav-link mx-1 scrollto" href="{{ route('front.payments.index') }}">{{ __('Payments') }}</a></li>
+                    <li><a class="nav-link mx-1 scrollto" href="{{ route('front.payments.index') }}">{{ __('Payments') }}</a></li> --}}
                     @endif
-                    @if (auth('team')->check() && auth('team')->user()->role == 'shipping')
+                    {{-- @if (auth('team')->check() && auth('team')->user()->role == 'shipping')
                         <li><a class="nav-link mx-1 scrollto {{ request()->is('express') || request()->is('express/*') ? 'active' : '' }}" href="{{ route('front.express.index') }}">{{ __('Shipping') }}</a></li>
                     @endif
                     @if (auth('team')->check() && auth('team')->user()->role == 'payments')
                         <li><a class="nav-link mx-1 scrollto" href="{{ route('front.payments.index') }}">{{ __('Payments') }}</a></li>
-                    @endif
+                    @endif --}}
                     @php
                     use \Mcamara\LaravelLocalization\LaravelLocalization;
                     $loc = new LaravelLocalization();
                     @endphp
-                    <li><a class="nav-link mx-1 scrollto" href="{{ app()->getLocale() == 'ar' ? $loc->getLocalizedURL('en') : $loc->getLocalizedURL('ar') }}">{{ app()->getLocale() == 'en' ? 'عربي' : 'English' }}</a></li>
+                    {{-- <li><a class="nav-link mx-1 scrollto" href="{{ app()->getLocale() == 'ar' ? $loc->getLocalizedURL('en') : $loc->getLocalizedURL('ar') }}">{{ app()->getLocale() == 'en' ? 'عربي' : 'English' }}</a></li> --}}
                 </ul>
             </nav>
             <!-- .navbar -->
@@ -90,7 +92,8 @@
                     </a>
                     <ul>
                         <li><a href="{{ route('front.user.account') }}">{{ __('Profile') }}</a></li>
-                        <li><a href="{{ route('front.user.dashboard') }}">{{ __('Dashboard') }}</a></li>
+                        <li><a href="{{ route('front.express.index') }}">الشحنات</a></li>
+                        {{-- <li><a href="{{ route('front.user.dashboard') }}">{{ __('Dashboard') }}</a></li> --}}
                         <li><a href="{{ route('front.logout') }}">{{ __('Logout') }}</a></li>
                     </ul>
                 </div>

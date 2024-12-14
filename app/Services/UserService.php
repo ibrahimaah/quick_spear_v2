@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Shipment;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -37,7 +38,7 @@ class UserService
     {
         try 
         {
-            $user->password = $new_pwd;
+            $user->password = Hash::make($new_pwd);
 
             if ($user->save()) 
             { 

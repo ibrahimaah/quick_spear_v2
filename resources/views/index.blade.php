@@ -4,20 +4,20 @@
     <!-- ======= Services Section ======= -->
     <section id="services" class="row services">
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-6 py-5">
                     <h1 class="text-dark my-4 fw-bold"
                         style="font-size: calc(1.7rem + 1.6901vw - 6.33788px);line-heightv: calc(1.7rem + 2.2535vw - 8.45062px);">
                         {{ __('The best and fastest way to deliver your shipments in simple steps') }}
                     </h1>
-                    @if (auth()->check())
+                    {{-- @if (auth()->check())
                     <a href="{{ route('front.user.account') }}" class="btn btn-primary py-3 px-5 btn-lg">{{ __('Profile') }}</a>
-                    @else
+                    @else --}}
                     {{-- <a href="{{ route('front.get_register') }}" class="btn btn-primary py-3 px-5 btn-lg">{{ __('Register') }}</a> --}}
-                    @endif
+                    {{-- @endif --}}
                     {{-- <a class="btn btn-primary py-3 px-5 btn-lg" href="#">اشحن لمرة واحدة</a> --}}
                 </div>
-                <div class="col-md-6 mt-4 mt-lg-0">
+                {{-- <div class="col-md-6 mt-4 mt-lg-0">
                     <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active mr-2 tabtitle activeTab" id="home-tab" data-bs-toggle="tab"
@@ -99,7 +99,7 @@
                             <a href="{{ route('front.contact') }}" class="btn btn-primary py-3 px-5 btn-lg">{{ __('Contact us') }}</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

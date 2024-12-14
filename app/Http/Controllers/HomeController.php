@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ExpressDataTable;
 use App\Models\ShipmentRate;
 use App\Models\Setting;
 use App\Models\ContactExpress as Contact;
+use App\Models\ShipmentStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -18,6 +21,13 @@ class HomeController extends Controller
         //     'website_email' => 'info@shipybuy.com',
         //     'first_char_account_number' => 'ACC',
         // ]);
+        if(Auth()->check())
+        {
+            $dataTable = new ExpressDataTable(false,Auth::user()->shop->id);
+            return $dataTable->render('pages.user.express.shipping',['shipment_statuses' => ShipmentStatus::all()]);
+        }
+        
+        
         return view('index');
     }
 

@@ -48,7 +48,7 @@
                         src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}"
                         alt="" class="img-fluid"></a>
             </div>
-
+{{-- 
             <nav id="navbar" class="navbar justify-content-between">
                 <i class="bi bi-list mobile-nav-toggle"></i>
                 <ul class="justify-content-between">
@@ -69,7 +69,7 @@
                             href="{{ app()->getLocale() == 'ar' ? $loc->getLocalizedURL('en') : $loc->getLocalizedURL('ar') }}">{{ app()->getLocale() == 'en' ? 'عربي' : 'English' }}</a>
                     </li>
                 </ul>
-            </nav>
+            </nav> --}}
             <!-- .navbar -->
             <nav id="navbar" class="navbar order-last order-lg-0">
                 @if (auth()->check() || auth('team')->check())
@@ -80,7 +80,9 @@
                         </a>
                         <ul>
                             <li><a href="{{ route('front.user.account') }}">{{ __('Profile') }}</a></li>
-                            <li><a href="{{ route('front.user.dashboard') }}">{{ __('Dashboard') }}</a></li>
+                            {{-- <li><a href="{{ route('front.user.dashboard') }}">{{ __('Dashboard') }}</a></li> --}}
+                            <li><a href="{{ route('front.express.index') }}">الشحنات</a></li>
+                            
                             <li><a href="{{ route('front.logout') }}">{{ __('Logout') }}</a></li>
                         </ul>
                     </div>
