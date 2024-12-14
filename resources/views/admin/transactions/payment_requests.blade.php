@@ -10,13 +10,31 @@
 	<div class="col-sm-12">
 	    <div class="card">
 	      <div class="card-header">
-	        <div class="d-flex justify-content-between">
-				<h5>طلبات الدفع</h5>
-				<h5 class="mb-0 text-secondary">
-					<span>المجموع :</span> 
-					<span class="fw-bold">{{ $total_due_to_customer_amount }}</span>
-				</h5>
-				<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+	        <div class="row justify-content-between align-items-center">
+				<div class="col-sm-4">
+					<h5>طلبات الدفع</h5>
+				</div>
+
+				{{-- <p class="h5 mb-0 text-secondary">
+					<span>عدد الفواتير الغير مدفوعة :</span> 
+					<span class="fw-bold">{{ $num_of_unpaid_bills }}</span>
+				</p> --}}
+
+				<div class="col-sm-4">
+					<div class="card h-100 text-center shadow">
+					  <div class="card-body"> 
+						<div class="display-4 text-success mb-2">
+							<i class="bi bi-file-earmark-text"></i>
+						  </div>
+						<h2 class="card-title mb-3">{{ $num_of_unpaid_bills }}</h2>
+						<p class="card-text text-muted">عدد الفواتير الغير مدفوعة </p>
+					  </div>
+					</div>
+				  </div>
+
+				<div class="col-sm-4 d-flex justify-content-end">
+					<a href="{{ url()->previous() }}" class="btn btn-danger d-block w-50">رجوع</a>
+				</div>
 			</div>
 	      </div>
 

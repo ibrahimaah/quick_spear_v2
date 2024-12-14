@@ -85,6 +85,8 @@ class BillController extends Controller
 
             BillTracking::where('bill_number', $bill_number)
                         ->update(['bill_value' => $total_due_to_customer_amount]);
+            
+            
 
             $pdf = PDF::loadView('admin.transactions.bill', compact(
                 'orders', 
@@ -96,7 +98,7 @@ class BillController extends Controller
                 'total_value_on_delivery', 
                 'total_customer_delivery_price', 
                 'total_due_to_customer_amount', 
-                'total_due_from_customer_amount'
+                'total_due_from_customer_amount',
             ));
             
             return $pdf->stream('bill-'.$bill_number.'.pdf');

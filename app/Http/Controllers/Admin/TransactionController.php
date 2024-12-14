@@ -11,6 +11,8 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\PaymentRequest;
 use App\Http\Controllers\Controller;
+use App\Models\BillStatus;
+use App\Models\BillTracking;
 use App\Models\Shop;
 use App\Services\BillService;
 use App\Services\ShopService;
@@ -33,20 +35,26 @@ class TransactionController extends Controller
     public function view_all_payment_requests()
     {
         $res_get_all_shops = $this->shopService->get_all_shops();
-        $res_get_total_due_to_customer_amount = $this->billService->get_total_due_to_customer_amount();
+        // $res_get_total_due_to_customer_amount = $this->billService->get_total_due_to_customer_amount();
 
         if ($res_get_all_shops['code'] !== 1) 
         {
             dd($res_get_all_shops['msg']);
         }
 
-        if ($res_get_total_due_to_customer_amount['code'] !== 1) 
-        {
-            dd($res_get_total_due_to_customer_amount['msg']);
-        }
+        // if ($res_get_total_due_to_customer_amount['code'] !== 1) 
+        // {
+        //     dd($res_get_total_due_to_customer_amount['msg']);
+        // }
 
+        $shops = $res_get_all_shops['data'];
         
-        return view('admin.transactions.payment_requests',['shops'=>$res_get_all_shops['data'],'total_due_to_customer_amount' => $res_get_total_due_to_customer_amount['data']]);
+        $sortedShops = $shops->sortByDesc(function($shop) {
+            return $shop->billsTracking->where('bill_status_id', BillStatus::UNDER_REVIEW)->isNotEmpty();
+        });
+
+        $num_of_unpaid_bills = BillTracking::where('bill_status_id',BillStatus::UNDER_REVIEW)->count();
+        return view('admin.transactions.payment_requests',['shops'=> $sortedShops,'num_of_unpaid_bills' => $num_of_unpaid_bills]);
      
         
     }
