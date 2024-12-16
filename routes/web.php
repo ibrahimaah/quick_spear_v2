@@ -5,21 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExpressController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ShipmentImportController;
-use App\Http\Controllers\TestController;
-use App\Models\Bill;
-use App\Models\BillTracking;
-use App\Models\City;
-use App\Models\LastDeportationLog;
-use App\Models\Region;
-use App\Models\Shipment;
-use App\Models\Shop;
-use App\Services\BillService;
-use App\Services\DeliveryPriceService;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ShipmentImportController; 
+use App\Services\BillService; 
 
 // Route::post('testupload', [TestController::class, 'store']);
     Route::get('/tmp', function()
@@ -60,32 +49,34 @@ Route::group(
             Route::get('/success', [PaymentController::class, 'success'])->name('success');
             Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->name('user.dashboard');
             Route::controller(UserDashboardController::class)->prefix('profile')->name('user.')->group(function () {
-                Route::get('/account-details', 'account')->name('account');
-                Route::get('/local_price', 'localPrice')->name('localPrice');
-                Route::post('/account-details/update', 'account_update')->name('account_update');
+                // Route::get('/account-details', 'account')->name('account');
+                Route::get('/edit-password', 'edit_pwd')->name('edit_pwd');
+                Route::post('/update-password', 'update_pwd')->name('update_pwd');
+                // Route::get('/local_price', 'localPrice')->name('localPrice');
+                // Route::post('/account-details/update', 'account_update')->name('account_update');
                 // address
                 Route::get('/address', 'address')->name('address');
                 Route::post('/address/store', 'address_store')->name('address_store');
                 Route::get('/address/delete/{id}', 'address_delete')->name('address_delete');
 
                 // documents
-                Route::get('/documents', 'documents')->name('documents');
-                Route::post('/documents/store', 'documents_store')->name('documents_store');
-                Route::get('/documents/delete/{id}', 'documents_delete')->name('documents_delete');
+                // Route::get('/documents', 'documents')->name('documents');
+                // Route::post('/documents/store', 'documents_store')->name('documents_store');
+                // Route::get('/documents/delete/{id}', 'documents_delete')->name('documents_delete');
  
 
                 // payment methods
-                Route::get('/payment_methods', 'payment_methods')->name('payment_methods');
-                Route::post('/payment_method/store', 'payment_method_store')->name('payment_method_store');
-                Route::get('/payment_method/delete/{id}', 'payment_method_delete')->name('payment_method_delete');
+                // Route::get('/payment_methods', 'payment_methods')->name('payment_methods');
+                // Route::post('/payment_method/store', 'payment_method_store')->name('payment_method_store');
+                // Route::get('/payment_method/delete/{id}', 'payment_method_delete')->name('payment_method_delete');
 
                 // payment methods
-                Route::get('/teams', 'teams')->name('teams');
-                Route::post('/team/store', 'team_store')->name('team_store');
-                Route::get('/team/delete/{id}', 'team_delete')->name('team_delete');
+                // Route::get('/teams', 'teams')->name('teams');
+                // Route::post('/team/store', 'team_store')->name('team_store');
+                // Route::get('/team/delete/{id}', 'team_delete')->name('team_delete');
 
-                Route::get('/aramex_account', 'aramex_account')->name('aramex_account');
-                Route::post('/aramex_account/update', 'aramex_account_update')->name('aramex_account_update');
+                // Route::get('/aramex_account', 'aramex_account')->name('aramex_account');
+                // Route::post('/aramex_account/update', 'aramex_account_update')->name('aramex_account_update');
             });
             Route::controller(ExpressController::class)->prefix('express')->name('express.')->group(function () {
                 Route::get('/', 'index')->name('index');

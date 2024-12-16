@@ -16,6 +16,7 @@ use App\Models\ShipmentRate;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Services\AddressService;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -307,10 +308,35 @@ class UserDashboardController extends Controller
         }
     }
 
-
-    public function localPrice()
+    public function edit_pwd()
     {
-        $rates = ShipmentRate::latest()->get();
-        return view('pages.user.account.rates', compact('rates'));
+        return view('pages.user.account.edit_pwd');
     }
+    public function update_pwd(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'current_password' => ['required','current_password'],
+            'new_password' => ['required','confirmed','min:6'],
+            'new_password_confirmation' => ['required']
+        ]);
+
+
+        if ($validator->fails()) { return back()->withErrors($validator)->withInput($request->all()); }
+
+        $res_update_pwd = (new UserService)->update_pwd($request->new_password,auth()->user());
+
+        if ($res_update_pwd['code'] == 1)
+        {
+            return redirect()->back()->with("success", "تم تعديل كلمة المرور بنجاح");
+        }
+        else 
+        {
+            dd($res_update_pwd['msg']);
+        }
+    }
+    // public function localPrice()
+    // {
+    //     $rates = ShipmentRate::latest()->get();
+    //     return view('pages.user.account.rates', compact('rates'));
+    // }
 }
