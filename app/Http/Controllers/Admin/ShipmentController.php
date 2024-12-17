@@ -18,6 +18,7 @@ use App\Models\Region;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use App\Models\Shop;
+use App\Services\DeliveryPriceService;
 use App\Services\ShipmentService;
 use Exception;
 use Illuminate\Http\Request;
@@ -85,7 +86,6 @@ class ShipmentController extends Controller
         
         $data = $validated;
         $data['is_returned'] = $storeAdminShipmentRequest->input('is_returned', 0);
-        // $data['shipment_status_id'] = ShipmentStatus::UNDER_REVIEW;
         $data['shipment_status_id'] = ShipmentStatus::UNDER_DELIVERY;
         
         $res_store = $this->shipmentService->store($data);
@@ -118,39 +118,55 @@ class ShipmentController extends Controller
     public function edit(Shipment $shipment)
     {
         
-        $city = City::findOrFail($shipment->consignee_city);
-        $regions = $city->regions; 
-        $delegates = $city->delegates;  
-        $shops = Shop::all();
-        $shipment_statuses = ShipmentStatus::all(); 
-        
-
-         // Previous shipment
-        $previousShipmentId = null;
-        $previousShipment = Shipment::where('id', '<', $shipment->id)->orderBy('id', 'desc')->where('is_deported',false)->first();
-
-        if ($previousShipment) 
+        try 
         {
-            $previousShipmentId = $previousShipment->id;
-        }
-        else 
-        {
+            $city = City::findOrFail($shipment->consignee_city);
+            $regions = $city->regions; 
+            $delegates = $city->delegates;  
+            $shops = Shop::all();
+            $shipment_statuses = ShipmentStatus::all(); 
+            
+
+            // Previous shipment
             $previousShipmentId = null;
-        }
+            $previousShipment = Shipment::where('id', '<', $shipment->id)->orderBy('id', 'desc')->where('is_deported',false)->first();
 
-        // Next shipment
-        $nextShipmentId = null;
-        $nextShipment = Shipment::where('id', '>', $shipment->id)->orderBy('id', 'asc')->where('is_deported',false)->first();
-        if ($nextShipment) 
-        {
-            $nextShipmentId = $nextShipment->id;
-        }
-        else 
-        {
+            if ($previousShipment) 
+            {
+                $previousShipmentId = $previousShipment->id;
+            }
+            else 
+            {
+                $previousShipmentId = null;
+            }
+
+            // Next shipment
             $nextShipmentId = null;
-        }
+            $nextShipment = Shipment::where('id', '>', $shipment->id)->orderBy('id', 'asc')->where('is_deported',false)->first();
+            if ($nextShipment) 
+            {
+                $nextShipmentId = $nextShipment->id;
+            }
+            else 
+            {
+                $nextShipmentId = null;
+            }
 
-        return view('admin.shipments.edit', compact('shipment','delegates','shops','shipment_statuses','regions','previousShipmentId','nextShipmentId'));
+            $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($shipment->id);
+                    
+            if ($res_get_delivery_price['code'] != 1) 
+            {
+                throw new Exception($res_get_delivery_price['msg']);
+            }
+            
+            $delivery_price = $res_get_delivery_price['data'];
+            
+            return view('admin.shipments.edit', compact('shipment','delegates','shops','shipment_statuses','regions','previousShipmentId','nextShipmentId','delivery_price'));
+        }
+        catch(Exception $ex)
+        {
+            dd($ex->getMessage());
+        }
     }
 
     public function update(UpdateAdminShipmentRequest $updateAdminShipmentRequest, Shipment $shipment)

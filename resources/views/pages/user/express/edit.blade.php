@@ -125,6 +125,7 @@
 
 
                 <button class="btn btn-primary btn-lg my-3" type="submit">{{ __('Save') }}</button>
+                <a href="{{ url()->previous() }}" class="btn btn-danger btn-lg my-3">رجوع</a>
             </form>
         </div>
     </div>

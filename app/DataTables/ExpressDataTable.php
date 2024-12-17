@@ -270,8 +270,8 @@ class ExpressDataTable extends DataTable
                 $this->column('customer_notes',__('Customer notes'),false,false,false,false),
                 $this->column('delegate_notes', __('Delegate notes')),
                 $this->column('created_at',__('Created.'),false,false,false,false),
-                $this->column('accepted_by_admin_at',__('accepted_by_admin_at'),false,false,false,false), 
-                $this->column('admin_actions',__('Actions'),false,false,false,false), 
+                // $this->column('accepted_by_admin_at',__('accepted_by_admin_at'),false,false,false,false), 
+                $this->column('user_actions',__('Actions'),false,false,false,false), 
         ];
     }
     // elseif (!$this->is_from_admin && !$this->delegate_id)  //user datatable

@@ -132,11 +132,11 @@ class ExpressController extends Controller
 
         if($res_store['code'] == 1)
         {
-            return redirect()->route('front.express.index')->with('success', 'تم اضافة الشحنة بنجاح');
+            return redirect()->route('front.express.create')->with('success', 'تم اضافة الشحنة بنجاح');
         }
         else 
         {
-            return redirect()->route('front.express.index')->with('faild', 'حدث خطأ في إضافة الشحنة');
+            return redirect()->route('front.express.create')->with('faild', 'حدث خطأ في إضافة الشحنة');
         } 
     }
 

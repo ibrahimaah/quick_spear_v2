@@ -205,6 +205,7 @@ $rejected_with_pay = App\Models\ShipmentStatus::REJECTED_WITH_PAY;
 
                         --}}
                         </div>
+                        <input type="hidden" name="deliver_price" id="delivery_price" value="{{ $delivery_price }}" />
                         <button class="btn btn-primary btn-lg my-3" id="save_shipment_btn" type="submit">حفظ</button>
                         <a href="{{ url()->previous() }}" class="btn btn-danger">رجوع</a>
                     </form>
@@ -332,10 +333,16 @@ $rejected_with_pay = App\Models\ShipmentStatus::REJECTED_WITH_PAY;
             $('#shipment_status_select').on('change',function(e){
                 var shipment_status_id = $("option:selected", this).val();
                 var order_price_input_val = $('#order_price_input').val();
-                if (shipment_status_id == {{ $deliverd }} || shipment_status_id == {{ $rejected_with_pay }}) 
+                var delivery_price_input_val = $('#delivery_price').val();
+                if (shipment_status_id == {{ $deliverd }}) 
                 {
                     $('#value_on_delivery_input').val(order_price_input_val)
-                } else {
+                } 
+                else if(shipment_status_id == {{ $rejected_with_pay }})
+                {
+                    $('#value_on_delivery_input').val(delivery_price_input_val)
+                }
+                else {
                     $('#value_on_delivery_input').val(0)
                 }
             });

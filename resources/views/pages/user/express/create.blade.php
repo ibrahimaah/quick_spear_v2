@@ -32,7 +32,9 @@
         <div class="alert text-center py-4 text-light my-3 alert-danger">{{ session()->get('error') }}</div>
     @endif
     @if (session()->has('success'))
-        <div class="alert text-center py-4 text-light my-3 alert-success">{{ session()->get('success') }}</div>
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+          </div>
     @endif
     {{-- <div class="card-header"> --}}
         {{-- <h4>#1</h4> --}}
@@ -146,6 +148,8 @@
                     </div>
                 </div>
                 <button class="btn btn-primary btn-lg my-3" id="save_shipment_btn" type="submit">{{ __('Save') }}</button>
+                <a href="{{ url()->previous() }}" class="btn btn-danger btn-lg my-3">رجوع</a>
+
             </form>
         </div>
     </div>
