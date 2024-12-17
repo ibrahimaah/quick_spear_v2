@@ -9,10 +9,12 @@ use App\Models\CityDelegate;
 use App\Models\Shipment;
 use App\Models\ShipmentStatus;
 use App\Models\Shop;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use PDF;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -25,9 +27,17 @@ class BillService
             
             $shop = Shop::findOrFail($shop_id);
 
-            $shop_bills = BillTracking::where('shop_id', $shop->id)
+            if ($bill_status_id) 
+            {
+                $shop_bills = BillTracking::where('shop_id', $shop->id)
                                   ->where('bill_status_id', $bill_status_id)
                                   ->get();
+            }
+            else 
+            {
+                $shop_bills = BillTracking::where('shop_id', $shop->id)->get();
+            }
+            
              
            if ($shop_bills->isNotEmpty()) 
            {
@@ -295,6 +305,73 @@ class BillService
         {
             return ['code' => 0 , 'msg' => $ex->getMessage()];
         }
+    }
+    
+    public function prepare_bill($bill_number)
+    {
+        
+       try 
+       {
+            $bill_tracking = BillTracking::where('bill_number',$bill_number)->firstOrFail();
+
+            $shop = $bill_tracking->shop; 
+
+            $client_name = $shop->user->name;
+
+            $bill_date_day = get_arabic_day_from_bill_number($bill_number);
+
+            $bill_date =Carbon::parse($bill_tracking->bill_date)->format('Y-m-d');
+
+            $orders = $bill_tracking->bills;
+             
+
+            $res_get_amount_due_from_and_to_customer = $this->get_amount_due_from_and_to_customer($orders);
+            
+            if ($res_get_amount_due_from_and_to_customer['code'] == 0) 
+            {
+                throw new Exception($res_get_amount_due_from_and_to_customer['msg']);
+            }
+
+            $total_value_on_delivery = $res_get_amount_due_from_and_to_customer['data']['total_value_on_delivery'];
+            $total_customer_delivery_price = $res_get_amount_due_from_and_to_customer['data']['total_customer_delivery_price'];
+
+            if ($total_value_on_delivery > $total_customer_delivery_price) 
+            {
+                $total_due_to_customer_amount = $total_value_on_delivery - $total_customer_delivery_price;
+                $total_due_from_customer_amount = 0;
+            } 
+            else 
+            {
+                $total_due_from_customer_amount = $total_customer_delivery_price - $total_value_on_delivery;
+                $total_due_to_customer_amount = 0;
+            }
+
+            BillTracking::where('bill_number', $bill_number)
+                        ->update(['bill_value' => $total_due_to_customer_amount]);
+            
+            
+
+            $pdf = PDF::loadView('admin.transactions.bill', compact(
+                'orders', 
+                'shop', 
+                'bill_number', 
+                'client_name', 
+                'bill_date_day', 
+                'bill_date', 
+                'total_value_on_delivery', 
+                'total_customer_delivery_price', 
+                'total_due_to_customer_amount', 
+                'total_due_from_customer_amount',
+            ));
+            
+            return $pdf->stream('bill-'.$bill_number.'.pdf');
+       }
+       catch(Exception $ex)
+       {
+            return ['code' => 0 , 'msg' => $ex->getMessage()];
+       }
+       
+        
     }
     
 }

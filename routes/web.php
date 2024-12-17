@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExpressController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AuthController; 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShipmentImportController; 
 use App\Services\BillService; 
@@ -94,19 +95,23 @@ Route::group(
                 // Route::get('/printSelectedBulk', 'printSelectedBulkGet')->name('printSelectedBulk.get');
                 // Route::post('register', [AuthController::class, 'register'])->name('register');
             });
-            Route::get('shipments_import', [ShipmentImportController::class, 'create'])->name('get_shipments_import');
-            Route::post('shipments_import', [ShipmentImportController::class, 'import_store'])->name('shipments_import');
-            Route::controller(PaymentController::class)->prefix('payments')->name('payments.')->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/{id}', 'show')->name('show');
-                Route::post('/export', 'export')->name('export');
-                Route::post('/PaymentRequestSend', 'PaymentRequestSend')->name('PaymentRequestSend');
-                Route::post('exportPayment', 'exportPayment')->name('exportPayment');
-                Route::post('checked', 'checked')->name('checked');
-                // Route::post('/shipment_update', 'shipment_update')->name('shipment_update');
-                // Route::get('/{id}', 'show')->name('show');
-                // Route::post('register', [AuthController::class, 'register'])->name('register');
-            });
+            // Route::get('shipments_import', [ShipmentImportController::class, 'create'])->name('get_shipments_import');
+            // Route::post('shipments_import', [ShipmentImportController::class, 'import_store'])->name('shipments_import');
+            // Route::controller(PaymentController::class)->prefix('payments')->name('payments.')->group(function () {
+            //     Route::get('/', 'index')->name('index');
+            //     Route::get('/{id}', 'show')->name('show');
+            //     Route::post('/export', 'export')->name('export');
+            //     Route::post('/PaymentRequestSend', 'PaymentRequestSend')->name('PaymentRequestSend');
+            //     Route::post('exportPayment', 'exportPayment')->name('exportPayment');
+            //     Route::post('checked', 'checked')->name('checked');
+            //     // Route::post('/shipment_update', 'shipment_update')->name('shipment_update');
+            //     // Route::get('/{id}', 'show')->name('show');
+            //     // Route::post('register', [AuthController::class, 'register'])->name('register');
+            // });
+
+
+            Route::get('view_shop_bills/{shop}',[BillController::class,'view_shop_bills'])->name('view_bills');
+            Route::get('prepare-bill/{bill_number}',[BillController::class,'prepare_bill'])->name('prepare_bill');
 
             Route::get('logout', function () {
                 auth()->logout();

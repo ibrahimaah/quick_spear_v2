@@ -9,6 +9,11 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 @section('content')
+    @php 
+        use App\Models\Shop;
+        $shop = Shop::where('user_id',auth()->id())->firstOrFail();
+        $shop_id = $shop->id;
+    @endphp 
     <section class="container-fluid mt-0 pt-0">
         <div class="row bg-light">
             <div class="col-lg-2">
@@ -24,6 +29,10 @@
 
                         <a href="{{ route('front.express.create') }}" class="nav-link link-dark @yield('active2')">
                             إنشاء شحنة
+                        </a>
+
+                        <a href="{{ route('front.view_bills',['shop' => $shop_id]) }}" class="nav-link link-dark @yield('active3')">
+                            عرض الفواتير
                         </a>
                          
                     </li>
