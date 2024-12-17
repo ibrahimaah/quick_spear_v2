@@ -294,11 +294,18 @@ class BillService
         
     }
 
-    public function get_total_due_to_customer_amount()
+    public function get_total_due_to_customer_amount($shop_id=null)
     {
         try 
         {
-            $total_due_to_customer_amount = BillTracking::where('bill_status_id',BillStatus::UNDER_REVIEW)->sum('bill_value');
+            if ($shop_id) 
+            { 
+                $total_due_to_customer_amount = BillTracking::where('bill_status_id',BillStatus::UNDER_REVIEW)->where('shop_id',$shop_id)->sum('bill_value');
+            }
+            else 
+            {
+                $total_due_to_customer_amount = BillTracking::where('bill_status_id',BillStatus::UNDER_REVIEW)->sum('bill_value');
+            }
             return ['code' => 1 , 'data' => $total_due_to_customer_amount]; 
         }
         catch(Exception $ex)
@@ -306,6 +313,8 @@ class BillService
             return ['code' => 0 , 'msg' => $ex->getMessage()];
         }
     }
+
+ 
     
     public function prepare_bill($bill_number)
     {

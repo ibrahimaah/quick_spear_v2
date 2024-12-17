@@ -19,25 +19,32 @@ class BillController extends Controller
     {
         // $res_get_bills_by_shop_id = $this->billService->get_bills_by_shop_id_and_bill_status($shop->id,$bill_status_id);
         $res_get_bills_by_shop_id = $this->billService->get_bills_by_shop_id_and_bill_status($shop->id,$bill_status_id);
+        $res_get_total_due_to_customer_amount = $this->billService->get_total_due_to_customer_amount($shop->id);
 
-        if ($res_get_bills_by_shop_id['code'] == 1) 
+        if ($res_get_total_due_to_customer_amount['code'] == 0) 
         {
-            $shop_bills = $res_get_bills_by_shop_id['data']; 
-            // dd($shop_bills);
-            return view('pages.user.bills.index',compact(['shop_bills','shop']));
+             dd($res_get_total_due_to_customer_amount['msg']);
         }
-        else 
+        if ($res_get_bills_by_shop_id['code'] == 0) 
         {
-            dd($res_get_bills_by_shop_id);
+             dd($res_get_bills_by_shop_id['msg']);
         }
+
+        
+        $shop_bills = $res_get_bills_by_shop_id['data']; 
+        $total_due_to_customer_amount = $res_get_total_due_to_customer_amount['data'];
+        return view('pages.user.bills.index',compact(['shop_bills','shop','total_due_to_customer_amount']));
+    
     }
 
     public function prepare_bill($bill_number)
     {
        $res_prepare_bill = $this->billService->prepare_bill($bill_number);
+       
        if ($res_prepare_bill['code'] == 0) 
        {
             dd($res_prepare_bill['msg']);
        }
+      
     }
 }

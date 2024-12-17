@@ -12,6 +12,10 @@
 	      <div class="card-header">
 	        <div class="d-flex justify-content-between">
 				<h5> الفواتير الخاصة بالمتجر <a href="{{ route('admin.users.show',['user' => $shop->user->id]) }}" class="text-success" target="_blank">{{ $shop->name }}</a></h5>
+				<div>
+					<span>المجموع : </span>
+					<span>{{ $total_due_to_customer_amount }}</span>
+				</div>
 				<a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
 			</div>
 	      </div>
@@ -32,9 +36,6 @@
 	            </thead>
 	              <tbody>
 	              	@foreach($shop_bills as $shop_bill)
-					
-					  	 
-
 						<tr>
 							<td>{{ ++$loop->iteration }}</td>
 							<td>{{ $shop_bill->bill_number }}</td>  
