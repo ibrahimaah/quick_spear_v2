@@ -550,6 +550,17 @@ class ExpressController extends Controller
         // $bulk = $request->bulk;
     }
 
+    public function view_invoice(Shipment $shipment)
+    {
+        // $shipmentService = new ShipmentService();
+        // $res_prepare_invoice = $shipmentService->prepare_invoice($shipment->id);
+        // if ($res_prepare_invoice['code'] == 0) 
+        // {
+        //     dd($res_prepare_invoice['msg']);
+        // }
+
+        return view('pages.user.bills.invoice',['shipment' => $shipment]);
+    }
 
     
 

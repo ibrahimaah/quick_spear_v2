@@ -92,6 +92,7 @@ Route::group(
                 Route::post('/delete/{shipment}', 'destroy')->name('destroy');
                 Route::post('/export', 'export')->name('export');
                 Route::post('/printSelectedBulk', 'printSelectedBulk')->name('printSelectedBulk');
+                Route::get('/view-invoice/{shipment}', 'view_invoice')->name('view_invoice');
                 // Route::get('/printSelectedBulk', 'printSelectedBulkGet')->name('printSelectedBulk.get');
                 // Route::post('register', [AuthController::class, 'register'])->name('register');
             });

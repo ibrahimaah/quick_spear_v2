@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
+
+use PDF;
 class ShipmentService
 {
     public function store($data)
@@ -184,6 +186,23 @@ class ShipmentService
             return ['code' => 0, 'msg' => $ex->getMessage()];
         }
     }
+
+    // public function prepare_invoice($shipment_id)
+    // {
+    //    try 
+    //    {
+    //         $shipment = Shipment::findOrFail($shipment_id);
+    //         $pdf = PDF::loadView('pages.user.bills.invoice', compact(
+    //             'shipment',
+    //         ));
+            
+    //         return $pdf->stream('bill-'.$shipment_id.'.pdf');
+    //    }
+    //    catch(Exception $ex)
+    //    {
+    //         return ['code' => 0 , 'msg' => $ex->getMessage()];
+    //    }
+    // }
 
 
     
