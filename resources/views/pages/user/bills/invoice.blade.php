@@ -8,8 +8,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
     @media print {
-        button {
-            display: none; /* Hide the button during print */
+        #print-btn,#back-btn {
+            display: none !important; /* Hide the button during print */
         }  
     }
 
@@ -17,7 +17,7 @@
 </head>
 <body>
  
-<div class="container w-50 mt-5 border border-3 border-dark">
+<div class="container mt-5 border border-3 border-dark">
   <div class="row p-4"> 
     <div class="col-sm-6 border-start border-3 border-dark">
         <div class="row align-items-center">
@@ -138,7 +138,8 @@
 
 <!-- Print Button -->
 <div class="text-center mt-4">
-    <button class="btn btn-primary" onclick="printPage()">طباعة</button>
+    <button class="btn btn-primary" onclick="printPage()" id="print-btn">طباعة</button>
+    <a href="{{ route('front.express.index') }}" class="btn btn-danger" id="back-btn">رجوع</a>
 </div>
 
 <!-- Move script tag to the bottom -->
