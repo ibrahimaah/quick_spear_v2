@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\City;
+use App\Models\ReturnStatus;
 use App\Models\Shipment;
 use App\Models\ShipmentRate;
 use App\Models\ShipmentStatus;
@@ -27,18 +28,17 @@ class ExpressDataTable extends DataTable
     // private $user_id;
     private $shop_id;
     private $delegate_id;
+    private $is_return;
     //$user_id , to show shipments for each user in dashboard
     //$delegate_id to show delegate shipments
     // public function __construct($filterData,$is_from_admin=false,$user_id=null,$delegate_id=null)
-    public function __construct($is_from_admin=false,$shop_id=null,$delegate_id=null)
+    public function __construct($is_from_admin=false,$shop_id=null,$delegate_id=null,$is_return = false)
     {
-        
         // $this->filterData = $filterData;
         $this->is_from_admin = $is_from_admin;
         $this->shop_id = $shop_id;
         $this->delegate_id = $delegate_id;
-
-        
+        $this->is_return = $is_return;
     }
 
 
@@ -134,6 +134,10 @@ class ExpressDataTable extends DataTable
                 return 'لا يوجد';
             }
         })
+        ->addColumn('return_status', function ($query) 
+        {
+            return __(ReturnStatus::findOrFail($query->return_status_id)->name);
+        })
         ->addColumn('user_actions', function ($query) 
         {
             return view('components.user-actions',['query'=>$query]);
@@ -156,8 +160,17 @@ class ExpressDataTable extends DataTable
         { 
             return view('components.delegate-shipment-actions',['query'=>$query,'shipment_statuses' => ShipmentStatus::all()]);;
         })
-        ->rawColumns(['actions','admin_actions','shipment_status_id','checkbox','notes','delegate_shipment_actions'])
-            ->setRowId('id');
+        ->addColumn('return_shipment_actions', function ($query) 
+        { 
+            return view('components.return-shipment-actions',['query'=>$query,'return_statuses' => ReturnStatus::all()]);;
+        })
+        ->rawColumns(['actions',
+                      'admin_actions',
+                      'shipment_status_id',
+                      'checkbox',
+                      'notes',
+                      'delegate_shipment_actions',
+                      'return_shipment_actions'])->setRowId('id');
     }
 
     /**
@@ -176,6 +189,18 @@ class ExpressDataTable extends DataTable
         if ($this->delegate_id) 
         {
             return $model->newQuery()->where('delegate_id',$this->delegate_id)->where('is_deported',false)->orderBy('id','DESC');
+        }
+
+        if ($this->is_return) 
+        {
+            return $model->newQuery()
+                         ->where(function ($query) {
+                            $query->whereIn('shipment_status_id', config('constants.RETURNED_STATUSES'))
+                                  ->orWhere('is_returned', true);
+                            })
+                         ->where('is_deported',true)
+                         ->where('return_status_id','<>',ReturnStatus::DELETED)
+                         ->orderBy('id','DESC');
         }
  
         return $model->newQuery()->where('shop_id',$this->shop_id)->orderBy('id','DESC');
@@ -251,6 +276,22 @@ class ExpressDataTable extends DataTable
                 $this->column('shipment_status_id', __('Action Status'),false,true,false,false), 
                 $this->column('notes', __('Notes'),false,false,false,false),
                 $this->column('delegate_shipment_actions', __('Actions')), 
+            ];
+        }
+        elseif($this->is_return)
+        {
+            $columns = [ 
+                $this->column('id',__('order_number'),false,true,false,false),
+                $this->column('shop_name',__('shop_name'),false,false,false,false),
+                $this->column('consignee_city',__('consignee_city'),false,false,false,false),
+                $this->column('consignee_region',__('consignee_region'),false,false,false,false),
+                $this->column('consignee_phone', __('Phone'),false,true,false,false),
+                $this->column('order_price', __('Order price'),false,false,false,false),
+                $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false),
+                $this->column('shipment_status_id', __('Action Status'),false,true,false,false), 
+                $this->column('return_status', __('Return Status'),false,false,false,false), 
+                // $this->column('notes', __('Notes'),false,false,false,false),
+                $this->column('return_shipment_actions', __('Actions')), 
             ];
         }
         elseif ($this->shop_id)  //user datatable in admin dashboard

@@ -20,5 +20,11 @@
     "accepted_by_admin_at":"Accepted by admin at",
     "order_number":"Order Number",
     "shop_name":"Shop Name",
+    "NOT_RECEIVED_FROM_DELEGATE":"Not Received From Delegate",
+    "RECEIVED_FROM_DELEGATE":"Received From Delegate",
+    "DELIVERED_TO_THE_SHOP":"Delivered To The Shop",
+    "Return Status" : "Return Status",
+    "NOT_SET" : "Not Set",
+    "UNDER_REVIEW": "Under Review"
     
 }

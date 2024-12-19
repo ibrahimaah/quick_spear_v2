@@ -28,21 +28,21 @@
                         <a class="sidebar-link" href="{{ route('admin.dashboard') }}"><i
                                 data-feather="airplay"></i><span class="">لوحة التحكم</span></a>
                     </li>
-                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
+                    {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                                 data-feather="users"></i><span class="">المشرفين</span></a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.admins.index') }}">عرض المشرفين</a></li>
                             <li><a href="{{ route('admin.admins.create') }}">اضافة مشرف</a></li>
-                        </ul>
-                        <span class="badge rounded-pill badge-success">{{ App\Models\Admin::count() }}</span>
-                    </li>
+                        </ul> --}}
+                        {{-- <span class="badge rounded-pill badge-success">{{ App\Models\Admin::count() }}</span> --}}
+                    {{-- </li> --}}
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                                 data-feather="users"></i><span class="">المستخدمين</span></a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.users.index') }}">عرض المستخدمين</a></li>
                             <li><a href="{{ route('admin.users.create') }}">اضافة مستخدم</a></li>
                         </ul>
-                        <span class="badge rounded-pill badge-success">{{ App\Models\User::count() }}</span>
+                        {{-- <span class="badge rounded-pill badge-success">{{ App\Models\User::count() }}</span> --}}
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
                         <i data-feather="users"></i><span class="">المندوبين</span></a>
@@ -50,24 +50,29 @@
                             <li><a href="{{ route('admin.delegates.index') }}">عرض المندوبين</a></li>
                             <li><a href="{{ route('admin.delegates.create') }}">اضافة مندوب</a></li>
                         </ul>
-                        <span class="badge rounded-pill badge-success">{{ App\Models\Delegate::count() }}</span>
+                        {{-- <span class="badge rounded-pill badge-success">{{ App\Models\Delegate::count() }}</span> --}}
+                    </li>
+                    <li class="sidebar-list">
+                        <a class="sidebar-link" href="{{ route('admin.delegates.index') }}"><i
+                                data-feather="users"></i><span class="">عرض المندوبين</span></a>
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
-                                data-feather="map-pin"></i><span class="">المدن</span></a>
+                                data-feather="map-pin"></i><span class="">المدن والمناطق</span></a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.cities.index') }}">عرض المدن</a></li>
                             <li><a href="{{ route('admin.cities.create') }}"> اضافة مدينة</a></li>
+                            <li><a href="{{ route('admin.regions.index') }}">عرض المناطق</a></li>
+                            <li><a href="{{ route('admin.regions.create') }}"> اضافة منطقة</a></li>
                         </ul>
-                        <span class="badge rounded-pill badge-success">{{ App\Models\City::count() }}</span>
+                        {{-- <span class="badge rounded-pill badge-success">{{ App\Models\City::count() }}</span> --}}
                     </li>
-                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
+                    {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                         data-feather="map-pin"></i><span class="">المناطق</span></a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.regions.index') }}">عرض المناطق</a></li>
                             <li><a href="{{ route('admin.regions.create') }}"> اضافة منطقة</a></li>
-                        </ul>
-                        <span class="badge rounded-pill badge-success">{{ App\Models\Region::count() }}</span>
-                    </li>
+                        </ul> 
+                    </li> --}}
                     {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                                 data-feather="flag"></i><span class="">العناوين</span></a>
                         <ul class="sidebar-submenu">
@@ -91,6 +96,7 @@
                             <li><a href="{{ route('admin.shipments.create') }}">إضافة شحنة</a></li>
                             
                             <li><a href="{{ route('admin.shipments.index') }}">عرض كل الشحنات</a></li>
+                            <li><a href="{{ route('admin.returns') }}">المرتجعات</a></li>
                            {{-- @php 
                                 $statuses = config('constants.STATUS_NUMBER');
                             @endphp 
@@ -99,7 +105,7 @@
                             @endforeach
                             --}}
                         </ul>
-                        <span class="badge rounded-pill badge-success">{{ App\Models\Shipment::where('is_deported',false)->count() }}</span>
+                        {{-- <span class="badge rounded-pill badge-success">{{ App\Models\Shipment::where('is_deported',false)->count() }}</span> --}}
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                         data-feather="flag"></i><span class="">المدفوعات</span></a>
@@ -109,6 +115,7 @@
                             <li><a href="{{ route('admin.payments.view_payments') }}">عرض كل المدفوعات </a></li>
                         </ul>
                     </li>
+                    
                     {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                                 data-feather="flag"></i><span class="">رسائل الدعم</span></a>
                         <ul class="sidebar-submenu">

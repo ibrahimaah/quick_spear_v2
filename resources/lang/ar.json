@@ -836,5 +836,11 @@
     "Postponed":"مؤجلة",
     "No Response":"لا رد بعد الوصول لزبون",
     "Canceled":"إلغاء",
-    "Payment Made":"تم الدفع"
+    "Payment Made":"تم الدفع",
+    "NOT_RECEIVED_FROM_DELEGATE":"لم يتم الاستلام من المندوب",
+    "RECEIVED_FROM_DELEGATE":"تم الاستلام من المندوب",
+    "DELIVERED_TO_THE_SHOP":"تم التسليم للمتجر",
+    "Return Status" : "حالة المرتجع",
+    "NOT_SET" : "غير محدد",
+    "UNDER_REVIEW": "قيد المراجعة"
 }

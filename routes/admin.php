@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RegionController;
+use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShipmentImportController;
 use App\Http\Controllers\Admin\StatementController;
@@ -129,6 +130,9 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     // Route::get('/address/create', [AddressController::class,'create'])->name('address.create');
     Route::post('/address/store',[AddressController::class,'store'])->name('address.store');
     Route::get('/address/delete/{id}', [AddressController::class,'delete'])->name('address.delete');
+    Route::get('get-returns', [ReturnController::class,'get_returns'])->name('returns');
+    Route::post('delete-return/{shipment}', [ReturnController::class,'delete_return'])->name('delete_return');
+    Route::post('update-shipment-return-status/{shipment}/{status}', [ReturnController::class, 'update_return_status'])->name('update_shipment_return_status');
 });
 
 
