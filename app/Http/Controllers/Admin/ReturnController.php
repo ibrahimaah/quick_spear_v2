@@ -41,7 +41,7 @@ class ReturnController extends Controller
         }
         catch(Exception $ex)
         {
-            return response()->json(['code' => 0 , 'msg' => $res_update_status['msg']]);
+            return response()->json(['code' => 0 , 'msg' => 'Error']);
         }
     }
 }

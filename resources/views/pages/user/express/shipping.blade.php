@@ -26,12 +26,16 @@
 
     <div class="card p-3">
 
-        <select class="form-select w-25 m-1" id="shipment_status_select">
-            <option value="">اختر حالةالشحنة</option>
-            @foreach($shipment_statuses as $shipment_status)
-            <option value="{{ $shipment_status->id }}">{{ __($shipment_status->name) }}</option>
-            @endforeach
-        </select>
+       <div class="row">
+            <div class="col-sm-12 col-md-4">
+                <select class="form-select m-1" id="shipment_status_select">
+                    <option value="">اختر حالةالشحنة</option>
+                    @foreach($shipment_statuses as $shipment_status)
+                    <option value="{{ $shipment_status->id }}">{{ __($shipment_status->name) }}</option>
+                    @endforeach
+                </select>
+            </div>
+       </div>
 
      
        <div class="card-body datatable-container" id="myTabContent">

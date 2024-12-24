@@ -15,8 +15,8 @@
         $shop_id = $shop->id;
     @endphp 
     <section class="container-fluid mt-0 pt-0">
-        <div class="row bg-light">
-            <div class="col-lg-2">
+        <div class="row bg-light g-3">
+            <div class="col-sm-12 col-lg-2">
                 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                     <span class="fs-4">{{ __('Shipping') }}</span>
                 </a>
@@ -36,16 +36,7 @@
                         </a>
                          
                     </li>
-                    {{--<li>
-                        <a href="{{ route('front.contact') }}" class="nav-link link-dark">
-                            {{ __('International Shipping') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('front.express.trackingPickup') }}" class="nav-link @yield('active2') link-dark">
-                            {{ __('Pickup') }}
-                        </a>
-                    </li> --}}
+                   
                 </ul>
             </div>
 
