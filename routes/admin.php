@@ -131,6 +131,7 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::post('/address/store',[AddressController::class,'store'])->name('address.store');
     Route::get('/address/delete/{id}', [AddressController::class,'delete'])->name('address.delete');
     Route::get('get-returns', [ReturnController::class,'get_returns'])->name('returns');
+    Route::get('view-returns-as-pdf', [ReturnController::class,'view_returns_as_pdf'])->name('view_returns_as_pdf');
     Route::post('delete-return/{shipment}', [ReturnController::class,'delete_return'])->name('delete_return');
     Route::post('update-shipment-return-status/{shipment}/{status}', [ReturnController::class, 'update_return_status'])->name('update_shipment_return_status');
 });

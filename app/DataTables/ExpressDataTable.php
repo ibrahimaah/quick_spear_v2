@@ -111,6 +111,9 @@ class ExpressDataTable extends DataTable
         ->addColumn('checkbox', function($query) { 
             return '<input type="checkbox" class="sub_chk" data-id="'. $query->id .'">';
         }) 
+        ->addColumn('delegate_name', function($query) { 
+            return $query->delegate->name;
+        }) 
         ->editColumn('shipment_status_id', function ($query) 
         {
             return __($query->status->name);
@@ -288,9 +291,11 @@ class ExpressDataTable extends DataTable
                 $this->column('consignee_phone', __('Phone'),false,true,false,false),
                 $this->column('order_price', __('Order price'),false,false,false,false),
                 $this->column('value_on_delivery', __('Value on delivery'),false,false,false,false),
+                $this->column('delegate_name', __('Delegate Name'),false,false,false,false),
                 $this->column('shipment_status_id', __('Action Status'),false,true,false,false), 
                 $this->column('return_status', __('Return Status'),false,false,false,false), 
-                // $this->column('notes', __('Notes'),false,false,false,false),
+                $this->column('created_at',__('Created.'),false,false,false,false),
+                $this->column('notes', __('Notes'),false,false,false,false),
                 $this->column('return_shipment_actions', __('Actions')), 
             ];
         }

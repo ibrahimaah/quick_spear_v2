@@ -11,7 +11,10 @@
                     <h5>
                         <span>المرتجعات</span>
                     </h5>
-                    <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+                    <div class="d-flex align-items-center gap-1">
+                        <a href="{{ route('admin.view_returns_as_pdf') }}" class="btn btn-primary d-block">كشف مرتجعات</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
+                    </div>
                 </div> 
             </div>
             
