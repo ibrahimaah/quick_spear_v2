@@ -13,6 +13,15 @@
                     </h5>
                     <div class="d-flex align-items-center gap-1">
                         <a href="{{ route('admin.view_returns_as_pdf') }}" class="btn btn-primary d-block">كشف مرتجعات</a>
+                        <a  onclick="confirm('برجاء تأكيد العملية') ? document.getElementById('rmv_returns').submit() : '';"
+                        class="btn btn-secondary">حذف كل المرتجعات</a>
+                
+                        <form action="{{ route('admin.remove_all_returns') }}" 
+                            id="rmv_returns"
+                            method="POST">
+                            @csrf
+                            @method('POST')
+                        </form>
                         <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
                     </div>
                 </div> 

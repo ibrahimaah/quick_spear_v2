@@ -6,6 +6,7 @@ use App\DataTables\ExpressDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\ReturnStatus;
 use App\Models\Shipment;
+use App\Services\ReturnService;
 use App\Services\ShipmentReturnService;
 use Carbon\Carbon;
 use Exception;
@@ -74,7 +75,20 @@ class ReturnController extends Controller
         }
         catch(Exception $ex)
         {
-            return response()->json(['code' => 0 , 'msg' => 'Error']);
+            return response()->json(['code' => 0 , 'msg' => $ex->getMessage()]);
+        }
+    }
+
+    public function remove_all_returns()
+    { 
+        $res_remove_all = $this->shipmentReturnService->remove_all();
+        if ($res_remove_all['code'] == 1) 
+        {
+            return back()->with('success','Done Successfully :)');
+        }
+        else 
+        {
+            dd($res_remove_all['msg']);
         }
     }
 }
