@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShipmentImportController;
 use App\Http\Controllers\Admin\StatementController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\ProfitController;
 use App\Models\City;
 use App\Models\Delegate;
 use App\Models\Region;
@@ -60,7 +61,7 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::post('/users/delivery-price/update/{id}', [DeliveryPriceController::class,'update'])->name('delivery_price.update');
     
 
-    
+    Route::get('profits',[ProfitController::class,'profits'])->name('profits');
 
     Route::resource('delegates', DelegateController::class);
     Route::get('get-shipments/{delegate}', [DelegateController::class,'get_shipments'])->name('delegates.get_shipments');

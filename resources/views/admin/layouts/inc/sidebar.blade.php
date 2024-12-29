@@ -89,7 +89,7 @@
                     </li> --}}
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
-                            <i data-feather="flag"></i>
+                            <i data-feather="file-text"></i>
                             <span class="">الشحنات</span>
                         </a>
                         <ul class="sidebar-submenu">
@@ -105,7 +105,7 @@
                             @endforeach
                             --}}
                         </ul>
-                        {{-- <span class="badge rounded-pill badge-success">{{ App\Models\Shipment::where('is_deported',false)->count() }}</span> --}}
+                        <span class="badge rounded-pill badge-success">{{ App\Models\Shipment::where('is_deported',false)->count() }}</span>
                     </li>
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                         data-feather="flag"></i><span class="">المدفوعات</span></a>
@@ -116,6 +116,11 @@
                         </ul>
                     </li>
                     
+                    <li class="sidebar-list">
+                        <a class="sidebar-link" href="{{ route('admin.profits') }}"><i
+                                data-feather="dollar-sign"></i><span class="">الأرباح</span></a>
+                    </li>
+                     
                     {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i
                                 data-feather="flag"></i><span class="">رسائل الدعم</span></a>
                         <ul class="sidebar-submenu">
