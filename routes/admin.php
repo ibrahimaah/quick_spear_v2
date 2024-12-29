@@ -62,6 +62,7 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     
 
     Route::get('profits',[ProfitController::class,'profits'])->name('profits');
+    Route::post('calc-profits',[ProfitController::class,'calc_profits'])->name('calc_profits');
 
     Route::resource('delegates', DelegateController::class);
     Route::get('get-shipments/{delegate}', [DelegateController::class,'get_shipments'])->name('delegates.get_shipments');
