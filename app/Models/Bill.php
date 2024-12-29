@@ -25,6 +25,8 @@ class Bill extends Model
         'delegate_notes',
         'is_returned', 
         'customer_delivery_price',
+        'delegate_delivery_price',
+        'profit',
         'shipment_status_id',
         'deportation_group_id',
         'bill_tracking_id'

@@ -362,13 +362,20 @@ class DelegateService
             try 
             {
                 $res_get_delivery_price = (new DeliveryPriceService())->getDeliveryPrice($shipment->id);
-                
+                $res_get_delegate_delivery_price = (new CityDelegateService())->getDelegateDeliveryPrice($shipment->delegate_id,$shipment->consignee_city);
+
                 if ($res_get_delivery_price['code'] != 1) 
                 {
                     throw new Exception($res_get_delivery_price['msg']);
                 }
+
+                if ($res_get_delegate_delivery_price['code'] != 1) 
+                {
+                    throw new Exception($res_get_delegate_delivery_price['msg']);
+                }
                 
-                $delivery_price = $res_get_delivery_price['data'];
+                $customer_delivery_price = $res_get_delivery_price['data'];
+                $delegate_delivery_price = $res_get_delegate_delivery_price['data'];
                 
         
                 $bill = Bill::create([
@@ -385,7 +392,9 @@ class DelegateService
                     'delegate_notes' => $shipment->delegate_notes,
                     'is_returned' => $shipment->is_returned,
                     'shipment_status_id' => $shipment->shipment_status_id,
-                    'customer_delivery_price' => $delivery_price,
+                    'customer_delivery_price' => $customer_delivery_price,
+                    'delegate_delivery_price' => $delegate_delivery_price,
+                    'profit' => $customer_delivery_price - $delegate_delivery_price,
                     // 'bill_status_id' => BillStatus::PENDING,
                     'deportation_group_id' => $deportationGroupId,
                     'bill_tracking_id' => $billTracking->id
@@ -403,7 +412,8 @@ class DelegateService
             catch (Exception $ex) 
             {
                 DB::rollBack(); 
-                return ['code' => 0 , 'msg' => $ex->getMessage()];
+                // return ['code' => 0 , 'msg' => $ex->getMessage()];
+                dd($ex->getMessage());
             }
         // });
         }
