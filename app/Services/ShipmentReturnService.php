@@ -15,13 +15,15 @@ class ShipmentReturnService
     {
         try 
         {
-            Shipment::where(function ($shipment) {
-                $shipment->whereIn('shipment_status_id', [ReturnStatus::DELIVERED_TO_THE_SHOP])
-                    ->orWhere('is_returned', true);
-            })
-            ->where('is_deported', true)
-            ->where('return_status_id', '<>', ReturnStatus::DELETED)
-            ->update(['return_status_id' => ReturnStatus::DELETED]);
+            Shipment::where('shipment_status_id', ReturnStatus::DELIVERED_TO_THE_SHOP)->update(['return_status_id' => ReturnStatus::DELETED]);
+
+            // Shipment::where(function ($shipment) {
+            //     $shipment->whereIn('shipment_status_id', [ReturnStatus::DELIVERED_TO_THE_SHOP])
+            //         ->orWhere('is_returned', true);
+            // })
+            // ->where('is_deported', true)
+            // ->where('return_status_id', '<>', ReturnStatus::DELETED)
+            // ->update(['return_status_id' => ReturnStatus::DELETED]);
     
             
             return ['code' => 1 , 'data' => true];
