@@ -14,8 +14,8 @@ class ShipmentReturnService
     public function remove_all()
     {
         try 
-        {
-            Shipment::where('shipment_status_id', ReturnStatus::DELIVERED_TO_THE_SHOP)->update(['return_status_id' => ReturnStatus::DELETED]);
+        { 
+            Shipment::where('return_status_id', ReturnStatus::DELIVERED_TO_THE_SHOP)->update(['return_status_id' => ReturnStatus::DELETED]);
 
             // Shipment::where(function ($shipment) {
             //     $shipment->whereIn('shipment_status_id', [ReturnStatus::DELIVERED_TO_THE_SHOP])
