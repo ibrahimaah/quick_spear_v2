@@ -16,7 +16,7 @@ class ShipmentReturnService
         try 
         {
             Shipment::where(function ($shipment) {
-                $shipment->whereIn('shipment_status_id', config('constants.RETURNED_STATUSES'))
+                $shipment->whereIn('shipment_status_id', [ReturnStatus::DELIVERED_TO_THE_SHOP])
                     ->orWhere('is_returned', true);
             })
             ->where('is_deported', true)
