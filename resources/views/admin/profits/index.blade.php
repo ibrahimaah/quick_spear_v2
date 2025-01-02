@@ -13,16 +13,19 @@
                           <label class="col-form-label">من</label>
                         </div>
                         <div class="col-auto">
-                          <input type="date" class="form-control" name="from" required>
+                          <input type="date" class="form-control" name="from" value="{{ $from ?? '' }}" required>
                         </div>
                         <div class="col-auto"> 
                             <label class="col-form-label">إلى</label>
                         </div>
                         <div class="col-auto">
-                            <input type="date" class="form-control" name="to" required>
+                            <input type="date" class="form-control" name="to" value="{{ $to ?? '' }}" required>
                         </div>
                         <div class="col-auto">
                             <input type="submit" class="form-control btn btn-primary" value="حساب">
+                        </div>
+                        <div class="col-auto">
+                            <a href="{{ route('admin.profits') }}" class="btn btn-danger">جديد</a>
                         </div>
                     </div>
                 </form>
@@ -31,6 +34,7 @@
         </div>
     </div>
  
+    @isset($profits)
     <div class="row justify-content-center">
         <div class="col-sm-4">
             <div class="card text-center shadow-lg">
@@ -50,6 +54,7 @@
             </div>
         </div>
     </div>
+    @endisset
  
 
 @endsection

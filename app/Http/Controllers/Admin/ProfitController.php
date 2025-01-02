@@ -28,6 +28,8 @@ class ProfitController extends Controller
 
         return view('admin.profits.index', [
             'profits' => $profits,
+            'from' => $from,
+            'to' => $to
         ]);
     }
 }

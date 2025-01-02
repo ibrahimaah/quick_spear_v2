@@ -154,7 +154,7 @@ class DelegateController extends Controller
 
         $delegate_statements_ids = $res_get_delegate_statements_ids['data'];
 
-        $statements = Statement::whereIn('deportation_group_id',$delegate_statements_ids)->where('delegate_id',$delegate->id)->get();
+        $statements = Statement::whereIn('deportation_group_id',$delegate_statements_ids)->where('delegate_id',$delegate->id)->orderBy('id','DESC')->get();
         return view('admin.delegates.statements',['statements' => $statements,'delegate'=>$delegate]);
     }
 

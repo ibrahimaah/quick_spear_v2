@@ -39,15 +39,22 @@ class ReturnController extends Controller
  
     public function view_returns_as_pdf()
     { 
+        // $returns_shipments = Shipment::where(function ($query) {
+        //     $query->whereIn('shipment_status_id', [ReturnStatus::UNDER_REVIEW,ReturnStatus::NOT_RECEIVED_FROM_DELEGATE])
+        //             ->orWhere('is_returned', true);
+        //     })
+        //     ->where('is_deported',true)
+        //     ->where('return_status_id','<>',ReturnStatus::DELETED)
+        //     ->orderBy('id','DESC')->get();
+
         $returns_shipments = Shipment::where(function ($query) {
-            $query->whereIn('shipment_status_id', [ReturnStatus::UNDER_REVIEW,ReturnStatus::NOT_RECEIVED_FROM_DELEGATE])
+            $query->whereIn('shipment_status_id', config('constants.RETURNED_STATUSES'))
                     ->orWhere('is_returned', true);
             })
             ->where('is_deported',true)
             ->where('return_status_id','<>',ReturnStatus::DELETED)
             ->orderBy('id','DESC')->get();
-
-          
+            
         return $this->generateReturnsPDF('admin.returns.returns_pdf', ['shipments' => $returns_shipments]);
     }
 
