@@ -377,6 +377,18 @@ class DelegateService
                 $customer_delivery_price = $res_get_delivery_price['data'];
                 $delegate_delivery_price = $res_get_delegate_delivery_price['data'];
                 
+                $profit = 0;
+                if (in_array($shipment->shipment_status_id,[ShipmentStatus::DELIVERED,
+                                                            ShipmentStatus::NO_RESPONSE,
+                                                            ShipmentStatus::REJECTED_WITH_PAY,
+                                                            ShipmentStatus::REJECTED_WITHOUT_PAY])) 
+                {
+                    $profit = $customer_delivery_price - $delegate_delivery_price;
+                }
+                else 
+                {
+                    $profit = 0;
+                }
         
                 $bill = Bill::create([
                     // 'bill_number' => $billNumber,
@@ -394,7 +406,7 @@ class DelegateService
                     'shipment_status_id' => $shipment->shipment_status_id,
                     'customer_delivery_price' => $customer_delivery_price,
                     'delegate_delivery_price' => $delegate_delivery_price,
-                    'profit' => $customer_delivery_price - $delegate_delivery_price,
+                    'profit' => $profit,
                     // 'bill_status_id' => BillStatus::PENDING,
                     'deportation_group_id' => $deportationGroupId,
                     'bill_tracking_id' => $billTracking->id
