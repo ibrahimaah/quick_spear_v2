@@ -139,7 +139,7 @@ class ExpressDataTable extends DataTable
         })
         ->addColumn('return_status', function ($query) 
         {
-            return __(ReturnStatus::findOrFail($query->return_status_id)->name);
+            return __(ReturnStatus::findOrFail($query->return_status_id)?->name);
         })
         ->addColumn('user_actions', function ($query) 
         {
