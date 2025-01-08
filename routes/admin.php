@@ -63,11 +63,13 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
 
     Route::get('profits',[ProfitController::class,'profits'])->name('profits');
     Route::post('calc-profits',[ProfitController::class,'calc_profits'])->name('calc_profits');
+    Route::get('profits-details/from-{from}/to-{to}',[ProfitController::class,'profits_details'])->name('profits_details');
 
     Route::resource('delegates', DelegateController::class);
     Route::get('get-shipments/{delegate}', [DelegateController::class,'get_shipments'])->name('delegates.get_shipments');
     Route::get('get_statements/{delegate}', [DelegateController::class,'get_statements'])->name('delegates.get_statements');
     Route::get('view-delegate-statment/{delegate_statements_id}', [DelegateController::class,'view_delegate_statment'])->name('delegates.view_delegate_statment');
+    // Route::get('view-delegate-statment/{delegate_statements_id}', [DelegateController::class,'view_delegate_statment'])->name('delegates.view_delegate_statment');
     Route::post('delete-statment/{statement}', [StatementController::class,'remove_statement'])->name('statements.destroy');
     Route::post('delete-statments/{delegate}', [DelegateController::class,'remove_delegate_statements'])->name('delegate.statements.destroy');
     

@@ -46,6 +46,9 @@
                          <span id="profits">{{ $profits ?? 0 }}</span>
                     </h1>
                     <p class="fw-bold text-secondary" style="font-size: 1.5rem;">دينار أردني</p>
+                    <a href="{{ route('admin.profits_details',['from' => $from , 'to' => $to]) }}" 
+                       class="btn btn-primary" target="_blank">التفاصيل</a>
+
                     {{-- <p class="card-text text-muted">Profits calculated between the selected dates.</p> --}}
                 </div>
                 {{-- <div class="card-footer text-muted">

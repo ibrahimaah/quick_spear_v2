@@ -9,4 +9,8 @@ class Statement extends Model
 {
     use HasFactory;
     protected $fillable = ['delegate_id','deportation_group_id','pdf_path'];
+    public function delegate()
+    {
+        return $this->belongsTo(Delegate::class);
+    }
 }

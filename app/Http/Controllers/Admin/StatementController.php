@@ -34,4 +34,23 @@ class StatementController extends Controller
         }
     }
 
+    
+    // public function view_statement(Request $request)
+    // {
+    //     try 
+    //     {
+    //         $validated = $request->validate([
+    //             'delegate_id' => 'required',
+    //             'deportation_group_id' => 'required',
+    //         ]);
+
+    //         $de 
+    //         return back()->with('success', 'تم الحذف بنجاح');
+    //     }
+    //     catch(Exception $ex)
+    //     {
+    //         dd($ex->getMessage());
+    //     }
+    // }
+
 }

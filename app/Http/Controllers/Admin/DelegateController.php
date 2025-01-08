@@ -412,7 +412,8 @@ class DelegateController extends Controller
                 'total_summation' => $total_summation,
                 'total_delegate_commission' => $total_delegate_commission,
                 'shipments' => $shipments
-            ], $delegate,$deportation_group_id);
+            ], 
+            $delegate,$deportation_group_id);
         }
         catch(Exception $ex)
         {

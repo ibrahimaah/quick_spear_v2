@@ -58,6 +58,10 @@ class Bill extends Model
         return $this->belongsTo(ShipmentStatus::class, 'shipment_status_id', 'id');
     }
 
+    public function delegate()
+    {
+        return $this->belongsTo(Delegate::class);
+    }
     // public function is_bill_status_under_review($bill_number)
     // {
     //     try 
