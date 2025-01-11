@@ -46,25 +46,13 @@ class ProfitController extends Controller
     }
     public function profits_details($from , $to)
     {
-        $statements = Statement::whereBetween('created_at', [$from, $to])->with('delegate')->get();
-        $statementsGroupedByDelegate = $statements->groupBy('delegate_id');
-        // dd($statementsGroupedByDelegate);
-
-          // Calculate profits for each statement
-        foreach ($statementsGroupedByDelegate as $delegateId => $statements) {
-            foreach ($statements as $statement) {
-                $profitService = new ProfitService();
-                $result = $profitService->calc_profits_by_statement_id_and_date($statement->id, $from, $to);
-                if ($result['code'] != 1) {
-                    // Handle the error
-                    dd($result['msg']); 
-                    // session()->flash('error', $result['msg']);
-                    // break;
-                }
-                $statement->calculated_profit = $result['data']; // Add the calculated profit to the statement
-            }
+        $res_get_profits_details = $this->profitService->get_profits_details($from,$to);
+        if ($res_get_profits_details['code'] != 1) 
+        {
+            dd($res_get_profits_details['msg']);
         }
 
+        $statementsGroupedByDelegate = $res_get_profits_details['data'];
 
         return view('admin.profits.profits-details', [
             'statementsGroupedByDelegate' => $statementsGroupedByDelegate,

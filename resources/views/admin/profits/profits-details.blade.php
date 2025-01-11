@@ -30,7 +30,11 @@
                     </div>
                 </form>
             </div>
-
+            @php 
+                $total_final_total = 0;
+                $total_delegate_profits = 0;
+                $total_calculated_profit = 0;
+            @endphp 
             <div class="table-responsive">
                 <table class="display text-center" id="basic-1">
                     <thead>
@@ -61,7 +65,25 @@
                                 <td>{{ $statement->delegate_profits }}</td>
                                 <td>{{ $statement->calculated_profit ?? 'N/A' }}</td>
                             </tr>  
+                            
+                            @php 
+                                $total_final_total += $statement->final_total;
+                                $total_delegate_profits += $statement->delegate_profits;
+                                $total_calculated_profit += $statement->calculated_profit;
+                            @endphp 
+
                         @endforeach
+                        @if($loop->last) 
+                        <tr>
+                            <th>المجموع النهائي</th>
+                            <td></td>
+                            <td></td> 
+                            <td></td>
+                            <td>{{ $total_final_total }}</td> 
+                            <td>{{ $total_delegate_profits }}</td>
+                            <td>{{ $total_calculated_profit }}</td>
+                        </tr> 
+                        @endif 
                     @endforeach
                     </tbody>
                   </table>
