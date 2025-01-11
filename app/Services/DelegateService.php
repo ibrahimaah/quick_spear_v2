@@ -273,12 +273,16 @@ class DelegateService
             
             
             $delegateController = new DelegateController($this);
-            $storagePath = $delegateController->delegate_final_delivery_statement($delegate,$deportation_group_id);
+            $res_delegate_final_delivery_statement = $delegateController->delegate_final_delivery_statement($delegate,$deportation_group_id);
+
             $statment = Statement::create([
-                'delegate_id' => $delegate->id,
+                'delegate_id'          => $delegate->id,
                 'deportation_group_id' => $deportation_group_id,
-                'pdf_path' => $storagePath
+                'pdf_path'             => $res_delegate_final_delivery_statement['storagePath'],
+                'final_total'          => $res_delegate_final_delivery_statement['final_total'],
+                'delegate_profits'     => $res_delegate_final_delivery_statement['delegate_profits']
             ]);
+            
             if (!$statment) 
             {
                 throw new Exception('Can not create a new statement');

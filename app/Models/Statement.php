@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Statement extends Model
 {
     use HasFactory;
-    protected $fillable = ['delegate_id','deportation_group_id','pdf_path'];
+    protected $fillable = ['delegate_id','deportation_group_id','pdf_path','final_total','delegate_profits'];
     public function delegate()
     {
         return $this->belongsTo(Delegate::class);

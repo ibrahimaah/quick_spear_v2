@@ -1,7 +1,7 @@
 {{-- @dd(auth()->user()->notifications) --}}
 @extends('admin.layouts.app')
-@section('title', 'الأرباح')
-@section('pageTitle', 'الأرباح')
+@section('title', 'تفاصيل الأرباح')
+@section('pageTitle', 'تفاصيل الأرباح')
 @section('content')
     <div class="row">
         <div class="card">
@@ -40,7 +40,7 @@
                         <th scope="col">المندوب</th>
                         <th scope="col">التاريخ</th>
                         <th scope="col">التحصيل</th>
-                        <th scope="col">عدد الطلبات</th>
+                        {{-- <th scope="col">عدد الطلبات</th> --}}
                         <th scope="col">أجور المندوب</th>
                         <th scope="col">أرباح</th>
                       </tr>
@@ -51,21 +51,15 @@
                             <tr>
                                 <th>{{ $statement->id }}</th>
                                 <td>
-                                    <a class="btn btn-sm btn-success" href="{{ asset('storage/' . $statement->pdf_path) }}">
+                                    <a class="btn btn-sm btn-success" href="{{ asset('storage/' . $statement->pdf_path) }}" target="_blank">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </td>
-                                <td>
-                                    @php
-                                        $delegate = App\Models\Delegate::findOrFail($delegateId);
-                                        echo $delegate->name;
-                                    @endphp
-                                </td>  
-                                <td>{{ $statement->created_at->format('Y-m-d H:i:s') }}</td>
-                                <td>30</td>
-                                <td>15</td>
-                                <td>9</td>
-                                <td>3</td>
+                                <td>{{ $statement->delegate->name }}</td> 
+                                <td>{{ $statement->created_at->format('Y-m-d h:i A') }}</td>
+                                <td>{{ $statement->final_total }}</td> 
+                                <td>{{ $statement->delegate_profits }}</td>
+                                <td>{{ $statement->calculated_profit ?? 'N/A' }}</td>
                             </tr>  
                         @endforeach
                     @endforeach

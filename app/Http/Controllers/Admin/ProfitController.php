@@ -22,13 +22,24 @@ class ProfitController extends Controller
 
     public function calc_profits(Request $request)
     {
-        $from = $request->from;
-        $to = $request->to;
+        $validated = $request->validate([
+            'from' => 'required',
+            'to' => 'required',
+        ]);
 
-        $profits = Bill::whereBetween('created_at', [$from, $to])->sum('profit');
+
+        $from = $validated['from'];
+        $to   = $validated['to']; 
+
+        $res_calc_profits_by_date = $this->profitService->calc_profits_by_date($from,$to);
+
+        if ($res_calc_profits_by_date['code'] != 1) 
+        {
+            dd($res_calc_profits_by_date['msg']);
+        }
 
         return view('admin.profits.index', [
-            'profits' => $profits,
+            'profits' => $res_calc_profits_by_date['data'],
             'from' => $from,
             'to' => $to
         ]);
@@ -38,6 +49,23 @@ class ProfitController extends Controller
         $statements = Statement::whereBetween('created_at', [$from, $to])->with('delegate')->get();
         $statementsGroupedByDelegate = $statements->groupBy('delegate_id');
         // dd($statementsGroupedByDelegate);
+
+          // Calculate profits for each statement
+        foreach ($statementsGroupedByDelegate as $delegateId => $statements) {
+            foreach ($statements as $statement) {
+                $profitService = new ProfitService();
+                $result = $profitService->calc_profits_by_statement_id_and_date($statement->id, $from, $to);
+                if ($result['code'] != 1) {
+                    // Handle the error
+                    dd($result['msg']); 
+                    // session()->flash('error', $result['msg']);
+                    // break;
+                }
+                $statement->calculated_profit = $result['data']; // Add the calculated profit to the statement
+            }
+        }
+
+
         return view('admin.profits.profits-details', [
             'statementsGroupedByDelegate' => $statementsGroupedByDelegate,
             'from' => $from,

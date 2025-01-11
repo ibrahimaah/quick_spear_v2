@@ -306,7 +306,7 @@ class DelegateController extends Controller
     //     }
     // }
 
-    private function generateDelegatePDF($view, $data, $delegate,$deportation_group_id = null)
+    private function generateDelegatePDF($view, $data, $delegate)
     {
         $now = Carbon::now();
         $delegate_name = $delegate->name;
@@ -325,34 +325,12 @@ class DelegateController extends Controller
 
         $pdf_file_name = str_replace('admin.delegates.delegate_', '', $view) . '_' . $now->format('Y-m-d') . '_' . floor(time() - 999999999);
 
-
-
-        if($deportation_group_id)
-        {
-            $pdf_file_name = 'statment_delegate_'.$delegate->id.'_id_'.$deportation_group_id;
-            
-            $storagePath = 'pdf/' . $pdf_file_name; // Relative path for public storage
-
-            $publicPath = storage_path('app/public/' . $storagePath);
-        
-            // Store the PDF file
-            $pdf->save($publicPath);
-        
-            // Return the public path for the file
-            return $storagePath;
-        }
-        else 
-        {
-            return response()->streamDownload(function() use ($pdf) {
-                echo $pdf->output();
-            }, $pdf_file_name . '.pdf', [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . $pdf_file_name . '.pdf"'
-            ]);
-        }
-
-
-       
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $pdf_file_name . '.pdf', [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $pdf_file_name . '.pdf"'
+        ]);       
     }
 
     public function delegate_daily_delivery_statement(Delegate $delegate)
@@ -398,7 +376,9 @@ class DelegateController extends Controller
             }
 
             $total_summation = $res_get_total_summation['data'];
+
             $total_delegate_commission = $res_get_total_delegate_commission['data'];
+
             $shipments = Shipment::where([
                 ['delegate_id', $delegate->id],
                 ['is_deported', false]
@@ -408,12 +388,48 @@ class DelegateController extends Controller
             ->orderBy('shop_id')
             ->get();
 
-            return $this->generateDelegatePDF('admin.delegates.delegate_final_delivery_statement', [
+            $final_statement_view = 'admin.delegates.delegate_final_delivery_statement';
+
+            $final_statement_view_data = [
                 'total_summation' => $total_summation,
                 'total_delegate_commission' => $total_delegate_commission,
                 'shipments' => $shipments
-            ], 
-            $delegate,$deportation_group_id);
+            ];
+
+            if($deportation_group_id)
+            {
+                $now = Carbon::now();
+                $delegate_name = $delegate->name;
+                $currentDayInArabic = $now->translatedFormat('l');
+                $currentDateInArabic = convertToArabicNumerals($now->format('Y/m/d'));
+                
+                // Prepare data for the PDF view
+                $data = array_merge($final_statement_view_data, [
+                    'delegate_name' => $delegate_name,
+                    'currentDayInArabic' => $currentDayInArabic,
+                    'currentDateInArabic' => $currentDateInArabic,
+                ]);
+
+                $pdf = PDF::loadView($final_statement_view,$data);
+
+                $pdf_file_name = 'statment_delegate_'.$delegate->id.'_id_'.$deportation_group_id;
+                
+                $storagePath = 'pdf/' . $pdf_file_name; // Relative path for public storage
+    
+                $publicPath = storage_path('app/public/' . $storagePath);
+            
+                // Store the PDF file
+                $pdf->save($publicPath);
+            
+                // Return the public path for the file
+                return [
+                    'storagePath' => $storagePath,
+                    'final_total' => $total_summation - $total_delegate_commission,
+                    'delegate_profits' => $total_delegate_commission,
+                ];
+            }
+
+            return $this->generateDelegatePDF($final_statement_view,$final_statement_view_data,$delegate);
         }
         catch(Exception $ex)
         {
