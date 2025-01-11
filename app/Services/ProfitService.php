@@ -50,11 +50,10 @@ class ProfitService
             // Calculate profits for each statement
             foreach ($statementsGroupedByDelegate as $delegateId => $statements) {
                 foreach ($statements as $statement) {
-                    $profitService = new ProfitService();
-                    $result = $profitService->calc_profits_by_statement_id_and_date($statement->id, $from, $to);
+                    $result = $this->calc_profits_by_statement_id_and_date($statement->id, $from, $to);
                     if ($result['code'] != 1) {
                         // Handle the error
-                        dd($result['msg']); 
+                        throw new Exception($result['msg']); 
                         // session()->flash('error', $result['msg']);
                         // break;
                     }
