@@ -33,6 +33,28 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2">
+                        <a href="{{ route('admin.delegates.index') }}" style="color:inherit;">
+                            <div class="col-12 p-0 text-center">
+                                <span class="fa fa-user fa-3x"></span>
+                                <div class="col-12 p-0 text-center">
+                                    عرض المندوبين
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                      <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2">
+                        <a href="{{ route('admin.payments.index') }}" style="color:inherit;">
+                            <div class="col-12 p-0 text-center">
+                                <span class="fa fa-book fa-3x"></span>
+                                <div class="col-12 p-0 text-center">
+                                    عرض كل طلبات الدفع
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    
 
 
                     {{-- <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2 card">

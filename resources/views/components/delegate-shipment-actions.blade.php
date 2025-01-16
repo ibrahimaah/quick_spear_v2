@@ -1,7 +1,7 @@
 
 
 <div class="d-flex justify-content-between gap-1">
-    <div>
+    {{-- <div>
         <a  onclick="confirm('برجاء تأكيد العملية') ? document.getElementById('cancel{{ $query->id }}').submit() : '';"
             class="btn btn-sm btn-secondary">إلغاء</a>
 
@@ -11,7 +11,7 @@
             @csrf
             @method('POST')
         </form>
-    </div>
+    </div> --}}
 
     
 

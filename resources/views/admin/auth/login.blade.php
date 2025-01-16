@@ -39,7 +39,7 @@
         <div class="col-12 p-0">
           <div class="login-card">
             <div>
-              <div><a class="logo" href="#"><img class="img-fluid for-light" width="150" src="{{asset('assets/admin/images/logo/logo.png')}}" alt="looginpage"></a></div>
+              <div><a class="logo" href="#"><img class="img-fluid for-light" width="300" src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}" alt="looginpage"></a></div>
               <div class="login-main">
                 @include('admin.layouts.inc.errors')
                 @include('admin.layouts.inc.success')

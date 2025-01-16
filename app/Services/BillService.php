@@ -30,12 +30,12 @@ class BillService
             if ($bill_status_id) 
             {
                 $shop_bills = BillTracking::where('shop_id', $shop->id)
-                                  ->where('bill_status_id', $bill_status_id)
+                                  ->where('bill_status_id', $bill_status_id)->orderBy('id','DESC')
                                   ->get();
             }
             else 
             {
-                $shop_bills = BillTracking::where('shop_id', $shop->id)->get();
+                $shop_bills = BillTracking::where('shop_id', $shop->id)->orderBy('id','DESC')->get();
             }
             
              

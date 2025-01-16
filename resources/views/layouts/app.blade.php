@@ -46,7 +46,7 @@
             <div class="logo mx-4">
                 <a href="/"><img
                         src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}"
-                        alt="" class="img-fluid"></a>
+                        alt="" class="img-fluid" style="width:160px"></a>
             </div>
 {{-- 
             <nav id="navbar" class="navbar justify-content-between">
