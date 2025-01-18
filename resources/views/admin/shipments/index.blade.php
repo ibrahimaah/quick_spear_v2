@@ -24,6 +24,9 @@
     {
         margin-top : 0.5rem !important;
     }
+    .highlight-green {
+    background-color: lightgreen !important;
+}
 </style> 
 
 
@@ -257,13 +260,16 @@
 
             $('#express-table').on('change', 'input[type="checkbox"]', function() {
                 var id = $(this).val(); 
-
+                var _row = $(this).closest('tr'); 
+                console.log(_row);
                 if (this.checked) 
                 {
                     selectedIds.push(id);
+                    _row.addClass('highlight-green');
                 } 
                 else 
                 {
+                    _row.removeClass('highlight-green');
                     var index = selectedIds.indexOf(id);
                     if (index !== -1) 
                     {

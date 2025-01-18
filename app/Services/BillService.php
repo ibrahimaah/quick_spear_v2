@@ -331,7 +331,17 @@ class BillService
 
             $bill_date =Carbon::parse($bill_tracking->bill_date)->format('Y-m-d');
 
-            $orders = $bill_tracking->bills;
+            //DELIVERED is always the first
+            $orders = $bill_tracking->bills->sort(function ($a, $b) {
+                if ($a->shipment_status_id === ShipmentStatus::DELIVERED) {
+                    return -1;
+                } elseif ($b->shipment_status_id === ShipmentStatus::DELIVERED) {
+                    return 1;
+                } else {
+                    return $a->shipment_status_id <=> $b->shipment_status_id;
+                }
+            });
+            // dd($orders);
              
 
             $res_get_amount_due_from_and_to_customer = $this->get_amount_due_from_and_to_customer($orders);
