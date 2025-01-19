@@ -81,7 +81,8 @@ class ExpressDataTable extends DataTable
             // return '<input type="checkbox" ' . $this->html->attributes($query->id) . '/>';
             if(!$query->delegate_notes)
             {
-                return __('There is no notes');
+                // return __('There is no notes');
+                return '';
             }else{
                 return $query->delegate_notes;
             }
@@ -89,7 +90,8 @@ class ExpressDataTable extends DataTable
         ->editColumn('customer_notes', function($query) {
             if(!$query->customer_notes)
             {
-                return __('There is no notes');
+                // return __('There is no notes');
+                return '';
             }else{
                 return $query->customer_notes;
             }
@@ -112,7 +114,8 @@ class ExpressDataTable extends DataTable
             return '<input type="checkbox" class="sub_chk" data-id="'. $query->id .'">';
         }) 
         ->addColumn('delegate_name', function($query) { 
-            return $query->delegate->name;
+            // return $query->delegate->name;
+            return $query->delegate?->name;
         }) 
         ->editColumn('shipment_status_id', function ($query) 
         {
@@ -134,7 +137,8 @@ class ExpressDataTable extends DataTable
             }
             else 
             {
-                return 'لا يوجد';
+                // return 'لا يوجد';
+                return '';
             }
         })
         ->addColumn('return_status', function ($query) 

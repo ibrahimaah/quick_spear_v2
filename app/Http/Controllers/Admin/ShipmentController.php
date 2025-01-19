@@ -178,11 +178,11 @@ class ShipmentController extends Controller
         $res_update_shipment = $this->shipmentService->update($data,$shipment,true);
 
         if ($res_update_shipment['code'] == 1) {
-            return redirect()->back()->with("success_update", "تم تعديل البيانات بنجاح");
+            return redirect()->back()->with("success", "تم تعديل البيانات بنجاح");
         }
         else {
             dd($res_update_shipment['msg']);
-            return redirect()->back()->with("faild_update",$res_update_shipment['msg'] );
+            return redirect()->back()->with("faild",$res_update_shipment['msg'] );
         }
         
     }

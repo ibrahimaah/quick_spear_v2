@@ -105,11 +105,14 @@ class UserController extends Controller
 
     public function show(user $user)
     {
+        
         $shop = $user->shop;
+        
         $dataTable = new ExpressDataTable(false,$shop->id);
         $cities = City::all();
         return $dataTable->render('admin.users.show', ['user'=>$user,
                                          'shop'=>$shop,
+                                         'numOfShipments' => $shop->shipments()->count(),
                                          'cities'=>$cities]); 
     }
 

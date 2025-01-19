@@ -69,7 +69,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             
-                            <h5>الشحنات</h5>
+                            <h5>الشحنات <span> ({{ $numOfShipments }})</span></h5>
                             <a href="{{ url()->previous() }}" class="btn btn-danger d-block">رجوع</a>
                             
                         </div>
@@ -227,11 +227,11 @@
                                                 <button type="button" 
                                                         class="btn btn-primary" 
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#edit-rate2-1">
+                                                        data-bs-target="#edit-rate-{{ $deliveryPrice->id }}">
                                                     تعديل
                                                 </button>
 
-                                                <div class="modal fade" id="edit-rate2-1" tabindex="-1">
+                                                <div class="modal fade" id="edit-rate-{{ $deliveryPrice->id }}" tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <form method="post"
