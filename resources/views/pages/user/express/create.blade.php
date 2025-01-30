@@ -60,7 +60,8 @@
             
                         <div class="row">
                             <div class="col-12 my-2 col-md-4">
-                                <label>{{ __('Consignee Name') }}</label><span class="text-danger">*</span>
+                                <label>{{ __('Consignee Name') }}</label>
+                                {{-- <span class="text-danger">*</span> --}}
                                 <input class="form-control mt-2 ml-2" type="text" name="consignee_name"/>
                                 @error('consignee_name')
                                     <div class="text-danger">{{ $message }}</div>

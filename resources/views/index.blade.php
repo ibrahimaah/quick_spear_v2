@@ -2,14 +2,17 @@
 @section('content')
 <div class="container pt-3">
     <!-- ======= Services Section ======= -->
-    <section id="services" class="row services">
+    <div id="services" class="row services">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 py-5">
-                    <h1 class="text-dark my-4 fw-bold"
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-8 py-5">
+                    <h1 class="text-dark text-center my-4 fw-bold"
                         style="font-size: calc(1.7rem + 1.6901vw - 6.33788px);line-heightv: calc(1.7rem + 2.2535vw - 8.45062px);">
                         {{ __('The best and fastest way to deliver your shipments in simple steps') }}
                     </h1>
+                    <img
+                        src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}"
+                        alt="" class="img-fluid w-100">
                     {{-- @if (auth()->check())
                     <a href="{{ route('front.user.account') }}" class="btn btn-primary py-3 px-5 btn-lg">{{ __('Profile') }}</a>
                     @else --}}
@@ -102,7 +105,7 @@
                 </div> --}}
             </div>
         </div>
-    </section>
+    </div>
     <!-- End Services Section -->
 </div>
 @endsection

@@ -25,7 +25,7 @@ class StoreClientShipmentRequest extends FormRequest
     {
         return [
             'shop_id' => 'required', 
-            'consignee_name' => 'required',
+            // 'consignee_name' => 'required',
             'consignee_phone' => 'required',
             'consignee_city' => 'required',
             'consignee_region' => 'required',

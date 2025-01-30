@@ -3,10 +3,10 @@
 @section('content')
 
  
-<div class="row mt-5">
+<div class="row">
     <div class="col-sm-12">
-        <div class="card">
-            <div class="card-header">
+        <div class="card pt-3">
+            <div class="card-header py-0">
                 <div class="d-flex justify-content-between">
                     <h5>
                         @if($delegate)
@@ -37,21 +37,26 @@
                                 </button>
                             </form>     
                         </div>  
+
+                        @if($delegate)
+                            <div class="text-center">
+                                <form action="{{ route('admin.delegates.deport',['delegate' => $delegate->id]) }}" method="post" id="deport-form">
+                                    @csrf 
+                                    <input class="btn btn-success my-4" id="deported-btn" type="submit" value="ترحيل الكشف">
+                                </form>
+                            </div>
+                        @endif
+
                     </div> 
                 @endif
             </div>
             
-            <div class="card-body datatable-container" id="myTabContent">
+         
+            
+            <div class="card-body datatable-container pt-0" id="myTabContent">
                 {{ $dataTable->table() }}
             </div>
-            @if($delegate)
-                <div class="text-center">
-                    <form action="{{ route('admin.delegates.deport',['delegate' => $delegate->id]) }}" method="post" id="deport-form">
-                        @csrf 
-                        <input class="btn btn-success my-4" id="deported-btn" type="submit" value="ترحيل الكشف">
-                    </form>
-                </div>
-            @endif
+           
         </div>
     </div>
 </div>

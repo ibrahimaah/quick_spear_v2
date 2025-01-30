@@ -44,9 +44,11 @@
     <header id="header" class="d-flex align-items-center p-3">
         <div class="container-fluid d-flex align-items-center justify-content-between">
             <div class="logo mx-4">
-                <a href="/"><img
+                {{-- <a href="/">
+                    <img
                         src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}"
-                        alt="" class="img-fluid" style="width:160px"></a>
+                        alt="" class="img-fluid" style="width:160px">
+                </a> --}}
             </div>
 {{-- 
             <nav id="navbar" class="navbar justify-content-between">

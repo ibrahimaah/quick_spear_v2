@@ -13,7 +13,7 @@
                     <div class="col-12 divider" style="min-height: 2px;"></div>
                 </div>
                 <div class="col-12 p-3 row d-flex">
-                    {{-- <div class="col-4  d-flex justify-content-center align-items-center mb-3 py-2">
+                    {{-- <div class="col-3  d-flex justify-content-center align-items-center mb-3 py-2">
                         <a href="{{ route('admin.import.create') }}" style="color:inherit;">
                             <div class="col-12 p-0 text-center">
                                 <span class="fa fa-arrow-up fa-3x"></span>
@@ -23,7 +23,8 @@
                             </div>
                         </a>
                     </div> --}}
-                    <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2">
+
+                    <div class="col-3 d-flex justify-content-center align-items-center mb-3 py-2">
                         <a href="{{ route('admin.shipments.index') }}" style="color:inherit;">
                             <div class="col-12 p-0 text-center">
                                 <span class="fa fa-truck fa-3x"></span>
@@ -33,7 +34,20 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2">
+
+                    <div class="col-3 d-flex justify-content-center align-items-center mb-3 py-2">
+                        <a href="{{ route('admin.shipments.create') }}" style="color:inherit;">
+                            <div class="col-12 p-0 text-center">
+                                <span class="fa fa-plus fa-3x"></span>
+                                <div class="col-12 p-0 text-center">
+                                    إضافة شحنة
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {{-- {{ route('admin.shipments.create') }} --}}
+
+                    <div class="col-3 d-flex justify-content-center align-items-center mb-3 py-2">
                         <a href="{{ route('admin.delegates.index') }}" style="color:inherit;">
                             <div class="col-12 p-0 text-center">
                                 <span class="fa fa-user fa-3x"></span>
@@ -43,7 +57,7 @@
                             </div>
                         </a>
                     </div>
-                      <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2">
+                      <div class="col-3 d-flex justify-content-center align-items-center mb-3 py-2">
                         <a href="{{ route('admin.payments.index') }}" style="color:inherit;">
                             <div class="col-12 p-0 text-center">
                                 <span class="fa fa-book fa-3x"></span>
@@ -57,7 +71,7 @@
                     
 
 
-                    {{-- <div class="col-4 d-flex justify-content-center align-items-center mb-3 py-2 card">
+                    {{-- <div class="col-3 d-flex justify-content-center align-items-center mb-3 py-2 card">
                         <a href="{{ route('admin.requests.index') }}" style="color:inherit;">
                             <div class="col-12 p-0 text-center card-body">
                                 <span class="fa fa-edit fa-3x"></span>

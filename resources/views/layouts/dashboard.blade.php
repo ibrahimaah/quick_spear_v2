@@ -42,11 +42,12 @@
     <!-- ======= Header ======= -->
     <header id="header" class="d-flex align-items-center p-3 bg-light shadow-sm p-3 mb-5 bg-body rounded">
         <div class="container-fluid d-flex align-items-center justify-content-between">
+
             <div class="logo mx-4"> 
                 <a href="/">
                     <img src="{{ asset(App\Models\Setting::first()->website_logo ?? 'assets/images/logo/logo.png') }}" 
                          alt=""
-                         style="width:160px" 
+                         style="width:140px" 
                          class="img-fluid">
                 </a>
             </div>
