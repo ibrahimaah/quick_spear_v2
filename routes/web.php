@@ -7,6 +7,7 @@ use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\DeliveryPriceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShipmentImportController; 
 use App\Services\BillService; 
@@ -111,6 +112,7 @@ Route::group(
             // });
 
 
+            Route::get('view-delivery-prices/{shop}',[DeliveryPriceController::class,'view_delivery_prices'])->name('view_delivery_prices');
             Route::get('view_shop_bills/{shop}',[BillController::class,'view_shop_bills'])->name('view_bills');
             Route::get('prepare-bill/{bill_number}',[BillController::class,'prepare_bill'])->name('prepare_bill');
 

@@ -24,9 +24,15 @@
     {
         margin-top : 0.5rem !important;
     }
-    .highlight-green {
+    /* .highlight-green {
     background-color: lightgreen !important;
-}
+} */
+
+ .highlight-dark-blue,.highlight-dark-blue td{
+    background-color:  #3A4C56 !important;
+    color: white !important;
+ }
+ 
 </style> 
 
 
@@ -265,11 +271,11 @@
                 if (this.checked) 
                 {
                     selectedIds.push(id);
-                    _row.addClass('highlight-green');
+                    _row.addClass('highlight-dark-blue');
                 } 
                 else 
                 {
-                    _row.removeClass('highlight-green');
+                    _row.removeClass('highlight-dark-blue');
                     var index = selectedIds.indexOf(id);
                     if (index !== -1) 
                     {

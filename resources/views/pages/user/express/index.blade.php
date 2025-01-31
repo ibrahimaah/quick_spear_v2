@@ -34,6 +34,10 @@
                         <a href="{{ route('front.view_bills',['shop' => $shop_id]) }}" class="nav-link link-dark @yield('active3')">
                             عرض الفواتير
                         </a>
+
+                        <a href="{{ route('front.view_delivery_prices',['shop' => $shop_id]) }}" class="nav-link link-dark @yield('active4')">
+                            عرض أسعار التوصيل
+                        </a>
                          
                     </li>
                    

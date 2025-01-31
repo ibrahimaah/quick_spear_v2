@@ -1,13 +1,13 @@
 <div>
     <a href="{{ route('admin.shipments.edit',['shipment'=>$query->id])}}" 
        class="btn btn-sm btn-warning" target="_blank">
-       <i class="bi bi-pencil"></i>
+       <span>تعديل</span><i class="bi bi-pencil"></i> 
     </a>
 
     
     <a href="{{ route('admin.shipments.show',['shipment'=>$query->id])}}" 
        class="btn btn-sm btn-primary" target="_blank">
-       <i class="bi bi-eye"></i>
+       <span>معلومات</span> <i class="bi bi-eye"></i> 
     </a>
     
 
