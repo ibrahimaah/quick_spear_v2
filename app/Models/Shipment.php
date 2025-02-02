@@ -191,4 +191,9 @@ class Shipment extends Model
             ShipmentStatus::REJECTED_WITH_PAY
         ]);
     }
+
+    public function is_under_review()
+    {
+        return $this->shipment_status_id == ShipmentStatus::UNDER_REVIEW;
+    }
 }

@@ -108,6 +108,28 @@ class ShipmentService
         }
     }
 
+    public function accept($id)
+    {
+        try 
+        {
+            $shipment = Shipment::findOrFail($id);
+            $shipment->shipment_status_id = ShipmentStatus::UNDER_DELIVERY;
+            
+            if ($shipment->save()) 
+            {
+                return ['code' => 1, 'data' => true];
+            } 
+            else 
+            {
+                throw new Exception('Error in accepting shipment');
+            }
+        } 
+        catch (Exception $ex) 
+        {
+            return ['code' => 0, 'msg' => $ex->getMessage()];
+        }
+    }
+
     public function cancel_assign_delegate($id)
     {
         try 

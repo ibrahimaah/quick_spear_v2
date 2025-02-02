@@ -106,6 +106,8 @@ Route::prefix('superAdmin/admin/dashboard')->middleware('auth:admin')->name('adm
     Route::resource('cities', CityController::class);
     Route::resource('regions', RegionController::class);
 
+    Route::post('accept-shipment/{shipment}', [ShipmentController::class, 'accept_shipment'])->name('shipments.accept_shipment');
+    // Route::post('deny-shipment/{shipment}', [ShipmentController::class, 'deny_shipment'])->name('shipments.deny_shipment');
     Route::get('get-shipments-by-status/{status}', [ShipmentController::class, 'get_shipments_by_status'])->name('get_shipments_by_status');
     Route::post('update-shipment-status/{shipment}/{status}', [ShipmentController::class, 'update_status'])->name('update_shipment_status');
 

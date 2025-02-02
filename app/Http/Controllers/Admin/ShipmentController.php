@@ -261,4 +261,23 @@ class ShipmentController extends Controller
             return response()->json(['code' => 0 , 'msg' => $res_update_status['msg']]);
         }
     }
+
+    public function accept_shipment(Shipment $shipment)
+    {
+        $res_remove = $this->shipmentService->accept($shipment->id);
+        
+        if ($res_remove['code'] == 1) 
+        {
+            return redirect()->back()->with('success_delete', 'تم قبول الطلب بنجاح');
+        }
+        else
+        {
+            return redirect()->back()->with('error_delete', $res_remove['msg']);
+        }
+    }
+
+    // public function deny_shipment(Shipment $shipment)
+    // {
+
+    // }
 }
