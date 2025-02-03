@@ -10,7 +10,14 @@
                 <div class="d-flex justify-content-between">
                     <h5>
                         @if($delegate)
-                        <span>الشحنات الخاصة بالمندوب</span><span class="text-success"> {{ $delegate->name }}</span>
+                        <div class="d-flex">
+                            <div>
+                                <span>الشحنات الخاصة بالمندوب</span><span class="text-success"> {{ $delegate->name }}</span>
+                            </div>
+                            <div>
+                                <span>&nbsp;({{ $numOfShipments }})</span>
+                            </div>
+                        </div>
                         @else 
                         <span>الشحنات</span>
                         @endif

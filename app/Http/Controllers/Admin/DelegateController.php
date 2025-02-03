@@ -140,7 +140,8 @@ class DelegateController extends Controller
     public function get_shipments(Delegate $delegate)
     {
         $dataTable = new ExpressDataTable(false,null,$delegate->id);
-        return $dataTable->render('admin.delegates.show_shipments',compact(['delegate']));
+        
+        return $dataTable->render('admin.delegates.show_shipments',['delegate' => $delegate , 'numOfShipments' => $delegate->shipments()->where('is_deported',false)->count()]);
     }
 
 

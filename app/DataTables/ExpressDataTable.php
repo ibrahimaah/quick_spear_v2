@@ -177,7 +177,48 @@ class ExpressDataTable extends DataTable
                       'checkbox',
                       'notes',
                       'delegate_shipment_actions',
-                      'return_shipment_actions'])->setRowId('id');
+                      'return_shipment_actions'])
+        ->setRowId('id')
+        ->setRowClass(function ($query) 
+        {
+            if ((!$this->is_from_admin) && ($this->shop_id) && (!$this->delegate_id) && (!$this->is_return)) 
+            {
+                 // Example: Change row background color based on some condition
+                if ($query->shipment_status_id == ShipmentStatus::UNDER_REVIEW) 
+                {
+                    return 'bg-under-review'; // Background color for status 1 (use Bootstrap classes or custom CSS)
+                }
+                elseif ($query->shipment_status_id == ShipmentStatus::DELIVERED)
+                {
+                    return 'bg-success'; // Background color for returned shipments
+                }
+                elseif (in_array($query->shipment_status_id, [ShipmentStatus::NO_RESPONSE,
+                                                              ShipmentStatus::CANCELED,
+                                                              ShipmentStatus::REJECTED_WITH_PAY,
+                                                              ShipmentStatus::REJECTED_WITHOUT_PAY]))
+                {
+                    return 'bg-danger'; // Background color for returned shipments
+                }
+                elseif ($query->shipment_status_id == ShipmentStatus::POSTPONED)
+                {
+                    return 'bg-postpone'; // Background color for returned shipments
+                }
+                elseif ($query->shipment_status_id == ShipmentStatus::UNDER_REVIEW)
+                {
+                    return 'bg-danger'; // Background color for returned shipments
+                }
+                // elseif ($query->notes !== '')
+                // {
+                //     return 'bg-notes'; // Background color for returned shipments
+                // }
+                else 
+                {
+                    return '';
+                }
+            }
+           
+            return ''; // Default row
+        });
     }
 
     /**

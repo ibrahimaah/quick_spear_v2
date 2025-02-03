@@ -7,6 +7,23 @@
         overflow-x: auto;
         white-space: nowrap; /* Prevents text wrapping */
     }
+    .bg-under-review
+    {
+        background-color: #91948B !important
+    }
+    .bg-under-delivery
+    {
+        background-color: lightgreen !important
+    }
+    .bg-postpone
+    {
+        background-color: yellow !important;
+    }
+    .bg-notes
+    {
+        background-color: orangered !important;
+    }
+    
 </style>
 
     {{-- <h2 class="mb-4">{{ __('Local Shipping') }}</h2> --}}
