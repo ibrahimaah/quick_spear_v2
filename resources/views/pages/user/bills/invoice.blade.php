@@ -41,7 +41,7 @@
                 قيمة الطرد
             </div>
             <div class="col-sm-6">
-                {{ $shipment->value_on_delivery }}
+                {{ $shipment->order_price }}
             </div>
         </div>
         <div class="row align-items-center">
