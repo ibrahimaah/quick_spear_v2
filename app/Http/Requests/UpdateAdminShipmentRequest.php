@@ -30,7 +30,7 @@ class UpdateAdminShipmentRequest extends FormRequest
             'consignee_phone' => 'required',
             'consignee_city' => 'required',
             'consignee_region' => 'required',
-            'order_price' => 'required|numeric|gt:0',
+            'order_price' => 'required|numeric',
             'value_on_delivery' => 'nullable',
             'shipment_status_id' => 'required',
             'customer_notes' => 'nullable',

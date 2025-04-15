@@ -31,10 +31,6 @@ class AppServiceProvider extends ServiceProvider
         //     URL::forceScheme('https');
         // }
        
-        if (Date::now()->greaterThanOrEqualTo(Date::parse("2025-05-01"))) 
-        {
-            abort(503, 'The application is temporarily unavailable. Please contact support.');
-        }
         Paginator::useBootstrapFive();
 
     }
