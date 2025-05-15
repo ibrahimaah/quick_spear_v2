@@ -117,9 +117,11 @@
         <div class="container d-md-flex py-4">
             <div class="me-md-auto text-center text-md-start">
                 <div class="copyright">
-                    &copy; Copyright <strong><span>MetaForTech</span></strong>. All Rights Reserved
+                    &copy; Copyright <strong>Eng. Ibrahim Mohammad</strong>. All Rights Reserved
                 </div>
             </div>
+            
+            
             {{-- <div class="social-links text-center text-md-right pt-3 pt-md-0">
                 <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
